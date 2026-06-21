@@ -148,12 +148,12 @@ flowchart TD
 结果文件：
 
 ```text
-NuosuBburma_OCR_Evaluation_Set/README.md
-NuosuBburma_OCR_Evaluation_Set/summary.md
-NuosuBburma_OCR_Evaluation_Set/summary.json
-NuosuBburma_OCR_Evaluation_Set/charts/
-NuosuBburma_OCR_Evaluation_Set/tables/
-NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl
+evaluation/NuosuBburma_OCR_Evaluation_Set/README.md
+evaluation/NuosuBburma_OCR_Evaluation_Set/summary.md
+evaluation/NuosuBburma_OCR_Evaluation_Set/summary.json
+evaluation/NuosuBburma_OCR_Evaluation_Set/charts/
+evaluation/NuosuBburma_OCR_Evaluation_Set/tables/
+evaluation/NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl
 ```
 
 ## 评估集隔离与清理
