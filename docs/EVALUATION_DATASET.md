@@ -1,6 +1,6 @@
 # 评估集说明
 
-本文档说明 `NuosuBburma OCR` 仓库中随附的提交评估集。
+本文档说明 `NuosuBburma OCR` 的提交评估集。完整数据托管在 Hugging Face Dataset，GitHub 仓库只保留入口说明、评估脚本和已完成的评估结果。
 
 ## 目标
 
@@ -18,23 +18,25 @@
 
 ## 数据包结构
 
+HF Dataset 地址：
+
+```text
+https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set
+```
+
+复跑评估时，将数据集下载到本仓库的以下位置：
+
 ```text
 datasets/NuosuBburma_OCR_Evaluation_Set/
   images/
   annotations.jsonl
-  samples.csv
-  source_summary.csv
-  dataset_summary.json
-  digit_summary.csv
-  excluded_samples.csv
-  review.html
   README.md
 ```
 
 规模：
 
-- 主评分样本：见 `dataset_summary.json`。
-- 引用图片：见 `dataset_summary.json`。
+- 主评分样本：603 条。
+- 引用图片：603 张。
 - 空 GT：0 条。
 - 占位符 GT：0 条。
 - 来源包括书籍扫描件、真实手写、真实照片和屏幕页面。
@@ -89,7 +91,7 @@ datasets/NuosuBburma_OCR_Evaluation_Set/
 提交评估集评估结果位于：
 
 ```text
-evaluation/submission_eval/
+evaluation/NuosuBburma_OCR_Evaluation_Set/
 ```
 
 摘要：

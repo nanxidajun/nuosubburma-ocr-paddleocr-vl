@@ -9,29 +9,29 @@
 | GitHub 项目 | 已整理待复核 | 当前仓库 |
 | 模型权重 | 后续外部托管 | 待补模型托管链接 |
 | 模型卡 | 后续外部托管 | 待补模型托管链接 |
-| 评估集 | 已放入仓库 | `datasets/NuosuBburma_OCR_Evaluation_Set/` |
-| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/submission_eval/` |
+| 评估集 | 已上传 HF Dataset，仓库保留入口 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
+| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/NuosuBburma_OCR_Evaluation_Set/` |
 | 训练配置和 manifest | 已放入仓库 | `configs/` |
 | 演示 | 本地单图 demo | `demo/` |
 
 ## 1. 评估集
 
-已包含：
+评估集托管：
 
-- 评估图片。
-- `annotations.jsonl` 标注。
-- 来源、难度、版式和混排类型统计。
-- 评估脚本。
-- 提交评估集重跑结果。
+- HF Dataset：`https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set`
+- GitHub 仓库保留评估集入口说明、评估脚本和提交评估集重跑结果。
 
-对应位置：
+HF Dataset 当前包含复跑评估所需的最小文件：
 
-- `datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl`
-- `datasets/NuosuBburma_OCR_Evaluation_Set/images/`
-- `datasets/NuosuBburma_OCR_Evaluation_Set/dataset_summary.json`
-- `datasets/NuosuBburma_OCR_Evaluation_Set/source_summary.csv`
+- `annotations.jsonl`
+- `images/`
+
+仓库内对应位置：
+
+- `datasets/NuosuBburma_OCR_Evaluation_Set/README.md`
 - `scripts/eval_nuosubburma.py`
 - `scripts/analyze_submission_eval.py`
+- `evaluation/NuosuBburma_OCR_Evaluation_Set/`
 
 ## 2. 训练数据构建说明
 
@@ -48,18 +48,18 @@
 
 - 训练和导出配置。
 - 评估脚本。
-- 评估集。
+- 评估集入口。
 - 评估结果。
 - 模型权重和模型卡走外部模型托管平台。
 - 单图 demo。
 
-大模型权重不直接提交到 GitHub。后续可上传到 Hugging Face 或其他模型托管平台，并在提交材料中补充链接。
+大模型权重不直接提交到 GitHub。评估集使用 HF Dataset 托管，模型权重后续可上传到 Hugging Face 或其他模型托管平台，并在提交材料中补充链接。
 
 ## 4. 邮件/提交清单
 
 - GitHub 仓库：`https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl`
 - 模型托管链接：待上传后补充。
-- 评估集：`datasets/NuosuBburma_OCR_Evaluation_Set/`
+- HF Dataset / 评估集来源：`https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set`
 - 训练配置：`configs/`
 - 演示说明：`demo/README.md`
 - GitHub ID：`nanxidajun`

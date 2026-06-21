@@ -12,7 +12,7 @@ RUN_DIR="${RUN_DIR:-outputs/nuosubburma_v5_16_synth_capped_rerender_lora}"
 EXPORT_CONFIG="${EXPORT_CONFIG:-configs/paddleocr-vl_lora_export_nuosubburma_v5_16.yaml}"
 EXPORT_DIR="${RUN_DIR}/export"
 REAL_EVAL_DATASET="${REAL_EVAL_DATASET:-datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl}"
-REAL_EVAL_OUT_DIR="${REAL_EVAL_OUT_DIR:-outputs/submission_eval}"
+REAL_EVAL_OUT_DIR="${REAL_EVAL_OUT_DIR:-outputs/NuosuBburma_OCR_Evaluation_Set}"
 
 if [ -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
   source "${CONDA_BASE}/etc/profile.d/conda.sh"
