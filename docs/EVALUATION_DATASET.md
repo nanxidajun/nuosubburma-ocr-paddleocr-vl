@@ -84,9 +84,9 @@ data/NuosuBburma_OCR_Evaluation_Set/
 - 真实手写作为高难度子场景单独解释。
 - 单行 OCR 与 region/page OCR 不混为同一种能力。
 
-## 最终重跑
+## clean603 重跑
 
-最终 clean603 评估结果位于：
+clean603 评估结果位于：
 
 ```text
 evaluation/clean603/

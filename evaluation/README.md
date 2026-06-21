@@ -1,6 +1,6 @@
 # 评估结果
 
-本目录存放 `NuosuBburma OCR` 的最终评估产物。
+本目录存放 `NuosuBburma OCR` 的 clean603 评估产物。
 
 ```text
 clean603/

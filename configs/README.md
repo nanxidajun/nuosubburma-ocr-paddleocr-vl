@@ -1,6 +1,6 @@
 # 配置
 
-本目录保存最终 v5.16 的训练/导出配置快照，以及训练数据 manifest。
+本目录保存本次提交使用的训练/导出配置快照，以及训练数据 manifest。
 
 ```text
 paddleocr-vl_lora_16k_nuosubburma_v5_16.yaml

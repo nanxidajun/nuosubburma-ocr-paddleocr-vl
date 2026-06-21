@@ -17,7 +17,7 @@
 | `dataset_summary.json` | 机器可读的数据分布摘要 |
 | `digit_summary.csv` | 含数字样本统计 |
 | `review.html` | 静态可视化复核页 |
-| `excluded_samples.csv` | 从最终评估集中排除的样本记录 |
+| `excluded_samples.csv` | 从提交评估集中排除的样本记录 |
 
 ## 命名规则
 
