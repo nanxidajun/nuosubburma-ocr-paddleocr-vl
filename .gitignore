@@ -1,0 +1,24 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local experiment outputs
+outputs/
+runs/
+wandb/
+checkpoints/
+
+# Large model artifacts should be released through model hosting, not GitHub.
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.pdparams
+*.pdopt
+
+# Large packaged datasets should be linked externally unless explicitly reviewed.
+*.tar
+*.tar.gz
+*.zip
