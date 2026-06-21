@@ -1,6 +1,6 @@
 # 数据
 
-本目录存放 `NuosuBburma OCR` 的 clean 评估集。
+本目录存放 `NuosuBburma OCR` 的 真实数据评估集。
 
 ```text
 NuosuBburma_OCR_Evaluation_Set/
