@@ -12,7 +12,7 @@
 
 | 方向 | 项目说明 | 位置 |
 |---|---|---|
-| 真实评估 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、屏幕/场景图；全部样本纳入正式评估，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/NuosuBburma_OCR_Evaluation_Set/` |
+| 真实评估 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、屏幕/场景图；全部样本纳入正式评估，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`NuosuBburma_OCR_Evaluation_Set/` |
 | 低资源场景 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 对规范彝文支持不足；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
 | 任务难点 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
 | 训练数据 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
@@ -34,7 +34,7 @@
 | 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
 | 训练配置与 manifest | 已放入仓库 | `configs/` |
 | 评估脚本 | 已放入仓库 | `scripts/eval_nuosubburma.py`，`scripts/analyze_submission_eval.py`，`scripts/run_eval.sh` |
-| 提交评估结果 | 已放入仓库 | `evaluation/NuosuBburma_OCR_Evaluation_Set/` |
+| 提交评估结果 | 已放入仓库 | `NuosuBburma_OCR_Evaluation_Set/` |
 | Demo | 本地单图 demo | `demo/README.md`，`demo/infer_single_image.py` |
 
 ## 核心结果
@@ -59,12 +59,12 @@
 这些结果对应的原始文件在：
 
 ```text
-evaluation/NuosuBburma_OCR_Evaluation_Set/README.md
-evaluation/NuosuBburma_OCR_Evaluation_Set/summary.md
-evaluation/NuosuBburma_OCR_Evaluation_Set/summary.json
-evaluation/NuosuBburma_OCR_Evaluation_Set/charts/
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/
-evaluation/NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl
+NuosuBburma_OCR_Evaluation_Set/README.md
+NuosuBburma_OCR_Evaluation_Set/summary.md
+NuosuBburma_OCR_Evaluation_Set/summary.json
+NuosuBburma_OCR_Evaluation_Set/charts/
+NuosuBburma_OCR_Evaluation_Set/tables/
+NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl
 ```
 
 ## 复现入口

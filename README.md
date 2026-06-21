@@ -62,7 +62,7 @@ xychart-beta
   bar [0.025771, 0.029050, 0.035492, 0.122708]
 ```
 
-完整结果见 [`evaluation/NuosuBburma_OCR_Evaluation_Set/`](evaluation/NuosuBburma_OCR_Evaluation_Set/)。
+完整结果见 [`NuosuBburma_OCR_Evaluation_Set/`](NuosuBburma_OCR_Evaluation_Set/)。
 
 ## 为什么做这个
 
@@ -187,7 +187,7 @@ configs/                         训练/导出配置与训练数据 manifest 快
 NuosuBburma_OCR_Evaluation_Set/  评估集入口说明，完整数据托管在 Hugging Face Dataset
 demo/                            单图推理 demo 与样例图
 docs/                            项目背景、评估集、模型训练和提交说明
-evaluation/                      603 条真实评估集结果与统计表
+NuosuBburma_OCR_Evaluation_Set/  评估集入口、603 条真实评估结果与图表
 model/                           模型托管入口、下载命令和使用边界说明
 scripts/                         训练、评估、统计工具
 ```
