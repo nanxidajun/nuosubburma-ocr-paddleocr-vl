@@ -9,6 +9,7 @@
 | GitHub 项目 | 已整理待复核 | 当前仓库 |
 | 模型权重 | 已上传 Hugging Face | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
 | 模型卡 | 已上传 Hugging Face | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
+| 模型入口说明 | 已放入仓库 | `model/README.md` |
 | 评估集 | 已上传 HF Dataset，仓库保留入口 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
 | 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/NuosuBburma_OCR_Evaluation_Set/` |
 | 训练配置和 manifest | 已放入仓库 | `configs/` |
@@ -51,6 +52,7 @@ HF Dataset 当前包含复跑评估所需的最小文件：
 - 评估集入口。
 - 评估结果。
 - 模型权重和模型卡托管在 Hugging Face。
+- `model/README.md` 保留模型下载、评估口径和使用边界。
 - 单图 demo。
 
 大模型权重不直接提交到 GitHub。评估集使用 HF Dataset 托管，模型权重使用 Hugging Face Model 托管。

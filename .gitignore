@@ -26,3 +26,7 @@ checkpoints/
 # The evaluation dataset is hosted on Hugging Face Dataset.
 /datasets/NuosuBburma_OCR_Evaluation_Set/*
 !/datasets/NuosuBburma_OCR_Evaluation_Set/README.md
+
+# The public model folder is an index only; weights live on Hugging Face.
+/model/*
+!/model/README.md

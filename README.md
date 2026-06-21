@@ -5,8 +5,8 @@
 ## 当前状态
 
 - 当前提交模型：`NuosuBburma OCR`，基于 PaddleOCR-VL LoRA 微调，模型托管在 Hugging Face。
-- 提交评估集：`NuosuBburma_OCR_Evaluation_Set`，真实数据评估集，完整数据托管在 Hugging Face Dataset。
-- GitHub 不维护大模型权重；`model/` 目录仅保留占位。
+- 提交评估集：`NuosuBburma OCR Evaluation Set`，真实数据评估集，完整数据托管在 Hugging Face Dataset。
+- GitHub 不维护大模型权重；`model/` 目录只保留模型托管入口和下载说明。
 - 本仓库已经放入可复跑评估所需的数据、脚本、配置和结果表。
 
 ## 项目范围
@@ -28,7 +28,7 @@ datasets/          NuosuBburma OCR 真实数据提交评估集
 demo/              单图推理 demo 与少量样例图
 docs/              项目说明、训练说明、评估集说明
 evaluation/        提交评估集重跑结果与统计表
-model/             暂时占位，模型卡后续走外部模型托管平台
+model/             模型托管入口、下载命令和使用边界说明
 scripts/           训练、评估、统计工具
 ```
 
@@ -37,6 +37,7 @@ scripts/           训练、评估、统计工具
 ## 核心文档
 
 - [提交材料映射](docs/COMPETITION_SUBMISSION.md)
+- [模型入口](model/README.md)
 - [模型与训练](docs/MODEL_AND_TRAINING.md)
 - [评估集说明](docs/EVALUATION_DATASET.md)
 
