@@ -11,7 +11,7 @@
 ```bash
 python demo/infer_single_image.py \
   --model /path/to/NuosuBburma-OCR-export \
-  --image demo/sample_images/footnote_line.png
+  --image demo/sample_images/mixed_line.png
 ```
 
 固定提示词：
@@ -22,7 +22,7 @@ python demo/infer_single_image.py \
 
 样例图：
 
-- `sample_images/footnote_line.png`
+- `sample_images/mixed_line.png`
 - `sample_images/screen_page.jpg`
 - `sample_images/handwriting_region.jpg`
 
