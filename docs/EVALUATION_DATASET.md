@@ -32,9 +32,10 @@ HF Dataset 当前只保留复跑评估所需的最小文件：
 | `annotations.jsonl` | 主评估标注，603 条样本 |
 | `images/` | 全部被引用图片，603 张 |
 
-GitHub 仓库不重复上传完整图片数据，只保留评估集说明、评估脚本和提交评估结果：
+GitHub 仓库不重复上传完整图片数据，只保留评估集入口说明、评估脚本和提交评估结果：
 
 ```text
+NuosuBburma_OCR_Evaluation_Set/README.md
 docs/EVALUATION_DATASET.md
 scripts/eval_nuosubburma.py
 scripts/analyze_submission_eval.py
