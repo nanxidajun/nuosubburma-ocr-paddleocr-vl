@@ -49,7 +49,7 @@ hf download nanxidajun/NuosuBburma-OCR \
   --repo-type model \
   --local-dir models/NuosuBburma-OCR
 
-hf download nanxidajun/NuosuBburma_OCR_Evaluation_Set \
+hf download nanxidajun/NuosuBburma-OCR-Evaluation-Set \
   --repo-type dataset \
   --local-dir datasets/NuosuBburma_OCR_Evaluation_Set
 
@@ -65,7 +65,7 @@ python scripts/analyze_submission_eval.py \
 ## 外部链接
 
 - Hugging Face 模型：<https://huggingface.co/nanxidajun/NuosuBburma-OCR>
-- Hugging Face 评估集：<https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set>
+- Hugging Face 评估集：<https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set>
 
 ## 作者
 

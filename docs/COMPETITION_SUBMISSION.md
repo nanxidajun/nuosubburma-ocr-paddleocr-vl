@@ -18,7 +18,7 @@
 
 评估集托管：
 
-- HF Dataset：`https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set`
+- HF Dataset：`https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set`
 - GitHub 仓库保留评估集入口说明、评估脚本和提交评估集重跑结果。
 
 HF Dataset 当前包含复跑评估所需的最小文件：
@@ -59,7 +59,7 @@ HF Dataset 当前包含复跑评估所需的最小文件：
 
 - GitHub 仓库：`https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl`
 - 模型托管链接：`https://huggingface.co/nanxidajun/NuosuBburma-OCR`
-- HF Dataset / 评估集来源：`https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set`
+- HF Dataset / 评估集来源：`https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set`
 - 训练配置：`configs/`
 - 演示说明：`demo/README.md`
 - GitHub ID：`nanxidajun`

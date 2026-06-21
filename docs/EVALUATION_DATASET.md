@@ -21,7 +21,7 @@
 HF Dataset 地址：
 
 ```text
-https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set
+https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 ```
 
 复跑评估时，将数据集下载到本仓库的以下位置：
