@@ -1,6 +1,6 @@
 # 评估集说明
 
-本文档说明 `NuosuBburma OCR` 仓库中随附的 clean 评估集。
+本文档说明 `NuosuBburma OCR` 仓库中随附的提交评估集。
 
 ## 目标
 
@@ -19,7 +19,7 @@
 ## 数据包结构
 
 ```text
-data/NuosuBburma_OCR_Evaluation_Set/
+datasets/NuosuBburma_OCR_Evaluation_Set/
   images/
   annotations.jsonl
   samples.csv
@@ -33,8 +33,8 @@ data/NuosuBburma_OCR_Evaluation_Set/
 
 规模：
 
-- 主评分样本：603 条。
-- 引用图片：603 张。
+- 主评分样本：见 `dataset_summary.json`。
+- 引用图片：见 `dataset_summary.json`。
 - 空 GT：0 条。
 - 占位符 GT：0 条。
 - 来源包括书籍扫描件、真实手写、真实照片和屏幕页面。
@@ -84,19 +84,19 @@ data/NuosuBburma_OCR_Evaluation_Set/
 - 真实手写作为高难度子场景单独解释。
 - 单行 OCR 与 region/page OCR 不混为同一种能力。
 
-## clean603 重跑
+## 提交评估集重跑
 
-clean603 评估结果位于：
+提交评估集评估结果位于：
 
 ```text
-evaluation/clean603/
+evaluation/submission_eval/
 ```
 
 摘要：
 
 | 指标 | 值 |
 |---|---:|
-| 样本数 | 603 |
+| 样本数 | 见 `summary.json` |
 | Avg NED | 0.036068 |
 | Exact match | 67.99% |
 | Yi-only NED | 0.038309 |

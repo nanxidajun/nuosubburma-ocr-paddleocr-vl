@@ -86,7 +86,7 @@
 
 起点：
 
-- 使用人工复核后的 clean603 评估集。
+- 使用人工复核后的提交评估集。
 - 选择模型时同时看 NED、彝文识别、汉字识别、输出漂移、超长输出和混排行为。
 
 判断：
@@ -109,11 +109,11 @@ NuosuBburma OCR (PaddleOCR-VL LoRA)
 | train loss | 0.191 |
 | train runtime | 1:08:53.89 |
 
-clean603 评估：
+提交评估集评估：
 
 | 指标 | 值 |
 |---|---:|
-| 样本数 | 603 |
+| 样本数 | 见 `summary.json` |
 | Avg NED | 0.036068 |
 | Exact match | 67.99% |
 | Yi-only NED | 0.038309 |

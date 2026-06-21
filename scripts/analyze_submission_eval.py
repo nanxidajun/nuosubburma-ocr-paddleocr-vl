@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""分析 NuosuBburma OCR clean603 评估输出。"""
+"""分析 NuosuBburma OCR 提交评估集输出。"""
 
 from __future__ import annotations
 
@@ -466,7 +466,7 @@ pre {{
 </body>
 </html>
 """
-    (out_dir / "worst180_clean603.html").write_text(doc, encoding="utf-8")
+    (out_dir / "worst180_submission_eval.html").write_text(doc, encoding="utf-8")
 
 
 def main() -> None:
@@ -474,7 +474,7 @@ def main() -> None:
     parser.add_argument("--annotations", type=Path, required=True)
     parser.add_argument("--result", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
-    parser.add_argument("--title", default="Clean 603 Evaluation")
+    parser.add_argument("--title", default="NuosuBburma OCR Evaluation Set")
     parser.add_argument("--html-limit", type=int, default=180)
     args = parser.parse_args()
 

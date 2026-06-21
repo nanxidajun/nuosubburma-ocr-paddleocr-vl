@@ -9,8 +9,8 @@
 | GitHub 项目 | 已整理待复核 | 当前仓库 |
 | 模型权重 | 后续外部托管 | 待补模型托管链接 |
 | 模型卡 | 后续外部托管 | 待补模型托管链接 |
-| 评估集 | 已放入仓库 | `data/NuosuBburma_OCR_Evaluation_Set/` |
-| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/clean603/` |
+| 评估集 | 已放入仓库 | `datasets/NuosuBburma_OCR_Evaluation_Set/` |
+| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/submission_eval/` |
 | 训练配置和 manifest | 已放入仓库 | `configs/` |
 | 演示 | 本地单图 demo | `demo/` |
 
@@ -22,16 +22,16 @@
 - `annotations.jsonl` 标注。
 - 来源、难度、版式和混排类型统计。
 - 评估脚本。
-- clean603 重跑结果。
+- 提交评估集重跑结果。
 
 对应位置：
 
-- `data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl`
-- `data/NuosuBburma_OCR_Evaluation_Set/images/`
-- `data/NuosuBburma_OCR_Evaluation_Set/dataset_summary.json`
-- `data/NuosuBburma_OCR_Evaluation_Set/source_summary.csv`
+- `datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl`
+- `datasets/NuosuBburma_OCR_Evaluation_Set/images/`
+- `datasets/NuosuBburma_OCR_Evaluation_Set/dataset_summary.json`
+- `datasets/NuosuBburma_OCR_Evaluation_Set/source_summary.csv`
 - `scripts/eval_nuosubburma.py`
-- `scripts/analyze_clean603_eval.py`
+- `scripts/analyze_submission_eval.py`
 
 ## 2. 训练数据构建说明
 
@@ -59,7 +59,7 @@
 
 - GitHub 仓库：`https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl`
 - 模型托管链接：待上传后补充。
-- 评估集：`data/NuosuBburma_OCR_Evaluation_Set/`
+- 评估集：`datasets/NuosuBburma_OCR_Evaluation_Set/`
 - 训练配置：`configs/`
 - 演示说明：`demo/README.md`
 - GitHub ID：`nanxidajun`
@@ -72,6 +72,6 @@ PaddleOCR衍生模型挑战赛-【材料名称】-【GitHub ID】
 
 ## 完整性说明
 
-- 仓库中的评估指标来自 clean603 重跑。
+- 仓库中的评估指标来自提交评估集重跑。
 - 评估数据不作为训练答案。
 - 已知限制保留在文档中，不隐藏模型边界。

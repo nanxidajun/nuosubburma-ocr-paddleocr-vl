@@ -1,11 +1,11 @@
 # 评估结果
 
-本目录存放 `NuosuBburma OCR` 的 clean603 评估产物。
+本目录存放 `NuosuBburma OCR` 提交评估集的评估产物。
 
 ```text
-clean603/
-  v516_clean603_result.jsonl
-  v516_clean603_eval.log
+submission_eval/
+  submission_model_result.jsonl
+  submission_model_eval.log
   summary.md
   summary.json
   by_source.csv
@@ -23,14 +23,14 @@ clean603/
 
 ```text
 Avg NED: 0.036068
-samples: 603
+samples: see summary.json
 ```
 
 重新生成统计：
 
 ```bash
-python scripts/analyze_clean603_eval.py \
-  --annotations data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result evaluation/clean603/v516_clean603_result.jsonl \
-  --out-dir outputs/clean603_analysis
+python scripts/analyze_submission_eval.py \
+  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --result evaluation/submission_eval/submission_model_result.jsonl \
+  --out-dir outputs/submission_eval/analysis
 ```

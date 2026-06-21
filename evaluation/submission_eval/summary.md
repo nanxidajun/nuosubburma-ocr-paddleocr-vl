@@ -1,4 +1,4 @@
-# v5.16 on NuosuBburma_OCR_Evaluation_Set clean603
+# Submission model on NuosuBburma_OCR_Evaluation_Set
 
 - rows: 603
 - Avg NED: 0.036068

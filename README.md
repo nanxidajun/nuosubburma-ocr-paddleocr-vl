@@ -5,7 +5,7 @@
 ## 当前状态
 
 - 当前提交模型：`NuosuBburma OCR`，基于 PaddleOCR-VL LoRA 微调。
-- 提交评估集：`NuosuBburma_OCR_Evaluation_Set`，603 条主评分样本。
+- 提交评估集：`NuosuBburma_OCR_Evaluation_Set`，真实数据评估集。
 - 模型权重和模型卡后续走模型托管平台；GitHub 暂不维护 `model/` 目录内容。
 - 本仓库已经放入可复跑评估所需的数据、脚本、配置和结果表。
 
@@ -24,10 +24,10 @@
 
 ```text
 configs/           训练/导出配置与训练数据 manifest 快照
-data/              603 条 clean 评估集
+datasets/          NuosuBburma OCR 真实数据提交评估集
 demo/              单图推理 demo 与少量样例图
 docs/              项目说明、训练说明、评估集说明
-evaluation/        clean603 评估结果与统计表
+evaluation/        提交评估集重跑结果与统计表
 model/             暂时占位，模型卡后续走外部模型托管平台
 scripts/           训练、评估、统计、评估集构建工具
 ```
@@ -45,14 +45,14 @@ scripts/           训练、评估、统计、评估集构建工具
 安装 PaddleOCR-VL 运行环境并下载合并后的模型导出目录后，可以运行：
 
 ```bash
-scripts/run_eval.sh /path/to/NuosuBburma-OCR-export data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl outputs/eval_clean603_result.jsonl
-python scripts/analyze_clean603_eval.py \
-  --annotations data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result outputs/eval_clean603_result.jsonl \
-  --out-dir outputs/eval_clean603_analysis
+scripts/run_eval.sh /path/to/NuosuBburma-OCR-export datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl outputs/submission_eval/result.jsonl
+python scripts/analyze_submission_eval.py \
+  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --result outputs/submission_eval/result.jsonl \
+  --out-dir outputs/submission_eval/analysis
 ```
 
-本仓库内已经包含一次 clean603 重跑结果，见 [evaluation/clean603](evaluation/clean603)。
+本仓库内已经包含一次提交评估集重跑结果，见 [evaluation/submission_eval](evaluation/submission_eval)。
 
 ## 作者
 
