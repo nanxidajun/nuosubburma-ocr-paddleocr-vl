@@ -1,26 +1,22 @@
-# Model and Training
+# 模型与训练
 
-This document records the model route, training-data construction logic, and model-selection method for the Nuosu Bburma OCR project.
+本文档记录 `NuosuBburma OCR` 的模型路线、训练配置和最终选择依据。长篇实验复盘不放在这里，这里只保留提交和复现需要的核心信息。
 
-Final numerical results will be updated after the evaluation rerun.
+## 基础方案
 
-## Base Method
-
-| Item | Value |
+| 项目 | 内容 |
 |---|---|
-| Base model | PaddleOCR-VL-1.6 (0.9B) |
-| Fine-tuning method | LoRA |
-| Task prompt | `<image>OCR:` |
-| Main task | Nuosu Bburma / 规范彝文 OCR |
-| Mixed text | Yi-Han mixed text supported |
-| Hardware | NVIDIA RTX 4090D |
-| Deployment status | not endpoint/mobile deployed yet |
+| 基座模型 | PaddleOCR-VL-1.6 (0.9B) |
+| 微调方式 | LoRA |
+| 任务提示词 | `<image>OCR:` |
+| 主任务 | 规范彝文 OCR |
+| 混排能力 | 支持彝汉混排 |
+| 训练硬件 | NVIDIA RTX 4090D |
+| 部署状态 | 暂未做端侧/移动端部署 |
 
-## Key Training Parameters
+## 关键训练参数
 
-These parameters should be checked against the final frozen training log before submission.
-
-| Parameter | Value |
+| 参数 | 值 |
 |---|---:|
 | max sequence length | 16384 |
 | LoRA rank | 8 |
@@ -33,83 +29,96 @@ These parameters should be checked against the final frozen training log before 
 | precision | bf16 |
 | sharding | stage2 |
 
-## Training Route
+配置文件：
 
-The model route should be explained as a branch decision tree, not as a long chronological experiment diary.
+- `configs/paddleocr-vl_lora_16k_nuosubburma_v5_16.yaml`
+- `configs/paddleocr-vl_lora_export_nuosubburma_v5_16.yaml`
+- `configs/train_data_manifest_v5_16.json`
 
-### Stage 1: Single-Book Feasibility
+## 训练路线
 
-Starting point:
+训练不是一次性混入大量数据，而是从简单到复杂逐步扩展。
 
-- real lines from `《勒俄特依》`;
-- relatively simple layout;
-- short poetic lines;
-- goal: verify that PaddleOCR-VL LoRA fine-tuning can learn Nuosu Bburma glyphs and output format.
+### 第一阶段：单书可行性
 
-Judgment:
+起点：
 
-- feasible for the basic OCR task;
-- insufficient coverage for fonts, mixed scripts, old-print noise, regions, and handwriting.
+- 使用《勒俄特依》中的真实裁切行。
+- 版式相对简单，主要是短句诗歌。
+- 目标是确认 PaddleOCR-VL LoRA 微调能否学到彝文字形和基本输出格式。
 
-### Stage 2: Real Data + Synthetic Coverage + Monitor Sets
+判断：
 
-Starting point:
+- 模型可以学习基本彝文字形。
+- 仅靠单书数据不足以覆盖字体、混排、老印刷噪声、多行区域和手写。
 
-- `《勒俄特依》` real lines;
-- synthetic data for low-frequency characters, confusable characters, punctuation, old-print degradation, mixed Yi-Han lines, and layout variation;
-- monitor sets for output drift and format failures.
+### 第二阶段：真实数据 + 合成覆盖 + 监控集
 
-Judgment:
+起点：
 
-- synthetic data is useful only when visual expansion and output-space risk are monitored together;
-- monitor sets are diagnostic tools, not final scoring data.
+- 保留《勒俄特依》真实行。
+- 增加低频字、形近字、标点边界、老印刷退化、彝汉混排和版式变化的合成数据。
+- 使用监控集观察输出空间漂移、LaTeX 化、Latin/ASCII 干扰和超长输出。
 
-### Stage 3: Reviewed Evaluation and Final Selection
+判断：
 
-Starting point:
+- 合成数据有用，但必须同时控制视觉扩展和输出空间风险。
+- 监控集只用于诊断，不作为最终主评分。
 
-- reviewed evaluation set;
-- final evaluation rerun pending;
-- model selection based on both recognition accuracy and failure modes.
+### 第三阶段：复核评估集与最终选择
 
-Judgment:
+起点：
 
-- the final model should not be selected by a single metric alone;
-- selection should consider NED, Yi recognition, Han recognition, output drift, long prediction, and mixed-script behavior.
+- 使用人工复核后的 clean603 评估集。
+- 选择模型时同时看 NED、彝文识别、汉字识别、输出漂移、超长输出和混排行为。
 
-## Branch Card Format
+判断：
 
-Each important training branch should be summarized in the same compact format.
+- 最终模型不能只按单一指标选择。
+- 输出稳定性和错误类型必须进入选择标准。
 
-| Field | Meaning |
-|---|---|
-| branch name | internal model/version name |
-| parent branch | previous branch or root branch |
-| train rows | total training rows |
-| data composition | only the important additions or removals |
-| NED | rerun result or `TBD` |
-| judgment | keep, reject, fallback, or diagnostic only |
+## 最终模型
 
-Example template:
+```text
+NuosuBburma OCR v5.16_synth_capped_rerender
+```
 
-| Branch | Parent | Train rows | Data composition | NED | Judgment |
-|---|---|---:|---|---:|---|
-| vX.Y branch name | parent | TBD | real + synthetic + guard data summary | TBD | TBD |
+训练快照：
 
-Do not include exact-match columns in the branch card unless the final report specifically needs them.
+| 项目 | 值 |
+|---|---:|
+| 训练行数 | 21504 |
+| epochs | 2 |
+| train loss | 0.191 |
+| train runtime | 1:08:53.89 |
 
-## Data Construction Principles
+clean603 最终评估：
 
-- Keep real and synthetic data separable.
-- Do not add evaluation answers as training targets.
-- Increase visual diversity without blindly increasing text-label diversity.
-- Cap high-risk categories that can trigger Latin, formula, or long-tail output drift.
-- Track mixed-script behavior separately from pure Yi recognition.
-- Treat handwriting and multi-line region OCR as difficult generalization cases, not as solved capabilities.
+| 指标 | 值 |
+|---|---:|
+| 样本数 | 603 |
+| Avg NED | 0.036068 |
+| Exact match | 67.99% |
+| Yi-only NED | 0.038309 |
+| Yi-only exact | 74.96% |
+| Han-only NED | 0.022447 |
+| Han-only exact | 93.99% |
+| replacement collapse | 0 |
+| long prediction failure | 0 |
+| LaTeX-like outputs | 2 |
 
-## Known Limitations
+## 数据构建原则
 
-- Handwriting remains the weakest scenario.
-- Multi-line region OCR should be evaluated separately from line-level OCR.
-- Endpoint/mobile deployment has not been implemented.
-- Final metrics must wait for the rerun evaluation.
+- 真实数据和合成数据保持可区分。
+- 不把评估集答案作为训练目标。
+- 优先增加视觉多样性，而不是盲目增加文本标签多样性。
+- 对 Latin、公式化输出、脚注和 region 类高风险样本设置比例上限。
+- 彝文识别、汉字识别和混排行为分开观察。
+- 手写和多行 region OCR 作为高难度泛化场景，不把它们当作已经完全解决的能力。
+
+## 已知限制
+
+- 真实手写仍是最弱场景。
+- 多行 region/page OCR 应该和单行 OCR 分开解释。
+- 端侧部署尚未实现。
+- 脚注符号仍有少量 LaTeX 化残留。

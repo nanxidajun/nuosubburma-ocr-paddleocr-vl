@@ -1,0 +1,88 @@
+{
+  "name": "NuosuBburma_OCR_Evaluation_Set",
+  "rows": 603,
+  "images": 603,
+  "annotation_file": "annotations.jsonl",
+  "all_samples_score_included": true,
+  "blank_gt": 0,
+  "placeholder_rows": 0,
+  "digit_rows": 81,
+  "no_digit_rows": 522,
+  "total_digit_chars": 169,
+  "by_source_name": {
+    "根与花": 121,
+    "勒俄玛牧导读教程": 126,
+    "凉山彝语语法": 30,
+    "《勒俄特依》译注": 45,
+    "凉山彝文资料选译第2集": 106,
+    "凉山彝文资料选译第3集": 84,
+    "彝文检字本": 32,
+    "真实手写": 53,
+    "真实照片": 3,
+    "屏幕页面": 3
+  },
+  "by_sample_type": {
+    "line": 515,
+    "region": 84,
+    "page": 4
+  },
+  "by_scene": {
+    "new_print_pdf": 309,
+    "old_print_pdf": 235,
+    "neat_handwriting": 53,
+    "screen_or_scene": 6
+  },
+  "by_difficulty": {
+    "easy": 172,
+    "medium": 324,
+    "hard": 107
+  },
+  "by_script_mix": {
+    "yi": 321,
+    "yi_han": 265,
+    "yi_han_latin": 17
+  },
+  "by_digit_presence": {
+    "has_digit": 81,
+    "no_digit": 522
+  },
+  "by_source_digit_presence": {
+    "根与花": {
+      "has_digit": 21,
+      "no_digit": 100
+    },
+    "勒俄玛牧导读教程": {
+      "no_digit": 107,
+      "has_digit": 19
+    },
+    "凉山彝语语法": {
+      "has_digit": 27,
+      "no_digit": 3
+    },
+    "《勒俄特依》译注": {
+      "has_digit": 9,
+      "no_digit": 36
+    },
+    "凉山彝文资料选译第2集": {
+      "no_digit": 106
+    },
+    "凉山彝文资料选译第3集": {
+      "no_digit": 83,
+      "has_digit": 1
+    },
+    "彝文检字本": {
+      "no_digit": 29,
+      "has_digit": 3
+    },
+    "真实手写": {
+      "no_digit": 52,
+      "has_digit": 1
+    },
+    "真实照片": {
+      "no_digit": 3
+    },
+    "屏幕页面": {
+      "no_digit": 3
+    }
+  }
+}

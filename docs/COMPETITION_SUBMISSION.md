@@ -1,82 +1,77 @@
-# Competition Submission Map
+# 提交材料映射
 
-This document maps the PaddleOCR Global Derivative Model Challenge requirements to the files and links that will be provided by this project.
+本文档把比赛提交需要的材料对应到本仓库中的文件位置。这里保留的是工程和提交索引，不写长篇实验文章。
 
-## Submission Status
+## 提交状态
 
-| Item | Status | Location |
+| 项目 | 状态 | 位置 |
 |---|---|---|
-| Public GitHub project | in progress | this repository |
-| Model weights | pending | Hugging Face link TBD |
-| Model card | pending | `model/` or Hugging Face model page |
-| Evaluation dataset | pending rerun/review | `data/`, external dataset link TBD |
-| Evaluation scripts and results | pending rerun | `evaluation/` |
-| Training data construction report | draft structure | `docs/MODEL_AND_TRAINING.md` |
-| Demo | prototype scope pending | `demo/` |
+| GitHub 项目 | 已整理待复核 | 当前仓库 |
+| 模型权重 | 后续外部托管 | 待补模型托管链接 |
+| 模型卡 | 后续外部托管 | 待补模型托管链接 |
+| 评估集 | 已放入仓库 | `data/NuosuBburma_OCR_Evaluation_Set/` |
+| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/clean603/` |
+| 训练配置和 manifest | 已放入仓库 | `configs/` |
+| 演示 | 本地单图 demo | `demo/` |
 
-## Required Materials
+## 1. 评估集
 
-### 1. Evaluation Set
+已包含：
 
-Expected materials:
+- 评估图片。
+- `annotations.jsonl` 标注。
+- 来源、难度、版式和混排类型统计。
+- 评估脚本。
+- clean603 最终重跑结果。
 
-- images or document samples;
-- annotations;
-- task description;
-- evaluation script;
-- dataset description, including source, scale, category distribution, and difficulty analysis.
+对应位置：
 
-Current policy:
+- `data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl`
+- `data/NuosuBburma_OCR_Evaluation_Set/images/`
+- `data/NuosuBburma_OCR_Evaluation_Set/dataset_summary.json`
+- `data/NuosuBburma_OCR_Evaluation_Set/source_summary.csv`
+- `scripts/eval_nuosubburma.py`
+- `scripts/analyze_clean603_eval.py`
 
-- final evaluation results will be added only after rerun;
-- synthetic and real sources must be clearly separated;
-- public release boundaries will be reviewed before uploading data.
+## 2. 训练数据构建说明
 
-### 2. Training Data Construction Report
+简版训练记录见：
 
-The training report will cover:
+- [模型与训练](MODEL_AND_TRAINING.md)
+- `configs/train_data_manifest_v5_16.json`
 
-- real data sources;
-- synthetic data strategy;
-- annotation guidelines;
-- quality-control process;
-- key construction scripts;
-- relationship between training branches and model selection.
+本仓库不放长篇写作草稿和本地实验日记。
 
-The working document is [Model and Training](MODEL_AND_TRAINING.md).
+## 3. 开源项目材料
 
-### 3. Open-Source Project
+已包含：
 
-Expected materials:
+- 训练和导出配置。
+- 评估脚本。
+- 评估集。
+- 评估结果。
+- 模型权重和模型卡走外部模型托管平台。
+- 单图 demo。
 
-- training and evaluation code;
-- model documentation;
-- demo or prototype;
-- reproducible configuration files;
-- clear links to model and dataset artifacts.
+大模型权重不直接提交到 GitHub。后续可上传到 Hugging Face 或其他模型托管平台，并在提交材料中补充链接。
 
-Large model weights and large datasets will not be committed directly to GitHub.
+## 4. 邮件/提交清单
 
-## Final Email Checklist
+- GitHub 仓库：`https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl`
+- 模型托管链接：待上传后补充。
+- 评估集：`data/NuosuBburma_OCR_Evaluation_Set/`
+- 训练配置：`configs/`
+- 演示说明：`demo/README.md`
+- GitHub ID：`nanxidajun`
 
-To be completed before submission:
-
-- GitHub repository link: TBD
-- Hugging Face model link: TBD
-- Evaluation dataset link: TBD
-- Training data construction report: TBD
-- Demo link or local demo instructions: TBD
-- GitHub ID: TBD
-
-Suggested email title format:
+建议邮件标题格式：
 
 ```text
 PaddleOCR衍生模型挑战赛-【材料名称】-【GitHub ID】
 ```
 
-## Integrity Notes
+## 完整性说明
 
-- The final reported metrics must come from the rerun evaluation.
-- Evaluation data should not be used as model training targets.
-- Synthetic evaluation samples, if any, must be explicitly labeled and kept below a safe review threshold.
-- Known limitations should remain visible in the final submission.
+- 仓库中的最终指标来自 clean603 重跑。
+- 评估数据不作为训练答案。
+- 已知限制保留在文档中，不隐藏模型边界。

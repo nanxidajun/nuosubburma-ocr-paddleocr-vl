@@ -1,50 +1,59 @@
-# Nuosu Bburma OCR with PaddleOCR-VL LoRA Fine-tuning
+# NuosuBburma OCR
 
-基于 PaddleOCR-VL 微调的规范彝文 OCR 项目。
+`NuosuBburma OCR` 是一个基于 `PaddlePaddle/PaddleOCR-VL-1.6` 微调的规范彝文 OCR 项目。项目目标不是做通用 OCR，而是让模型在规范彝文、彝汉混排、老印刷材料、少量多行区域和有限真实手写场景中稳定输出可用文本。
 
-This repository is being organized for the PaddleOCR Global Derivative Model Challenge. It focuses on OCR for Nuosu Bburma, also known in Chinese as 规范彝文, with attention to low-resource document recognition, mixed Yi-Han text, old printed materials, and reusable evaluation data.
+## 当前状态
 
-## Current Status
+- 最终选择模型：`v5.16_synth_capped_rerender`。
+- 最终评估集：`NuosuBburma_OCR_Evaluation_Set`，603 条主评分样本。
+- 模型权重和模型卡后续走模型托管平台；GitHub 暂不维护 `model/` 目录内容。
+- 本仓库已经放入可复跑评估所需的数据、脚本、配置和结果表。
 
-This repository is under submission preparation.
+## 项目范围
 
-- The public repository structure has been cleaned and simplified.
-- Final evaluation results will be added after the evaluation rerun.
-- Model weights are not stored directly in GitHub. A Hugging Face model link will be added after packaging review.
-- Dataset release boundaries are still being reviewed. Public samples and evaluation-set access instructions will be added after confirmation.
+- 规范彝文单行 OCR。
+- 彝文与汉语混排 OCR。
+- 老印刷、书籍扫描件裁切行。
+- 少量 region/page 场景。
+- 有限真实手写和屏幕页面样本。
+- PaddleOCR-VL-1.6 + LoRA 微调流程。
 
-## Scope
+当前不声明移动端或端侧部署能力，端侧部署作为后续工作。
 
-The project targets:
-
-- Nuosu Bburma / 规范彝文 OCR;
-- printed Yi text and Yi-Han mixed text;
-- selected old-print and region OCR cases;
-- a PaddleOCR-VL-1.6 (0.9B) + LoRA fine-tuning workflow;
-- evaluation data and documentation for a low-resource writing-system OCR task.
-
-The project does not currently claim endpoint/mobile deployment. Edge deployment is treated as future work.
-
-## Repository Layout
+## 仓库结构
 
 ```text
-configs/           Training, export, inference, and evaluation configs
-data/              Public samples and evaluation-set access notes
-demo/              Demo prototype and related assets
-docs/              Three core submission documents
-evaluation/        Evaluation scripts, rerun outputs, and error analysis
-model/             Model card preview and external model links
-scripts/           Reproducibility and utility scripts
+configs/           训练/导出配置与训练数据 manifest 快照
+data/              603 条 clean 评估集
+demo/              单图推理 demo 与少量样例图
+docs/              项目说明、训练说明、评估集说明
+evaluation/        clean603 最终评估结果与统计表
+model/             暂时占位，模型卡后续走外部模型托管平台
+scripts/           训练、评估、统计、评估集构建工具
 ```
 
-The repository intentionally avoids deep empty folders. Subdirectories will be added only when real files need them.
+仓库没有放入本地的大量实验中间产物、长篇写作草稿和分析工作区。
 
-## Core Documents
+## 核心文档
 
-- [Competition Submission Map](docs/COMPETITION_SUBMISSION.md)
-- [Model and Training](docs/MODEL_AND_TRAINING.md)
-- [Evaluation Dataset](docs/EVALUATION_DATASET.md)
+- [提交材料映射](docs/COMPETITION_SUBMISSION.md)
+- [模型与训练](docs/MODEL_AND_TRAINING.md)
+- [评估集说明](docs/EVALUATION_DATASET.md)
 
-## Author
+## 快速评估
+
+安装 PaddleOCR-VL 运行环境并下载合并后的模型导出目录后，可以运行：
+
+```bash
+scripts/run_eval.sh /path/to/NuosuBburma-OCR-export data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl outputs/eval_clean603_result.jsonl
+python scripts/analyze_clean603_eval.py \
+  --annotations data/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --result outputs/eval_clean603_result.jsonl \
+  --out-dir outputs/eval_clean603_analysis
+```
+
+本仓库内已经包含一次最终重跑结果，见 [evaluation/clean603](evaluation/clean603)。
+
+## 作者
 
 NanxiDajun
