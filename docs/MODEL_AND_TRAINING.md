@@ -14,6 +14,23 @@
 | 训练硬件 | NVIDIA RTX 4090D |
 | 部署状态 | 暂未做端侧/移动端部署 |
 
+## 训练环境
+
+| 项目 | 内容 |
+|---|---|
+| 操作环境 | Linux + CUDA GPU |
+| Python | 3.11 |
+| 深度学习框架 | PaddlePaddle |
+| 训练/导出工具 | PaddleFormers 1.1.1 |
+| 基座模型 | PaddleOCR-VL-1.6 |
+| GPU | NVIDIA RTX 4090D，单卡训练 |
+| CUDA runtime | 11.8 |
+| cuDNN | 8.9 |
+| 精度 | bf16 |
+| 默认 conda 环境名 | `paddleocr-vl` |
+
+脚本中保留了可覆盖的环境变量，例如 `CONDA_BASE`、`CONDA_ENV`、`MODEL_NAME_OR_PATH`、`CUDA_VISIBLE_DEVICES` 和 `HF_ENDPOINT`。复现时不要求路径与训练机器完全一致，只需要提供 PaddleOCR-VL-1.6 基座模型、匹配的 Paddle/PaddleFormers 环境和支持 bf16 的 CUDA GPU。
+
 ## 关键训练参数
 
 | 参数 | 值 |
