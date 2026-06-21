@@ -59,9 +59,12 @@
 这些结果对应的原始文件在：
 
 ```text
+evaluation/NuosuBburma_OCR_Evaluation_Set/README.md
 evaluation/NuosuBburma_OCR_Evaluation_Set/summary.md
 evaluation/NuosuBburma_OCR_Evaluation_Set/summary.json
-evaluation/NuosuBburma_OCR_Evaluation_Set/all_scored_rows.csv
+evaluation/NuosuBburma_OCR_Evaluation_Set/charts/
+evaluation/NuosuBburma_OCR_Evaluation_Set/tables/
+evaluation/NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl
 ```
 
 ## 复现入口

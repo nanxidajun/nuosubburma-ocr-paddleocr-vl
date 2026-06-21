@@ -1,36 +1,29 @@
 # 评估结果
 
-本目录存放 `NuosuBburma OCR` 提交评估集的评估产物。
+本目录存放 `NuosuBburma OCR` 在提交评估集上的公开评估结果。
 
-```text
-NuosuBburma_OCR_Evaluation_Set/
-  submission_model_result.jsonl
-  submission_model_eval.log
-  summary.md
-  summary.json
-  by_source.csv
-  by_sample_type.csv
-  by_script_mix.csv
-  by_difficulty.csv
-  by_has_digit.csv
-  by_scene.csv
-  danger_rows.csv
-  all_scored_rows.csv
-  final_train_v5_16.log
-```
+结果看板：
+
+- [NuosuBburma OCR Evaluation Set](NuosuBburma_OCR_Evaluation_Set/README.md)
 
 主结果：
 
-```text
-Avg NED: 0.036068
-samples: see summary.json
-```
+| 指标 | 值 |
+|---|---:|
+| Samples | 603 |
+| Avg NED | 0.036068 |
+| Exact match | 67.99% |
+| Yi-only exact | 74.96% |
+| Han-only exact | 93.99% |
+| replacement / LaTeX / long_pred | 0 / 2 / 0 |
+
+公开结果包只保留摘要、图表、分组统计和逐条模型输出。训练日志、运行日志和人工审查中间表不放入公开目录。
 
 重新生成统计：
 
 ```bash
 python scripts/analyze_submission_eval.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result evaluation/NuosuBburma_OCR_Evaluation_Set/submission_model_result.jsonl \
+  --result evaluation/NuosuBburma_OCR_Evaluation_Set/raw/submission_model_result.jsonl \
   --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
 ```
