@@ -23,9 +23,8 @@ checkpoints/
 *.tar.gz
 *.zip
 
-# The evaluation dataset is hosted on Hugging Face Dataset.
-/datasets/NuosuBburma_OCR_Evaluation_Set/*
-!/datasets/NuosuBburma_OCR_Evaluation_Set/README.md
+# Locally downloaded evaluation datasets should not be committed.
+datasets/
 
 # The public model folder is an index only; weights live on Hugging Face.
 /model/*

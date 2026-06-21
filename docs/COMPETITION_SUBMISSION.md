@@ -29,7 +29,7 @@
 | HF Dataset 评估集 | 已公开 | `https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set` |
 | 模型入口说明 | 已放入仓库 | `model/README.md` |
 | 项目背景与任务定义 | 已放入仓库 | `docs/PROJECT_BACKGROUND.md` |
-| 评估集入口说明 | 已放入仓库 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
+| 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
 | 模型与训练说明 | 已放入仓库 | `docs/MODEL_AND_TRAINING.md` |
 | 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
 | 训练配置与 manifest | 已放入仓库 | `configs/` |
