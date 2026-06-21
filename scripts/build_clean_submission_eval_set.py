@@ -13,8 +13,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 
-SRC_ROOT = Path("data/source_eval_set_nuosubburma_ocr")
-OUT_ROOT = Path("data/NuosuBburma_OCR_Evaluation_Set")
+SRC_ROOT = Path("datasets/source_eval_set_nuosubburma_ocr")
+OUT_ROOT = Path("datasets/NuosuBburma_OCR_Evaluation_Set")
 
 SOURCE_INFO = {
     "根与花": {
