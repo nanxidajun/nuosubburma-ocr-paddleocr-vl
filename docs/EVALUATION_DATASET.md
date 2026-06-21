@@ -1,49 +1,74 @@
 # 评估集说明
 
-本文档说明 `NuosuBburma OCR` 的提交评估集。完整数据托管在 Hugging Face Dataset，GitHub 仓库只保留入口说明、评估脚本和已完成的评估结果。
+本文档对应主提交稿中的“真实评估集构建”。它重点说明评估集为什么可信、覆盖了哪些真实难点，以及评估结果如何复查。
 
-## 目标
+## 设计原则
 
-评估集用于检查模型是否能够处理真实规范彝文 OCR 场景，而不是只记住某一本书或某一种合成风格。
+低资源 OCR 可以使用合成数据训练，但不能用合成数据证明真实能力。因此本项目把训练数据和评估数据严格区分：
 
-覆盖范围：
+| 原则 | 说明 |
+|---|---|
+| 真实来源 | 主评估集只使用真实来源样本，不使用合成样本作为主评分材料 |
+| 全量计分 | `603` 条样本全部纳入主评分，没有空 GT 和占位符 GT |
+| 覆盖多场景 | 覆盖新印刷、旧印刷、规范手写、屏幕/真实照片、line/region/page |
+| 保留难样本 | 手写、多行区域、脚注、数字、彝汉混排不被简单过滤 |
+| 可复查 | 保留 annotations、图片、逐样本结果和分组统计 |
 
-- 纯彝文文本。
-- 彝汉混排文本。
-- 老印刷材料。
-- 单行 OCR。
-- 少量 region/page OCR。
-- 有限真实手写样本。
-- 真实材料中出现的标点、数字和脚注符号。
+这一设计直接对应比赛“评估集质量”评分项中的数据规模、标注准确性、数据多样性和难度合理性。
 
-## 数据包结构
+## 数据托管
 
-HF Dataset 地址：
+完整评估集托管在 Hugging Face Dataset：
 
 ```text
 https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 ```
 
-复跑评估时，将数据集下载到本仓库的以下位置：
+HF Dataset 当前只保留复跑评估所需的最小文件：
+
+| 文件/目录 | 说明 |
+|---|---|
+| `README.md` | 数据集说明 |
+| `annotations.jsonl` | 主评估标注，603 条样本 |
+| `images/` | 全部被引用图片，603 张 |
+
+GitHub 仓库不重复上传完整图片数据，只保留入口说明、评估脚本和提交评估结果：
 
 ```text
-datasets/NuosuBburma_OCR_Evaluation_Set/
-  images/
-  annotations.jsonl
-  README.md
+datasets/NuosuBburma_OCR_Evaluation_Set/README.md
+scripts/eval_nuosubburma.py
+scripts/analyze_submission_eval.py
+evaluation/NuosuBburma_OCR_Evaluation_Set/
 ```
 
-规模：
+## 数据分布
 
-- 主评分样本：603 条。
-- 引用图片：603 张。
-- 空 GT：0 条。
-- 占位符 GT：0 条。
-- 来源包括书籍扫描件、真实手写、真实照片和屏幕页面。
+| 维度 | 分布 |
+|---|---|
+| 总量 | `603` 条样本，引用图片 `603` 张，全部纳入主评分 |
+| 样本类型 | `line` 515，`region` 84，`page` 4 |
+| 场景 | `new_print_pdf` 309，`old_print_pdf` 235，`neat_handwriting` 53，`screen_or_scene` 6 |
+| 难度 | `easy` 172，`medium` 324，`hard` 107 |
+| 文字混合 | `yi` 321，`yi_han` 265，`yi_han_latin` 17 |
+| 数字样本 | 含数字 `81` 条，不含数字 `522` 条 |
 
-## 标注格式
+这些分布不是为了追求样本数量最大，而是为了覆盖规范彝文 OCR 的真实难点：换书、换字体、换版式、换输入粒度、混排、手写和屏幕输入。
 
-评估集使用 PaddleOCR-VL 的 messages JSONL 格式：
+## 构建流程
+
+评估集采用“模型预标注 + 人工核对”的方式制作。这样既能降低低资源文字标注成本，又避免把模型输出直接当作 GT。
+
+```text
+真实来源图片整理
+-> 切图或区域裁剪
+-> 中间模型做预标注
+-> 人工逐条核对 GT
+-> 删除坏样本
+-> 统一基本格式
+-> 生成 annotations.jsonl
+```
+
+标注格式使用 PaddleOCR-VL messages JSONL：
 
 ```json
 {
@@ -63,48 +88,84 @@ datasets/NuosuBburma_OCR_Evaluation_Set/
 }
 ```
 
+## 评估集检查目标
+
+| 检查项 | 目的 |
+|---|---|
+| 换一本书 | 判断模型是否只适应单一排版书籍 |
+| 换一种版式 | 判断旧印刷、工具书、语法书、混排资料是否稳定 |
+| 彝汉混排 | 检查汉语、符号、脚注和注音附近是否漂移 |
+| 手写/照片 | 检查模型是否有基础真实泛化能力 |
+| 屏幕/上传图 | 检查切图与识别链路是否暴露问题 |
+| 单行/多行 | 检验区域识别能力，而不是只看单行样例 |
+
 ## 评价指标
 
 主指标：
 
-- NED，归一化编辑距离，越低越好。
+| 指标 | 含义 |
+|---|---|
+| NED | 归一化编辑距离，越低越好 |
+| Exact match | 整条样本完全匹配比例 |
+| WS Avg NED | 空白处理后的 NED |
+| NFKC+WS Avg NED | Unicode 规范化和空白处理后的 NED |
 
-辅助诊断：
+辅助诊断指标：
 
-- Yi-only NED / exact。
-- Han-only NED / exact。
-- 标点、数字、空格、换行差异。
-- Latin/ASCII 漂移。
-- LaTeX-like 或公式化幻觉。
-- 超长输出。
-- replacement collapse。
+| 指标 | 目的 |
+|---|---|
+| Yi-only NED / exact | 单独观察彝文识别能力 |
+| Han-only NED / exact | 单独观察汉字混排识别能力 |
+| Digit-only NED / exact | 单独观察数字识别和格式稳定性 |
+| replacement | 检查是否出现替换符 collapse |
+| LaTeX-like outputs | 检查脚注/符号是否被错误公式化 |
+| ASCII-letter | 检查是否补出图片中不存在的拉丁尾巴 |
+| long_pred | 检查是否出现异常长输出 |
 
-## 评估集规则
+## 最终评估结果
 
-- 评估样本不作为训练目标。
-- 样本保留来源、版式、难度和混排类型信息。
-- 真实手写作为高难度子场景单独解释。
-- 单行 OCR 与 region/page OCR 不混为同一种能力。
+最终提交模型在 `603` 条真实样本上的重跑结果：
 
-## 提交评估集重跑
-
-提交评估集评估结果位于：
-
-```text
-evaluation/NuosuBburma_OCR_Evaluation_Set/
-```
-
-摘要：
-
-| 指标 | 值 |
+| 指标 | 结果 |
 |---|---:|
-| 样本数 | 见 `summary.json` |
+| 样本数 | 603 |
 | Avg NED | 0.036068 |
 | Exact match | 67.99% |
-| Yi-only NED | 0.038309 |
+| WS Avg NED | 0.034219 |
+| NFKC+WS Avg NED | 0.033964 |
+| Yi-only Avg NED | 0.038309 |
 | Yi-only exact | 74.96% |
-| Han-only NED | 0.022447 |
+| Han-only Avg NED | 0.022447 |
 | Han-only exact | 93.99% |
-| replacement collapse | 0 |
-| long prediction failure | 0 |
-| LaTeX-like outputs | 2 |
+| Digit-only Avg NED | 0.139918 |
+| Digit-only exact | 85.19% |
+| replacement / LaTeX / ASCII-letter / long_pred | 0 / 2 / 18 / 0 |
+
+分组结果保留在以下文件中：
+
+```text
+evaluation/NuosuBburma_OCR_Evaluation_Set/by_sample_type.csv
+evaluation/NuosuBburma_OCR_Evaluation_Set/by_scene.csv
+evaluation/NuosuBburma_OCR_Evaluation_Set/by_difficulty.csv
+evaluation/NuosuBburma_OCR_Evaluation_Set/by_script_mix.csv
+evaluation/NuosuBburma_OCR_Evaluation_Set/by_source.csv
+```
+
+## 结果解读
+
+| 分组 | 结果摘要 | 说明 |
+|---|---|---|
+| line | Avg NED `0.028758`，Exact `72.62%` | 清晰行图是当前最稳定输入 |
+| region | Avg NED `0.079725`，Exact `42.86%` | 多行区域更容易出现漏行和边界错误 |
+| page | Avg NED `0.060449`，样本数 4 | 可以处理整页输入，但复杂整页不应夸大 |
+| new_print_pdf | Avg NED `0.029050` | 新印刷 PDF 效果稳定 |
+| old_print_pdf | Avg NED `0.025771` | 旧印刷书籍在本评估集中表现稳定 |
+| neat_handwriting | Avg NED `0.122708` | 手写仍是最弱场景，应单独解释 |
+
+## 真实性边界
+
+- 评估集不作为训练目标。
+- 合成训练样本不进入主评估集。
+- 模型预标注只作为人工核对草稿，不直接作为最终 GT。
+- 手写、region 和 page 结果需要与 line OCR 分开解读。
+- 评估集中的书籍样本来自扫描件裁剪，原始出版物版权归原出版社和权利人所有。

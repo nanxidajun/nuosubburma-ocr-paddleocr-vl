@@ -1,79 +1,116 @@
-# 提交材料映射
+# 比赛提交材料总览
 
-本文档把比赛提交需要的材料对应到本仓库中的文件位置。这里保留的是工程和提交索引，不写长篇实验文章。
+本文档面向 PaddleOCR 全球衍生模型挑战赛评审，说明本项目的提交材料、核心拿分点和真实性核验入口。完整技术细节分别放在 [项目背景与任务定义](PROJECT_BACKGROUND.md)、[模型与训练说明](MODEL_AND_TRAINING.md) 和 [评估集说明](EVALUATION_DATASET.md)。
 
-## 提交状态
+## 一句话概括
 
-| 项目 | 状态 | 位置 |
+`NuosuBburma OCR` 是一个基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 微调的规范彝文 OCR 项目，目标是把真实规范彝文资料从图片层转成可复制、可检索、可继续用于教学和语料建设的 Unicode 文本。
+
+项目关注的不是通用 OCR 已经充分覆盖的常规汉字/英文场景，而是一个低资源民族文字 OCR 场景：规范彝文公开 OCR 数据和可复用模型都很少，真实资料又大量存在于旧书扫描、教材、手写稿、屏幕截图和彝汉混排文本中。
+
+## 评委快速看点
+
+| 评分维度 | 本项目对应证据 | 位置 |
 |---|---|---|
-| GitHub 项目 | 已整理待复核 | 当前仓库 |
-| 模型权重 | 已上传 Hugging Face | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
-| 模型卡 | 已上传 Hugging Face | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
+| 评估集质量 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、屏幕/场景图；全部样本纳入主评分，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/NuosuBburma_OCR_Evaluation_Set/` |
+| 场景稀缺性 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 对规范彝文支持不足；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
+| 任务复杂度 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
+| 训练数据构建科学性 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
+| 模型微调策略与创新 | 使用 PaddleOCR-VL-1.6 LoRA 微调；通过分阶段实验控制视觉覆盖和输出空间漂移；最终模型不是只按单一 NED 选择，而是同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
+| 技术文档与开源贡献 | GitHub 提供配置、脚本、评估结果、模型入口和本地 demo；HF Model 托管模型权重；HF Dataset 托管最小评估集 | 本仓库，HF Model，HF Dataset |
+
+## 提交材料清单
+
+| 材料 | 状态 | 链接或位置 |
+|---|---|---|
+| GitHub 开源项目 | 已公开 | `https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl` |
+| Hugging Face 模型 | 已公开 | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
+| Hugging Face 模型卡 | 已公开 | `https://huggingface.co/nanxidajun/NuosuBburma-OCR` |
+| HF Dataset 评估集 | 已公开 | `https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set` |
 | 模型入口说明 | 已放入仓库 | `model/README.md` |
-| 评估集 | 已上传 HF Dataset，仓库保留入口 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
-| 评估脚本和结果 | 已放入仓库 | `scripts/`, `evaluation/NuosuBburma_OCR_Evaluation_Set/` |
-| 训练配置和 manifest | 已放入仓库 | `configs/` |
-| 演示 | 本地单图 demo | `demo/` |
+| 项目背景与任务定义 | 已放入仓库 | `docs/PROJECT_BACKGROUND.md` |
+| 评估集入口说明 | 已放入仓库 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
+| 模型与训练说明 | 已放入仓库 | `docs/MODEL_AND_TRAINING.md` |
+| 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
+| 训练配置与 manifest | 已放入仓库 | `configs/` |
+| 评估脚本 | 已放入仓库 | `scripts/eval_nuosubburma.py`，`scripts/analyze_submission_eval.py`，`scripts/run_eval.sh` |
+| 提交评估结果 | 已放入仓库 | `evaluation/NuosuBburma_OCR_Evaluation_Set/` |
+| Demo | 本地单图 demo | `demo/README.md`，`demo/infer_single_image.py` |
 
-## 1. 评估集
+## 核心结果
 
-评估集托管：
+最终提交模型在 `NuosuBburma OCR Evaluation Set` 的 `603` 条真实样本上重跑，结果如下：
 
-- HF Dataset：`https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set`
-- GitHub 仓库保留评估集入口说明、评估脚本和提交评估集重跑结果。
+| 指标 | 结果 |
+|---|---:|
+| 样本数 | 603 |
+| Avg NED | 0.036068 |
+| Exact match | 67.99% |
+| WS Avg NED | 0.034219 |
+| NFKC+WS Avg NED | 0.033964 |
+| Yi-only Avg NED | 0.038309 |
+| Yi-only exact | 74.96% |
+| Han-only Avg NED | 0.022447 |
+| Han-only exact | 93.99% |
+| Digit-only Avg NED | 0.139918 |
+| Digit-only exact | 85.19% |
+| replacement / LaTeX / ASCII-letter / long_pred | 0 / 2 / 18 / 0 |
 
-HF Dataset 当前包含复跑评估所需的最小文件：
-
-- `annotations.jsonl`
-- `images/`
-
-仓库内对应位置：
-
-- `datasets/NuosuBburma_OCR_Evaluation_Set/README.md`
-- `scripts/eval_nuosubburma.py`
-- `scripts/analyze_submission_eval.py`
-- `evaluation/NuosuBburma_OCR_Evaluation_Set/`
-
-## 2. 训练数据构建说明
-
-简版训练记录见：
-
-- [模型与训练](MODEL_AND_TRAINING.md)
-- `configs/train_data_manifest_v5_16.json`
-
-本仓库不放长篇写作草稿和本地实验日记。
-
-## 3. 开源项目材料
-
-已包含：
-
-- 训练和导出配置。
-- 评估脚本。
-- 评估集入口。
-- 评估结果。
-- 模型权重和模型卡托管在 Hugging Face。
-- `model/README.md` 保留模型下载、评估口径和使用边界。
-- 单图 demo。
-
-大模型权重不直接提交到 GitHub。评估集使用 HF Dataset 托管，模型权重使用 Hugging Face Model 托管。
-
-## 4. 邮件/提交清单
-
-- GitHub 仓库：`https://github.com/nanxidajun/nuosubburma-ocr-paddleocr-vl`
-- 模型托管链接：`https://huggingface.co/nanxidajun/NuosuBburma-OCR`
-- HF Dataset / 评估集来源：`https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set`
-- 训练配置：`configs/`
-- 演示说明：`demo/README.md`
-- GitHub ID：`nanxidajun`
-
-建议邮件标题格式：
+这些结果对应的原始文件在：
 
 ```text
-PaddleOCR衍生模型挑战赛-【材料名称】-【GitHub ID】
+evaluation/NuosuBburma_OCR_Evaluation_Set/summary.md
+evaluation/NuosuBburma_OCR_Evaluation_Set/summary.json
+evaluation/NuosuBburma_OCR_Evaluation_Set/all_scored_rows.csv
 ```
 
-## 完整性说明
+## 复现入口
 
-- 仓库中的评估指标来自提交评估集重跑。
-- 评估数据不作为训练答案。
-- 已知限制保留在文档中，不隐藏模型边界。
+下载模型：
+
+```bash
+hf download nanxidajun/NuosuBburma-OCR \
+  --repo-type model \
+  --local-dir models/NuosuBburma-OCR
+```
+
+下载评估集：
+
+```bash
+hf download nanxidajun/NuosuBburma-OCR-Evaluation-Set \
+  --repo-type dataset \
+  --local-dir datasets/NuosuBburma_OCR_Evaluation_Set
+```
+
+运行评估：
+
+```bash
+scripts/run_eval.sh \
+  models/NuosuBburma-OCR \
+  datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl
+
+python scripts/analyze_submission_eval.py \
+  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --result outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl \
+  --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
+```
+
+## 真实性核验口径
+
+| 核验问题 | 回答 |
+|---|---|
+| 评估集是否真实 | 是。主评估集为真实来源样本，不使用合成样本作为主评分材料 |
+| 合成数据是否进入评估 | 否。合成数据只用于训练补覆盖和 monitor 诊断 |
+| GT 是否完全由模型生成 | 否。中间模型只用于预标注草稿，最终需要人工核对 |
+| 是否把最终评估集喂回训练 | 否。训练数据构建保留 denylist 和 overlap 清理，最终提交模型固定后再用 603 clean set 重跑 |
+| 结果是否可复查 | 可以。仓库保留评估脚本、逐样本结果、汇总统计和危险输出统计 |
+| 权重是否公开 | 是。模型权重托管在 Hugging Face Model |
+
+## 能力边界
+
+- 本模型支持整页、区域和行图输入。
+- 当前最稳定的使用方式通常是 line / region OCR。
+- 复杂整页文档在版面较密、手写、多栏、脚注、注音块或图文混排较强时，建议配合版面分析、切图流程或人工复核。
+- 手写已有一定泛化能力，但仍明显弱于印刷体。
+- 本版本尚未进行专门的端侧/移动端优化。
