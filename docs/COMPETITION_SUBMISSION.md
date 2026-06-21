@@ -1,6 +1,6 @@
-# 比赛提交材料总览
+# 提交材料总览
 
-本文档面向 PaddleOCR 全球衍生模型挑战赛评审，说明本项目的提交材料、核心拿分点和真实性核验入口。完整技术细节分别放在 [项目背景与任务定义](PROJECT_BACKGROUND.md)、[模型与训练说明](MODEL_AND_TRAINING.md) 和 [评估集说明](EVALUATION_DATASET.md)。
+本文档整理 `NuosuBburma OCR` 的公开提交材料、复现入口和核验边界。完整技术细节分别放在 [项目背景与任务定义](PROJECT_BACKGROUND.md)、[模型与训练说明](MODEL_AND_TRAINING.md) 和 [评估集说明](EVALUATION_DATASET.md)。
 
 ## 一句话概括
 
@@ -8,16 +8,16 @@
 
 项目关注的不是通用 OCR 已经充分覆盖的常规汉字/英文场景，而是一个低资源民族文字 OCR 场景：规范彝文公开 OCR 数据和可复用模型都很少，真实资料又大量存在于旧书扫描、教材、手写稿、屏幕截图和彝汉混排文本中。
 
-## 评委快速看点
+## 项目内容摘要
 
-| 评分维度 | 本项目对应证据 | 位置 |
+| 方向 | 项目说明 | 位置 |
 |---|---|---|
-| 评估集质量 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、屏幕/场景图；全部样本纳入主评分，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/NuosuBburma_OCR_Evaluation_Set/` |
-| 场景稀缺性 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 对规范彝文支持不足；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
-| 任务复杂度 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
-| 训练数据构建科学性 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
-| 模型微调策略与创新 | 使用 PaddleOCR-VL-1.6 LoRA 微调；通过分阶段实验控制视觉覆盖和输出空间漂移；最终模型不是只按单一 NED 选择，而是同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
-| 技术文档与开源贡献 | GitHub 提供配置、脚本、评估结果、模型入口和本地 demo；HF Model 托管模型权重；HF Dataset 托管最小评估集 | 本仓库，HF Model，HF Dataset |
+| 真实评估 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、屏幕/场景图；全部样本纳入正式评估，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/NuosuBburma_OCR_Evaluation_Set/` |
+| 低资源场景 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 对规范彝文支持不足；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
+| 任务难点 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
+| 训练数据 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
+| 模型策略 | 使用 PaddleOCR-VL-1.6 LoRA 微调；通过分阶段实验控制视觉覆盖和输出空间漂移；最终模型不是只按单一 NED 选择，而是同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
+| 开源材料 | GitHub 提供配置、脚本、评估结果、模型入口和本地 demo；HF Model 托管模型权重；HF Dataset 托管最小评估集 | 本仓库，HF Model，HF Dataset |
 
 ## 提交材料清单
 
@@ -29,7 +29,7 @@
 | HF Dataset 评估集 | 已公开 | `https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set` |
 | 模型入口说明 | 已放入仓库 | `model/README.md` |
 | 项目背景与任务定义 | 已放入仓库 | `docs/PROJECT_BACKGROUND.md` |
-| 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
+| 评估集 GitHub 入口 | 已放入仓库 | `datasets/NuosuBburma_OCR_Evaluation_Set/README.md` |
 | 模型与训练说明 | 已放入仓库 | `docs/MODEL_AND_TRAINING.md` |
 | 评估集说明 | 已放入仓库 | `docs/EVALUATION_DATASET.md` |
 | 训练配置与 manifest | 已放入仓库 | `configs/` |
@@ -96,7 +96,7 @@ python scripts/analyze_submission_eval.py \
   --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
 ```
 
-## 真实性核验口径
+## 核验说明
 
 | 核验问题 | 回答 |
 |---|---|

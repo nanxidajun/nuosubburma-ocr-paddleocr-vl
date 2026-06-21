@@ -36,7 +36,7 @@ scripts/           训练、评估、统计工具
 ## 核心文档
 
 - [文档目录](docs/README.md)
-- [比赛提交材料总览](docs/COMPETITION_SUBMISSION.md)
+- [提交材料总览](docs/COMPETITION_SUBMISSION.md)
 - [项目背景与任务定义](docs/PROJECT_BACKGROUND.md)
 - [模型入口](model/README.md)
 - [模型与训练说明](docs/MODEL_AND_TRAINING.md)
