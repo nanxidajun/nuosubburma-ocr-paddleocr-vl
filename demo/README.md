@@ -1,6 +1,10 @@
 # Demo
 
-本目录包含一个单图推理脚本和少量评估集样例图。
+本目录提供 `NuosuBburma OCR` 的本地单图推理 Demo 原型。
+
+当前不提供线上 Space。PaddleOCR-VL 推理环境较重，模型权重约 1.8GB，并依赖 PaddleFormers / PaddlePaddle / GPU 环境；免费 CPU Space 难以稳定承载。线上演示可在后续具备 GPU 环境时补充。
+
+## 本地运行
 
 示例：
 
@@ -21,3 +25,13 @@ python demo/infer_single_image.py \
 - `sample_images/footnote_line.png`
 - `sample_images/screen_page.jpg`
 - `sample_images/handwriting_region.jpg`
+
+模型权重：
+
+- Hugging Face: `https://huggingface.co/nanxidajun/NuosuBburma-OCR`
+
+说明：
+
+- `--model` 需要指向已经下载到本地的 merged export 模型目录。
+- `--device` 默认使用 `gpu`；如需 CPU 仅可做环境连通性测试，实际推理速度和可用性不保证。
+- Demo 面向单图 OCR 链路展示，不声明完整线上 OCR 服务能力。

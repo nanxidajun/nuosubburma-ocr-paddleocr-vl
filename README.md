@@ -4,9 +4,9 @@
 
 ## 当前状态
 
-- 当前提交模型：`NuosuBburma OCR`，基于 PaddleOCR-VL LoRA 微调。
-- 提交评估集：`NuosuBburma_OCR_Evaluation_Set`，真实数据评估集。
-- 模型权重和模型卡后续走模型托管平台；GitHub 暂不维护 `model/` 目录内容。
+- 当前提交模型：`NuosuBburma OCR`，基于 PaddleOCR-VL LoRA 微调，模型托管在 Hugging Face。
+- 提交评估集：`NuosuBburma_OCR_Evaluation_Set`，真实数据评估集，完整数据托管在 Hugging Face Dataset。
+- GitHub 不维护大模型权重；`model/` 目录仅保留占位。
 - 本仓库已经放入可复跑评估所需的数据、脚本、配置和结果表。
 
 ## 项目范围
@@ -42,17 +42,30 @@ scripts/           训练、评估、统计、评估集构建工具
 
 ## 快速评估
 
-安装 PaddleOCR-VL 运行环境并下载合并后的模型导出目录后，可以运行：
+安装 PaddleOCR-VL 运行环境并下载合并后的模型导出目录与评估集后，可以运行：
 
 ```bash
-scripts/run_eval.sh /path/to/NuosuBburma-OCR-export datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl outputs/submission_eval/result.jsonl
+hf download nanxidajun/NuosuBburma-OCR \
+  --repo-type model \
+  --local-dir models/NuosuBburma-OCR
+
+hf download nanxidajun/NuosuBburma_OCR_Evaluation_Set \
+  --repo-type dataset \
+  --local-dir datasets/NuosuBburma_OCR_Evaluation_Set
+
+scripts/run_eval.sh models/NuosuBburma-OCR datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl
 python scripts/analyze_submission_eval.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result outputs/submission_eval/result.jsonl \
-  --out-dir outputs/submission_eval/analysis
+  --result outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl \
+  --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
 ```
 
-本仓库内已经包含一次提交评估集重跑结果，见 [evaluation/submission_eval](evaluation/submission_eval)。
+本仓库内已经包含一次提交评估集重跑结果，见 [evaluation/NuosuBburma_OCR_Evaluation_Set](evaluation/NuosuBburma_OCR_Evaluation_Set)。
+
+## 外部链接
+
+- Hugging Face 模型：<https://huggingface.co/nanxidajun/NuosuBburma-OCR>
+- Hugging Face 评估集：<https://huggingface.co/datasets/nanxidajun/NuosuBburma_OCR_Evaluation_Set>
 
 ## 作者
 

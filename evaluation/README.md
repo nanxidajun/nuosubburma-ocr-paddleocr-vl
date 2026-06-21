@@ -3,7 +3,7 @@
 本目录存放 `NuosuBburma OCR` 提交评估集的评估产物。
 
 ```text
-submission_eval/
+NuosuBburma_OCR_Evaluation_Set/
   submission_model_result.jsonl
   submission_model_eval.log
   summary.md
@@ -31,6 +31,6 @@ samples: see summary.json
 ```bash
 python scripts/analyze_submission_eval.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result evaluation/submission_eval/submission_model_result.jsonl \
-  --out-dir outputs/submission_eval/analysis
+  --result evaluation/NuosuBburma_OCR_Evaluation_Set/submission_model_result.jsonl \
+  --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
 ```
