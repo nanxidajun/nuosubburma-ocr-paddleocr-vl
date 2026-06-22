@@ -14,5 +14,5 @@
 - 模型入口：[`../model/README.md`](../model/README.md)
 - 评估集入口：[`../NuosuBburma_OCR_Evaluation_Set/README.md`](../NuosuBburma_OCR_Evaluation_Set/README.md)
 - 评估集说明：[`EVALUATION_DATASET.md`](EVALUATION_DATASET.md)
-- 评估结果：[`../evaluation/NuosuBburma_OCR_Evaluation_Set/`](../evaluation/NuosuBburma_OCR_Evaluation_Set/)
+- 评估结果：[`../evaluation/`](../evaluation/)
 - 本地 Demo：[`../demo/README.md`](../demo/README.md)

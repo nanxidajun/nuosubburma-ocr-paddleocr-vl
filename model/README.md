@@ -76,7 +76,7 @@ https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 完整评估结果见：
 
 ```text
-evaluation/NuosuBburma_OCR_Evaluation_Set/
+evaluation/
 ```
 
 ## 使用边界

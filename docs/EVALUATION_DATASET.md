@@ -39,7 +39,7 @@ NuosuBburma_OCR_Evaluation_Set/README.md
 docs/EVALUATION_DATASET.md
 scripts/eval_nuosubburma.py
 scripts/analyze_submission_eval.py
-evaluation/NuosuBburma_OCR_Evaluation_Set/
+evaluation/
 ```
 
 ## 数据分布
@@ -145,13 +145,13 @@ evaluation/NuosuBburma_OCR_Evaluation_Set/
 分组结果保留在以下文件中：
 
 ```text
-evaluation/NuosuBburma_OCR_Evaluation_Set/README.md
-evaluation/NuosuBburma_OCR_Evaluation_Set/charts/
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/by_sample_type.csv
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/by_scene.csv
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/by_difficulty.csv
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/by_script_mix.csv
-evaluation/NuosuBburma_OCR_Evaluation_Set/tables/by_source.csv
+evaluation/README.md
+evaluation/charts/
+evaluation/tables/by_sample_type.csv
+evaluation/tables/by_scene.csv
+evaluation/tables/by_difficulty.csv
+evaluation/tables/by_script_mix.csv
+evaluation/tables/by_source.csv
 ```
 
 ## 结果解读

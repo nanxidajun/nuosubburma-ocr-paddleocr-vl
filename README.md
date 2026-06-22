@@ -54,7 +54,7 @@ xychart-beta
   bar [0.025771, 0.029050, 0.035492, 0.122708]
 ```
 
-完整结果见 [`evaluation/NuosuBburma_OCR_Evaluation_Set/`](evaluation/NuosuBburma_OCR_Evaluation_Set/)。
+完整结果见 [`evaluation/`](evaluation/)。
 
 ## 为什么做这个
 
