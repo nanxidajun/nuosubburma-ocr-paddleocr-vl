@@ -174,15 +174,51 @@ python demo/infer_single_image.py \
 <image>OCR:
 ```
 
-整页扫描件建议先切图再识别：
+### 屏幕图示例：整块识别或先切图
+
+同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。
+
+<p>
+  <img src="demo/sample_images/screen_page.jpg" alt="screen page sample" width="320">
+</p>
+
+方式 A：整块 / 区域直接识别。
 
 ```bash
-python3 scripts/run_book_crop_pipeline.py \
-  --input page_images \
-  --output-root outputs/crop_pipeline_demo
+python demo/infer_single_image.py \
+  --model models/NuosuBburma-OCR \
+  --image demo/sample_images/screen_page.jpg
 ```
 
-切图结果会生成 `03_cut_before_after_review/` 供人工快速检查，并在 `04_successful_crop_summary/01_line_ocr_ready/` 汇总可进入行级 OCR 的图片。完整说明见 [切图流程](docs/CROP_PIPELINE.md)。
+方式 B：先切图，再识别行图。
+
+```bash
+mkdir -p outputs/screen_page_input
+cp demo/sample_images/screen_page.jpg outputs/screen_page_input/
+
+python3 scripts/run_book_crop_pipeline.py \
+  --input outputs/screen_page_input \
+  --output-root outputs/screen_page_crop
+```
+
+切图结果会生成：
+
+```text
+outputs/screen_page_crop/
+  03_cut_before_after_review/                 # 看切图是否合理
+  04_successful_crop_summary/01_line_ocr_ready/ # 可进入 OCR 的行图
+  04_successful_crop_summary/index.csv        # 行图顺序和来源索引
+```
+
+然后从 `01_line_ocr_ready/` 中选择行图做 OCR：
+
+```bash
+python demo/infer_single_image.py \
+  --model models/NuosuBburma-OCR \
+  --image "outputs/screen_page_crop/04_successful_crop_summary/01_line_ocr_ready/..."
+```
+
+如果已经批量识别了多张切行图，可以用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本。完整说明见 [切图流程](docs/CROP_PIPELINE.md) 和 [后处理工具](postprocess/README.md)。
 
 ## 仓库结构
 
