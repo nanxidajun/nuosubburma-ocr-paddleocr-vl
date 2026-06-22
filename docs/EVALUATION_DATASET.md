@@ -55,6 +55,8 @@ evaluation/
 
 这些分布不是为了追求样本数量最大，而是为了覆盖规范彝文 OCR 的真实难点：换书、换字体、换版式、换输入粒度、混排、手写和屏幕输入。
 
+![Evaluation dataset composition](figures/dataset_composition.svg)
+
 ## 构建流程
 
 评估集采用“模型预标注 + 人工核对”的方式制作。这样既能降低低资源文字标注成本，又避免把模型输出直接当作 GT。
@@ -107,7 +109,6 @@ evaluation/
 | 指标 | 含义 |
 |---|---|
 | NED | 归一化编辑距离，越低越好 |
-| Exact match | 整条样本完全匹配比例 |
 | WS Avg NED | 空白处理后的 NED |
 | NFKC+WS Avg NED | Unicode 规范化和空白处理后的 NED |
 
@@ -115,32 +116,32 @@ evaluation/
 
 | 指标 | 目的 |
 |---|---|
-| Yi-only NED / exact | 单独观察彝文识别能力 |
-| Han-only NED / exact | 单独观察汉字混排识别能力 |
-| Digit-only NED / exact | 单独观察数字识别和格式稳定性 |
+| Yi-only NED | 单独观察彝文识别能力 |
+| Han-only NED | 单独观察汉字混排识别能力 |
+| Digit-only NED | 单独观察数字识别和格式稳定性 |
 | replacement | 检查是否出现替换符 collapse |
 | LaTeX-like outputs | 检查脚注/符号是否被错误公式化 |
-| ASCII-letter | 检查是否补出图片中不存在的拉丁尾巴 |
+| ASCII-letter | 统计预测中出现 Latin 字母的样本数，需要与 GT 对照 |
+| extra Latin | 检查 GT 无 Latin 但预测多出 Latin 的样本数 |
 | long_pred | 检查是否出现异常长输出 |
 
 ## 最终评估结果
 
 最终提交模型在 `603` 条真实样本上的重跑结果：
 
+![Evaluation snapshot](figures/evaluation_snapshot.svg)
+
 | 指标 | 结果 |
 |---|---:|
 | 样本数 | 603 |
 | Avg NED | 0.036068 |
-| Exact match | 67.99% |
 | WS Avg NED | 0.034219 |
 | NFKC+WS Avg NED | 0.033964 |
 | Yi-only Avg NED | 0.038309 |
-| Yi-only exact | 74.96% |
 | Han-only Avg NED | 0.022447 |
-| Han-only exact | 93.99% |
 | Digit-only Avg NED | 0.139918 |
-| Digit-only exact | 85.19% |
-| replacement / LaTeX / ASCII-letter / long_pred | 0 / 2 / 18 / 0 |
+| replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
+| ASCII-letter rows | 18 / 18，预测含 Latin 的 18 条 GT 本身也含 Latin 注音 |
 
 分组结果保留在以下文件中：
 
@@ -158,8 +159,8 @@ evaluation/tables/by_source.csv
 
 | 分组 | 结果摘要 | 说明 |
 |---|---|---|
-| line | Avg NED `0.028758`，Exact `72.62%` | 清晰行图是当前最稳定输入 |
-| region | Avg NED `0.079725`，Exact `42.86%` | 多行区域更容易出现漏行和边界错误 |
+| line | Avg NED `0.028758` | 清晰行图是当前最稳定输入 |
+| region | Avg NED `0.079725` | 多行区域更容易出现漏行和边界错误 |
 | page | Avg NED `0.060449`，样本数 4 | 可以处理整页输入，但复杂整页不应夸大 |
 | new_print_pdf | Avg NED `0.029050` | 新印刷 PDF 效果稳定 |
 | old_print_pdf | Avg NED `0.025771` | 旧印刷书籍在本评估集中表现稳定 |

@@ -101,19 +101,7 @@ configs/train_data_manifest_v5_16.json
 
 内部实验很多，但最终文档不按流水账列几十次训练，而按“分支判断”说明为什么当前模型胜出。
 
-```mermaid
-flowchart TD
-  A["阶段一：勒俄特依真实单书 baseline"] --> B["阶段二：合成覆盖 + monitor 诊断"]
-  B --> C["v4.4 strong-safe：clean line 稳定"]
-  C --> D["v5.2 real audit：暴露手写、region、混排瓶颈"]
-  D --> E["v5.6 strict-clean：输出空间相对干净"]
-  E --> F["v5.8 stable balance：稳定回退候选"]
-  F --> G["v5.15 layout latin rebalance：曾为最强"]
-  G --> H["v5.16 synth capped rerender：最终胜出"]
-  H --> I["603 clean submission set 重跑：最终提交结果"]
-  H --> J["v5.17 micro format tail：未晋级"]
-  F --> K["v5.9-v5.14：局部收益但漂移或长输出风险回升"]
-```
+![Training branch strategy](figures/training_branch.svg)
 
 关键分支卡：
 
@@ -128,22 +116,19 @@ flowchart TD
 
 ## 最终提交模型
 
-最终公开模型命名为 **NuosuBburma OCR**。内部 v5.16 分支固定为最终模型后，再用 `NuosuBburma OCR Evaluation Set` 的 `603` 条 clean submission samples 重跑一次，得到本次提交包使用的结果。
+最终公开模型命名为 **NuosuBburma OCR**。模型确定后，再用 `NuosuBburma OCR Evaluation Set` 的 `603` 条 clean submission samples 重跑一次，得到本次提交包使用的结果。
 
 | 指标 | 结果 |
 |---|---:|
 | 样本数 | 603 |
 | Avg NED | 0.036068 |
-| Exact match | 67.99% |
 | WS Avg NED | 0.034219 |
 | NFKC+WS Avg NED | 0.033964 |
 | Yi-only Avg NED | 0.038309 |
-| Yi-only exact | 74.96% |
 | Han-only Avg NED | 0.022447 |
-| Han-only exact | 93.99% |
 | Digit-only Avg NED | 0.139918 |
-| Digit-only exact | 85.19% |
-| replacement / LaTeX / ASCII-letter / long_pred | 0 / 2 / 18 / 0 |
+| replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
+| ASCII-letter rows | 18 / 18，预测含 Latin 的 18 条 GT 本身也含 Latin 注音 |
 
 结果文件：
 

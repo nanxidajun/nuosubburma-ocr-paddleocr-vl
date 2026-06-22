@@ -18,6 +18,8 @@
   "replacement": 0,
   "latex": 2,
   "ascii_letter": 18,
+  "gt_ascii_letter": 18,
+  "extra_ascii_letter": 0,
   "ascii_any": 104,
   "long_pred": 0,
   "title": "Submission model on NuosuBburma_OCR_Evaluation_Set",

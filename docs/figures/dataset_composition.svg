@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-labelledby="title desc">
+  <title id="title">NuosuBburma OCR evaluation dataset composition</title>
+  <desc id="desc">Composition of the 603 real evaluation samples by source scene, input granularity and script mix.</desc>
+  <style>
+    text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
+    .panel{fill:#fff;stroke:#d9e1de;stroke-width:1.3;rx:14}.label{font-size:16px;font-weight:760;fill:#172026}
+    .note{font-size:13px;fill:#637081}.small{font-size:12px;fill:#fff;font-weight:750}.outside{font-size:12px;fill:#172026;font-weight:750}
+    .c1{fill:#176b87}.c2{fill:#12a37f}.c3{fill:#f0a22e}.c4{fill:#d94b43}.c5{fill:#8b5cf6}.c6{fill:#64748b}
+    .legend{font-size:13px;fill:#2b3742}
+  </style>
+  <rect class="bg" width="1120" height="500"/>
+  <text class="title" x="40" y="48">603 条真实评估样本的构成</text>
+  <text class="sub" x="40" y="74">评估集不靠合成样本证明能力，而是覆盖换书、换版式、混排、手写和输入粒度差异。</text>
+
+  <rect class="panel" x="40" y="112" width="1040" height="330"/>
+
+  <text class="label" x="72" y="160">来源场景</text>
+  <rect class="c2" x="220" y="136" width="420" height="34" rx="8"/>
+  <rect class="c1" x="640" y="136" width="320" height="34" rx="8"/>
+  <rect class="c3" x="960" y="136" width="72" height="34" rx="8"/>
+  <rect class="c4" x="1032" y="136" width="8" height="34" rx="4"/>
+  <text class="small" x="238" y="158">新印刷 PDF 309</text>
+  <text class="small" x="660" y="158">旧印刷/旧书扫描 235</text>
+  <text class="outside" x="960" y="198">手写 53</text>
+  <text class="outside" x="1032" y="198">屏幕/场景 6</text>
+
+  <text class="label" x="72" y="270">输入粒度</text>
+  <rect class="c1" x="220" y="246" width="700" height="34" rx="8"/>
+  <rect class="c3" x="920" y="246" width="114" height="34" rx="8"/>
+  <rect class="c6" x="1034" y="246" width="6" height="34" rx="3"/>
+  <text class="small" x="238" y="268">line 515</text>
+  <text class="outside" x="920" y="308">region 84</text>
+  <text class="outside" x="1034" y="308">page 4</text>
+
+  <text class="label" x="72" y="380">文字混合</text>
+  <rect class="c5" x="220" y="356" width="437" height="34" rx="8"/>
+  <rect class="c2" x="657" y="356" width="360" height="34" rx="8"/>
+  <rect class="c4" x="1017" y="356" width="23" height="34" rx="6"/>
+  <text class="small" x="238" y="378">纯彝文 321</text>
+  <text class="small" x="675" y="378">彝汉混排 265</text>
+  <text class="outside" x="1017" y="418">彝汉拉丁混排 17</text>
+
+  <text class="note" x="72" y="466">小类样本不被过滤，是为了暴露真实 OCR 使用中的边界问题；读数时需结合样本量和输入难度。</text>
+</svg>

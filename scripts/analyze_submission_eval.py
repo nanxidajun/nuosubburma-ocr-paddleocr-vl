@@ -100,10 +100,14 @@ def is_long_failure(pred: str, label: str) -> bool:
 
 
 def danger_flags(pred: str, label: str) -> dict[str, bool]:
+    pred_has_ascii_letter = bool(ASCII_LETTER_RE.search(pred))
+    label_has_ascii_letter = bool(ASCII_LETTER_RE.search(label))
     return {
         "replacement": "�" in pred,
         "latex": has_latex(pred),
-        "ascii_letter": bool(ASCII_LETTER_RE.search(pred)),
+        "ascii_letter": pred_has_ascii_letter,
+        "gt_ascii_letter": label_has_ascii_letter,
+        "extra_ascii_letter": pred_has_ascii_letter and not label_has_ascii_letter,
         "ascii_any": bool(ASCII_ANY_RE.search(pred)),
         "long_pred": is_long_failure(pred, label),
     }
@@ -138,6 +142,8 @@ def metric_pack(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "replacement": 0,
             "latex": 0,
             "ascii_letter": 0,
+            "gt_ascii_letter": 0,
+            "extra_ascii_letter": 0,
             "ascii_any": 0,
             "long_pred": 0,
         }
@@ -219,6 +225,8 @@ def metric_pack(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "replacement": flags["replacement"],
         "latex": flags["latex"],
         "ascii_letter": flags["ascii_letter"],
+        "gt_ascii_letter": flags["gt_ascii_letter"],
+        "extra_ascii_letter": flags["extra_ascii_letter"],
         "ascii_any": flags["ascii_any"],
         "long_pred": flags["long_pred"],
     }
@@ -342,7 +350,8 @@ def build_summary(out_dir: Path, rows: list[dict[str, Any]], title: str) -> None
         f"- Yi-only Avg NED / exact: {summary['yi_ned']} / {summary['yi_exact']} ({summary['yi_rows']} rows)",
         f"- Han-only Avg NED / exact: {summary['han_ned']} / {summary['han_exact']} ({summary['han_rows']} rows)",
         f"- Digit-only Avg NED / exact: {summary['digit_ned']} / {summary['digit_exact']} ({summary['digit_rows']} rows)",
-        f"- replacement / latex / ascii_letter / long_pred: {summary['replacement']} / {summary['latex']} / {summary['ascii_letter']} / {summary['long_pred']}",
+        f"- replacement / latex / extra_ascii_letter / long_pred: {summary['replacement']} / {summary['latex']} / {summary['extra_ascii_letter']} / {summary['long_pred']}",
+        f"- ascii_letter / gt_ascii_letter: {summary['ascii_letter']} / {summary['gt_ascii_letter']}",
         "",
     ]
     (out_dir / "summary.md").write_text("\n".join(lines), encoding="utf-8")

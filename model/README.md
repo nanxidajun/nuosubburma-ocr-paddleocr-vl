@@ -62,16 +62,17 @@ https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 
 提交评估结果：
 
+![Evaluation snapshot](../docs/figures/evaluation_snapshot.svg)
+
 | 指标 | 结果 |
 |---|---:|
 | 样本数 | 603 |
 | Avg NED | 0.036068 |
-| Exact match | 67.99% |
 | Yi-only Avg NED | 0.038309 |
-| Yi-only exact | 74.96% |
 | Han-only Avg NED | 0.022447 |
-| Han-only exact | 93.99% |
-| replacement / LaTeX / ASCII-letter / long_pred | 0 / 2 / 18 / 0 |
+| Digit-only Avg NED | 0.139918 |
+| replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
+| ASCII-letter rows | 18 / 18，预测含 Latin 的 18 条 GT 本身也含 Latin 注音 |
 
 完整评估结果见：
 

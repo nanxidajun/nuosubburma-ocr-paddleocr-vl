@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">NuosuBburma OCR evaluation snapshot</title>
+  <desc id="desc">Evaluation summary on 603 real samples: NED metrics by input granularity and scene plus output safety counts.</desc>
+  <style>
+    text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
+    .card{fill:#fff;stroke:#d9e1de;stroke-width:1.3;rx:14}.card2{fill:#f7fffc;stroke:#b9ded1;stroke-width:1.5;rx:14}
+    .metric{font-size:30px;font-weight:820;fill:#102a27}.mtitle{font-size:14px;font-weight:760;fill:#52606d}.note{font-size:12px;fill:#6b7785}
+    .panel-title{font-size:18px;font-weight:780;fill:#172026}.label{font-size:13px;fill:#25313a}.value{font-size:13px;font-weight:740;fill:#172026}
+    .axis{stroke:#e2e8e5;stroke-width:1}.bar1{fill:#176b87}.bar2{fill:#12a37f}.bar3{fill:#f0a22e}.bar4{fill:#8b5cf6}.bar5{fill:#d94b43}
+    .zero{stroke:#12a37f;stroke-width:8;stroke-linecap:round}
+  </style>
+  <rect class="bg" width="1120" height="560"/>
+  <text class="title" x="40" y="48">提交评估结果一屏读完</text>
+  <text class="sub" x="40" y="74">主展示只看 NED、分组难度和输出风险；完全匹配率保留在原始结果中，不作为主要判断。</text>
+
+  <rect class="card2" x="40" y="104" width="245" height="92"/>
+  <text class="mtitle" x="62" y="134">真实评估样本</text>
+  <text class="metric" x="62" y="172">603</text>
+  <text class="note" x="134" y="171">line / region / page</text>
+
+  <rect class="card" x="305" y="104" width="245" height="92"/>
+  <text class="mtitle" x="327" y="134">Avg NED</text>
+  <text class="metric" x="327" y="172">0.0361</text>
+  <text class="note" x="442" y="171">越低越好</text>
+
+  <rect class="card" x="570" y="104" width="245" height="92"/>
+  <text class="mtitle" x="592" y="134">Line Avg NED</text>
+  <text class="metric" x="592" y="172">0.0288</text>
+  <text class="note" x="706" y="171">最稳定入口</text>
+
+  <rect class="card" x="835" y="104" width="245" height="92"/>
+  <text class="mtitle" x="857" y="134">输出风险</text>
+  <text class="metric" x="857" y="172">0 / 2 / 0 / 0</text>
+  <text class="note" x="857" y="188">replacement / LaTeX / extra Latin / long_pred</text>
+
+  <rect class="card" x="40" y="228" width="500" height="274"/>
+  <text class="panel-title" x="64" y="264">不同输入粒度 Avg NED</text>
+  <line class="axis" x1="176" y1="292" x2="466" y2="292"/>
+  <text class="label" x="64" y="323">line</text>
+  <rect class="bar1" x="176" y="304" width="105" height="28" rx="7"/>
+  <text class="value" x="294" y="323">0.0288  n=515</text>
+  <text class="label" x="64" y="374">page</text>
+  <rect class="bar2" x="176" y="355" width="220" height="28" rx="7"/>
+  <text class="value" x="409" y="374">0.0604  n=4</text>
+  <text class="label" x="64" y="425">region</text>
+  <rect class="bar3" x="176" y="406" width="290" height="28" rx="7"/>
+  <text class="value" x="479" y="425">0.0797  n=84</text>
+  <text class="note" x="64" y="472">结论：整页和多行区域应与清晰行图分开解读。</text>
+
+  <rect class="card" x="580" y="228" width="500" height="274"/>
+  <text class="panel-title" x="604" y="264">不同真实场景 Avg NED</text>
+  <line class="axis" x1="752" y1="292" x2="1020" y2="292"/>
+  <text class="label" x="604" y="319">旧印刷</text>
+  <rect class="bar1" x="752" y="300" width="57" height="24" rx="6"/>
+  <text class="value" x="822" y="319">0.0258</text>
+  <text class="label" x="604" y="361">新印刷</text>
+  <rect class="bar2" x="752" y="342" width="64" height="24" rx="6"/>
+  <text class="value" x="829" y="361">0.0291</text>
+  <text class="label" x="604" y="403">屏幕/场景</text>
+  <rect class="bar3" x="752" y="384" width="78" height="24" rx="6"/>
+  <text class="value" x="843" y="403">0.0355</text>
+  <text class="label" x="604" y="445">手写</text>
+  <rect class="bar4" x="752" y="426" width="270" height="24" rx="6"/>
+  <text class="value" x="1035" y="445">0.1227</text>
+  <line class="zero" x1="606" y1="476" x2="628" y2="476"/>
+  <text class="note" x="640" y="480">replacement 与 long prediction 均为 0；LaTeX-like 残留 2 条。</text>
+</svg>
