@@ -4,7 +4,7 @@
 
 ## 合并切行识别结果
 
-`merge_line_ocr_results.py` 用于把切图 pipeline 输出的多张行图识别结果，按页面和阅读顺序合并回整页文本。
+`merge_line_ocr_results.py` 用于把切图 pipeline 输出的多张行图识别结果，按页面和阅读顺序汇总回整页文本。默认保留切行换行，不把多行拼成一行。
 
 可先看独立示例：[`examples/screen_page/`](examples/screen_page/)。
 
@@ -23,6 +23,7 @@ python postprocess/merge_line_ocr_results.py \
 - `--results` 是行图 OCR 结果，支持 JSONL 或 JSON list。
 - `--index` 是 `04_successful_crop_summary/index.csv`，用于恢复页面、父框、二次切分行顺序。
 - 输出 JSONL 每行是一页，包含 `page_id`、`page_file`、`text` 和原始 `lines`。
+- 默认行间分隔符是换行；只有确实需要压成一段时，才传 `--separator ""`。
 
 ## 给识别结果加注音
 

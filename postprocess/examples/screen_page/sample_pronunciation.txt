@@ -1,10 +1,13 @@
 # 注音添加小样
 
 原文:
-ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
+ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮ
+ꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
 
 pronunciation:
-nga ni jjo jjux ggap mop ji sy ku jo hxie mop cyp ma da dde wep wex ap jjix o
+nga ni jjo jjux ggap mop ji sy ku jo
+hxie mop cyp ma da dde wep wex ap jjix o
 
 inline_pronunciation:
-ꉢ(nga)ꅿ(ni)ꐥ(jjo)ꐨ(jjux)ꈝ(ggap)ꃀ(mop)ꏢ(ji)ꌦ(sy)ꈐ(ku)ꏮ(jo)ꉌ(hxie)ꃀ(mop)ꋍ(cyp)ꂷ(ma)ꄉ(da)ꅉ(dde)ꊌ(wep)ꊊ(wex)ꀋ(ap)ꐙ(jjix)ꀑ(o)
+ꉢ(nga)ꅿ(ni)ꐥ(jjo)ꐨ(jjux)ꈝ(ggap)ꃀ(mop)ꏢ(ji)ꌦ(sy)ꈐ(ku)ꏮ(jo)
+ꉌ(hxie)ꃀ(mop)ꋍ(cyp)ꂷ(ma)ꄉ(da)ꅉ(dde)ꊌ(wep)ꊊ(wex)ꀋ(ap)ꐙ(jjix)ꀑ(o)

@@ -176,7 +176,7 @@ python demo/infer_single_image.py \
 
 ### 实用工作流：切图、合并、注音
 
-真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、屏幕截图或拍照图。因此仓库把流程拆成两层：`crop_pipeline/` 负责把页面切成可复核行图，`postprocess/` 负责把行 OCR 结果合并回页面文本，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
+真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、屏幕截图或拍照图。因此仓库把流程拆成两层：`crop_pipeline/` 负责把页面切成可复核行图，`postprocess/` 负责把行 OCR 结果汇总回页面文本，默认保留切行换行，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
 
 同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，切图示例见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
 
@@ -239,8 +239,7 @@ python postprocess/merge_line_ocr_results.py \
   --results outputs/screen_page_crop/line_ocr_result.jsonl \
   --index outputs/screen_page_crop/04_successful_crop_summary/index.csv \
   --out-jsonl outputs/screen_page_crop/page_ocr_merged.jsonl \
-  --out-txt-dir outputs/screen_page_crop/page_text \
-  --separator ""
+  --out-txt-dir outputs/screen_page_crop/page_text
 
 python postprocess/add_nuosu_pronunciation.py \
   --input outputs/screen_page_crop/page_ocr_merged.jsonl \
@@ -248,9 +247,9 @@ python postprocess/add_nuosu_pronunciation.py \
   --output outputs/screen_page_crop/page_ocr_merged_pronounced.jsonl
 ```
 
-后处理示例里放了小样，方便直接看输出长什么样：
+后处理示例里放了小样，方便直接看默认保留切行时输出长什么样：
 
-- 合并文本小样：[`postprocess/examples/screen_page/sample_merged_text.txt`](postprocess/examples/screen_page/sample_merged_text.txt)
+- 页面汇总小样：[`postprocess/examples/screen_page/sample_merged_text.txt`](postprocess/examples/screen_page/sample_merged_text.txt)
 - 注音文本小样：[`postprocess/examples/screen_page/sample_pronunciation.txt`](postprocess/examples/screen_page/sample_pronunciation.txt)
 
 完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[切图屏幕页示例](crop_pipeline/examples/screen_page/) 和 [后处理示例](postprocess/examples/screen_page/)。
@@ -259,7 +258,7 @@ python postprocess/add_nuosu_pronunciation.py \
 
 - `crop_pipeline/run.py`：输入图片文件夹、单张图片或 PDF，输出切图复核目录和行图索引。
 - `crop_pipeline/infer_line_crops.py`：批量识别切图 pipeline 生成的行图。
-- `postprocess/merge_line_ocr_results.py`：把切行 OCR 结果按顺序合并回页面文本。
+- `postprocess/merge_line_ocr_results.py`：把切行 OCR 结果按顺序汇总回页面文本，默认保留换行。
 - `postprocess/add_nuosu_pronunciation.py`：给规范彝文 OCR 输出添加罗马注音。
 
 ## 仓库结构
