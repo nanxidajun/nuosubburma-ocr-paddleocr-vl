@@ -103,10 +103,3 @@ python postprocess/add_nuosu_pronunciation.py \
   --field text \
   --output outputs/screen_page_crop/page_ocr_merged_pronounced.jsonl
 ```
-
-## 5. 对照 GT
-
-```bash
-cat crop_pipeline/examples/screen_page/screen_page_gt.txt
-cat outputs/screen_page_crop/page_text/*.txt
-```
