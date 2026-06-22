@@ -232,7 +232,7 @@ python crop_pipeline/infer_line_crops.py \
   --output outputs/screen_page_crop/line_ocr_result.jsonl
 ```
 
-再用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本，用 `postprocess/add_nuosu_pronunciation.py` 给识别结果添加注音。完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[后处理工具](postprocess/README.md) 和 [端到端屏幕页示例](crop_pipeline/examples/screen_page/)。
+再用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本，用 `postprocess/add_nuosu_pronunciation.py` 给识别结果添加注音。完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[切图屏幕页示例](crop_pipeline/examples/screen_page/) 和 [后处理示例](postprocess/examples/screen_page/)。
 
 相关脚本：
 
@@ -246,7 +246,7 @@ python crop_pipeline/infer_line_crops.py \
 ```text
 configs/                         训练/导出配置与训练数据 manifest 快照
 NuosuBburma_OCR_Evaluation_Set/  评估集入口说明，完整数据托管在 Hugging Face Dataset
-crop_pipeline/                   整页/PDF 切图、切行 OCR、合并页面文本的实用工作流
+crop_pipeline/                   整页/PDF 切图与行图 OCR 入口
 demo/                            单图推理 demo 与样例图
 docs/                            项目背景、评估集、模型训练和提交说明
 evaluation/                      603 条真实评估集结果与统计表

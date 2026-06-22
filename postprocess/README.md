@@ -6,6 +6,8 @@
 
 `merge_line_ocr_results.py` 用于把切图 pipeline 输出的多张行图识别结果，按页面和阅读顺序合并回整页文本。
 
+可先看独立示例：[`examples/screen_page/`](examples/screen_page/)。
+
 典型用法：
 
 ```bash
@@ -56,4 +58,3 @@ python postprocess/add_nuosu_pronunciation.py \
 codepoint,char,unicode_name,romanization
 U+A000,ꀀ,Yi Syllable It,it
 ```
-

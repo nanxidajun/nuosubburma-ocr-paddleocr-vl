@@ -61,14 +61,14 @@ python3 crop_pipeline/run.py \
 outputs/screen_page_crop/04_successful_crop_summary/01_line_ocr_ready/
 ```
 
-完整链路示例见 [`examples/screen_page/`](examples/screen_page/)。
+切图示例见 [`examples/screen_page/`](examples/screen_page/)。
 
 ## 配套脚本
 
 - `run.py`：把图片文件夹、单张图片或 PDF 切成可复核行图。
 - `infer_line_crops.py`：批量识别 `04_successful_crop_summary/01_line_ocr_ready/` 中的行图。
-- `../postprocess/merge_line_ocr_results.py`：把切行识别结果按 `index.csv` 合并回页面文本；如需合并成一段，可设置 `--separator ""` 或 `--separator " "`。
-- `../postprocess/add_nuosu_pronunciation.py`：给 OCR 输出中的规范彝文添加罗马注音。
+
+合并切行识别结果、添加彝文注音属于后处理流程，见 [`../postprocess/`](../postprocess/)。
 
 ## PDF 输入
 
