@@ -30,7 +30,7 @@
 
 <img src="preview/02_cut_sheet.png" alt="cut sheet" width="760">
 
-这次切图生成了 `27` 个汇总文件，其中 `25` 个进入 `01_line_ocr_ready/`，校验结果为 `ok: true`。
+这次切图生成了 `27` 个汇总文件，`27` 个全部进入 `01_line_ocr_ready/`，校验结果为 `ok: true`。
 
 可查看文件：
 
@@ -43,8 +43,9 @@
 
 - 逐行 GT 模拟 OCR 结果：[`preview/line_gt_result_sample.jsonl`](preview/line_gt_result_sample.jsonl)
 - 合并成一段后的 JSONL：[`preview/merged_gt_one_paragraph.jsonl`](preview/merged_gt_one_paragraph.jsonl)
-- 合并成一段后的 TXT：[`preview/merged_gt_text/screen_page_with_gt.txt`](preview/merged_gt_text/screen_page_with_gt.txt)
+- 合并成一段后的 TXT：[`preview/merged_gt_text/screen_page_with_gt_p001.txt`](preview/merged_gt_text/screen_page_with_gt_p001.txt)
 - 加注音后的 JSONL：[`preview/merged_gt_pronounced.jsonl`](preview/merged_gt_pronounced.jsonl)
+- 加注音后的 TXT：[`preview/merged_gt_text/screen_page_with_gt_p001_pronounced.txt`](preview/merged_gt_text/screen_page_with_gt_p001_pronounced.txt)
 
 实际使用时，`line_gt_result_sample.jsonl` 这一步会替换成模型产生的 `line_ocr_result.jsonl`。
 

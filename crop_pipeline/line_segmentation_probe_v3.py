@@ -195,7 +195,10 @@ def classify_box(box: Box, page_hint: str, page_h: int, page_w: int, reference_h
     if box.y < 0.13 * page_h and box.w < 0.45 * page_w and box.h < 1.35 * safe_ref_h:
         return "header_line", "optional_ignore_or_metadata", "top-page short header/page-number band"
 
-    if box.y2 > 0.945 * page_h and box.h < 1.35 * safe_ref_h:
+    is_extreme_bottom = box.y2 > 0.965 * page_h
+    is_tiny_footer = box.w < 0.10 * page_w
+    is_center_or_right_footer = box.x > 0.18 * page_w
+    if is_extreme_bottom and box.h < 1.35 * safe_ref_h and (is_tiny_footer or is_center_or_right_footer):
         return "footer_or_page_number", "optional_ignore_or_metadata", "bottom-page footer/page-number band"
 
     if page_hint != "body_page" and box.y > 0.70 * page_h and box.h > max(1.55 * safe_ref_h, 0.045 * page_h):

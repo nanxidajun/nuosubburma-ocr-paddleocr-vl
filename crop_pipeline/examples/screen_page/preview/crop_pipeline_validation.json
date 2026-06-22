@@ -5,10 +5,10 @@
   "summary": {
     "index": {
       "rows": 27,
-      "line_rows": 25,
+      "line_rows": 27,
       "secondary_line_rows": 0,
       "region_keep_rows": 0,
-      "reference_rows": 2
+      "reference_rows": 0
     }
   }
 }
