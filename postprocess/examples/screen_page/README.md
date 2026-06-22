@@ -22,12 +22,25 @@ python postprocess/merge_line_ocr_results.py \
 
 默认会保留切行换行；只有确实需要压成一段时，才额外传 `--separator ""`。
 
-查看小样：
+查看输入与结果文件：
 
 - 输入行 OCR：[`line_ocr_result_sample.jsonl`](line_ocr_result_sample.jsonl)
 - 输入索引：[`crop_index_sample.csv`](crop_index_sample.csv)
 - 合并 JSONL：[`merged_page_text_sample.jsonl`](merged_page_text_sample.jsonl)
-- 页面汇总小样：[`sample_merged_text.txt`](sample_merged_text.txt)
+
+页面汇总小样：
+
+```text
+输入行数: 4
+匹配 index: 4/4
+行间分隔: 默认换行
+
+页面文本:
+ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮ
+ꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
+ꑭꁗꀒꁧꉜꄉꄔꄸꑌ
+ꐰꇐꊂꈹꇁꄏꀕꀋꐚ
+```
 
 ## 添加注音
 
@@ -38,9 +51,24 @@ python postprocess/add_nuosu_pronunciation.py \
   --output outputs/postprocess_demo/merged_page_text_pronounced.jsonl
 ```
 
-查看小样：
+查看结果文件：
 
 - 注音 JSONL：[`pronounced_page_text_sample.jsonl`](pronounced_page_text_sample.jsonl)
-- 注音文本小样：[`sample_pronunciation.txt`](sample_pronunciation.txt)
+
+注音文本小样：
+
+```text
+原文:
+ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮ
+ꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
+
+pronunciation:
+nga ni jjo jjux ggap mop ji sy ku jo
+hxie mop cyp ma da dde wep wex ap jjix o
+
+inline_pronunciation:
+ꉢ(nga)ꅿ(ni)ꐥ(jjo)ꐨ(jjux)ꈝ(ggap)ꃀ(mop)ꏢ(ji)ꌦ(sy)ꈐ(ku)ꏮ(jo)
+ꉌ(hxie)ꃀ(mop)ꋍ(cyp)ꂷ(ma)ꄉ(da)ꅉ(dde)ꊌ(wep)ꊊ(wex)ꀋ(ap)ꐙ(jjix)ꀑ(o)
+```
 
 注音使用 [`postprocess/nuosu_unicode.csv`](../../nuosu_unicode.csv)。

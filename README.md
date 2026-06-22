@@ -247,10 +247,36 @@ python postprocess/add_nuosu_pronunciation.py \
   --output outputs/screen_page_crop/page_ocr_merged_pronounced.jsonl
 ```
 
-后处理示例里放了小样，方便直接看默认保留切行时输出长什么样：
+后处理示例里放了小样，方便直接看默认保留切行时输出长什么样。
 
-- 页面汇总小样：[`postprocess/examples/screen_page/sample_merged_text.txt`](postprocess/examples/screen_page/sample_merged_text.txt)
-- 注音文本小样：[`postprocess/examples/screen_page/sample_pronunciation.txt`](postprocess/examples/screen_page/sample_pronunciation.txt)
+页面汇总小样：
+
+```text
+输入行数: 4
+匹配 index: 4/4
+行间分隔: 默认换行
+
+ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮ
+ꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
+ꑭꁗꀒꁧꉜꄉꄔꄸꑌ
+ꐰꇐꊂꈹꇁꄏꀕꀋꐚ
+```
+
+注音文本小样：
+
+```text
+原文:
+ꉢꅿꐥꐨꈝꃀꏢꌦꈐꏮ
+ꉌꃀꋍꂷꄉꅉꊌꊊꀋꐙꀑ
+
+pronunciation:
+nga ni jjo jjux ggap mop ji sy ku jo
+hxie mop cyp ma da dde wep wex ap jjix o
+
+inline_pronunciation:
+ꉢ(nga)ꅿ(ni)ꐥ(jjo)ꐨ(jjux)ꈝ(ggap)ꃀ(mop)ꏢ(ji)ꌦ(sy)ꈐ(ku)ꏮ(jo)
+ꉌ(hxie)ꃀ(mop)ꋍ(cyp)ꂷ(ma)ꄉ(da)ꅉ(dde)ꊌ(wep)ꊊ(wex)ꀋ(ap)ꐙ(jjix)ꀑ(o)
+```
 
 完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[切图屏幕页示例](crop_pipeline/examples/screen_page/) 和 [后处理示例](postprocess/examples/screen_page/)。
 
