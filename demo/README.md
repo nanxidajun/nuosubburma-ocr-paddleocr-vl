@@ -26,6 +26,8 @@ python demo/infer_single_image.py \
 - `sample_images/screen_page.jpg`
 - `sample_images/handwriting_region.jpg`
 
+整页扫描件不建议直接当作普通单行 demo 输入。可以先运行切图流程，再从 `04_successful_crop_summary/01_line_ocr_ready/` 中选择行图进入本地推理。说明见 [`../docs/CROP_PIPELINE.md`](../docs/CROP_PIPELINE.md)。
+
 模型权重：
 
 - Hugging Face: `https://huggingface.co/nanxidajun/NuosuBburma-OCR`

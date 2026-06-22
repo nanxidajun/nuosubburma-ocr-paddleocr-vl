@@ -13,7 +13,7 @@
 
 项目从旧书《勒俄特依》的真实裁切行开始，逐步扩展到新旧印刷、彝汉混排、少量手写、屏幕图和整页/区域输入。目标很直接：把图片里的规范彝文转成可复制、可检索、可校对、可继续用于教学和语料建设的 Unicode 文本。
 
-[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
+[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图流程](docs/CROP_PIPELINE.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
 
 ## 项目概览
 
@@ -174,6 +174,16 @@ python demo/infer_single_image.py \
 <image>OCR:
 ```
 
+整页扫描件建议先切图再识别：
+
+```bash
+python3 scripts/run_book_crop_pipeline.py \
+  --input page_images \
+  --output-root outputs/crop_pipeline_demo
+```
+
+切图结果会生成 `03_cut_before_after_review/` 供人工快速检查，并在 `04_successful_crop_summary/01_line_ocr_ready/` 汇总可进入行级 OCR 的图片。完整说明见 [切图流程](docs/CROP_PIPELINE.md)。
+
 ## 仓库结构
 
 ```text
@@ -183,7 +193,8 @@ demo/                            单图推理 demo 与样例图
 docs/                            项目背景、评估集、模型训练和提交说明
 evaluation/                      603 条真实评估集结果与统计表
 model/                           模型托管入口、下载命令和使用边界说明
-scripts/                         训练、评估、统计工具
+postprocess/                     切行 OCR 结果合并、规范彝文注音工具
+scripts/                         训练、评估、统计和切图工具
 ```
 
 ## 文档
@@ -193,6 +204,8 @@ scripts/                         训练、评估、统计工具
 - [项目背景与任务定义](docs/PROJECT_BACKGROUND.md)
 - [评估集说明](docs/EVALUATION_DATASET.md)
 - [模型与训练说明](docs/MODEL_AND_TRAINING.md)
+- [书页切图流程](docs/CROP_PIPELINE.md)
+- [后处理工具](postprocess/README.md)
 - [模型入口](model/README.md)
 - [评估集入口](NuosuBburma_OCR_Evaluation_Set/README.md)
 
@@ -200,7 +213,7 @@ scripts/                         训练、评估、统计工具
 
 - 支持整页、区域、单行图像输入。
 - 当前最稳定的使用方式通常是单行/区域 OCR。
-- 复杂整页文档在版面较密、手写、多栏、脚注、注音块或图文混排较强时，建议配合版面分析、切图流程或人工复核。
+- 复杂整页文档在版面较密、手写、多栏、脚注、注音块或图文混排较强时，建议配合 [切图流程](docs/CROP_PIPELINE.md)、版面分析或人工复核。
 - 手写样本已有一定泛化能力，但稳定性弱于印刷体。
 - 本版本尚未进行专门的端侧/移动端优化。
 

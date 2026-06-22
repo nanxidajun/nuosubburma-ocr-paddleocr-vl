@@ -8,6 +8,7 @@
 | 2 | [项目背景与任务定义](PROJECT_BACKGROUND.md) | 说明为什么选择规范彝文 OCR、任务稀缺性和任务复杂度 |
 | 3 | [评估集说明](EVALUATION_DATASET.md) | 说明真实评估集的来源、分布、构建流程、指标和结果解读 |
 | 4 | [模型与训练说明](MODEL_AND_TRAINING.md) | 说明训练数据构建、LoRA 微调策略、分支选择和最终模型结果 |
+| 5 | [书页切图流程](CROP_PIPELINE.md) | 说明整页扫描件如何切成可复核、可进入 OCR 的行图或区域图 |
 
 相关入口：
 
@@ -15,4 +16,5 @@
 - 评估集入口：[`../NuosuBburma_OCR_Evaluation_Set/README.md`](../NuosuBburma_OCR_Evaluation_Set/README.md)
 - 评估集说明：[`EVALUATION_DATASET.md`](EVALUATION_DATASET.md)
 - 评估结果：[`../evaluation/`](../evaluation/)
+- 切图流程：[`CROP_PIPELINE.md`](CROP_PIPELINE.md)
 - 本地 Demo：[`../demo/README.md`](../demo/README.md)
