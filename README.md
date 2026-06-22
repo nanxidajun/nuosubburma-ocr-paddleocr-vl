@@ -13,7 +13,7 @@
 
 项目从旧书《勒俄特依》的真实裁切行开始，逐步扩展到新旧印刷、彝汉混排、少量手写、屏幕图和整页/区域输入。目标很直接：把图片里的规范彝文转成可复制、可检索、可校对、可继续用于教学和语料建设的 Unicode 文本。
 
-[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图 Pipeline](crop_pipeline/README.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
+[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图 Pipeline](crop_pipeline/README.md) · [后处理工具](postprocess/README.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
 
 ## 项目概览
 
@@ -176,9 +176,9 @@ python demo/infer_single_image.py \
 
 ### 实用工作流：切图、合并、注音
 
-真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、屏幕截图或拍照图。因此仓库单独提供了 `crop_pipeline/` 和 `postprocess/`：可以先把页面切成可复核行图，再识别行图，最后合并回一段页面文本，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
+真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、屏幕截图或拍照图。因此仓库把流程拆成两层：`crop_pipeline/` 负责把页面切成可复核行图，`postprocess/` 负责把行 OCR 结果合并回页面文本，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
 
-同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，完整链路见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
+同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，切图示例见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
 
 <p>
   <img src="crop_pipeline/examples/screen_page/screen_page_with_gt.jpg" alt="screen page sample with GT" width="320">
@@ -232,7 +232,28 @@ python crop_pipeline/infer_line_crops.py \
   --output outputs/screen_page_crop/line_ocr_result.jsonl
 ```
 
-再用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本，用 `postprocess/add_nuosu_pronunciation.py` 给识别结果添加注音。完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[切图屏幕页示例](crop_pipeline/examples/screen_page/) 和 [后处理示例](postprocess/examples/screen_page/)。
+切图完成后，后处理单独执行，不属于一键切图 pipeline：
+
+```bash
+python postprocess/merge_line_ocr_results.py \
+  --results outputs/screen_page_crop/line_ocr_result.jsonl \
+  --index outputs/screen_page_crop/04_successful_crop_summary/index.csv \
+  --out-jsonl outputs/screen_page_crop/page_ocr_merged.jsonl \
+  --out-txt-dir outputs/screen_page_crop/page_text \
+  --separator ""
+
+python postprocess/add_nuosu_pronunciation.py \
+  --input outputs/screen_page_crop/page_ocr_merged.jsonl \
+  --field text \
+  --output outputs/screen_page_crop/page_ocr_merged_pronounced.jsonl
+```
+
+后处理示例里放了小样，方便直接看输出长什么样：
+
+- 合并文本小样：[`postprocess/examples/screen_page/sample_merged_text.txt`](postprocess/examples/screen_page/sample_merged_text.txt)
+- 注音文本小样：[`postprocess/examples/screen_page/sample_pronunciation.txt`](postprocess/examples/screen_page/sample_pronunciation.txt)
+
+完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[切图屏幕页示例](crop_pipeline/examples/screen_page/) 和 [后处理示例](postprocess/examples/screen_page/)。
 
 相关脚本：
 
@@ -265,6 +286,7 @@ scripts/                         训练、评估和统计工具
 - [切图 Pipeline](crop_pipeline/README.md)
 - [书页切图流程说明](docs/CROP_PIPELINE.md)
 - [后处理工具](postprocess/README.md)
+- [后处理示例](postprocess/examples/screen_page/README.md)
 - [模型入口](model/README.md)
 - [评估集入口](NuosuBburma_OCR_Evaluation_Set/README.md)
 
