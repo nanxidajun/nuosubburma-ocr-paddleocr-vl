@@ -169,9 +169,18 @@ python demo/infer_single_image.py \
 
 同一张页面照片可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，切图示例见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
 
-<p>
-  <img src="crop_pipeline/examples/screen_page/screen_page_with_gt.jpg" alt="page photo sample with GT" width="320">
-</p>
+<table>
+  <tr>
+    <td align="center"><strong>原图</strong></td>
+    <td align="center"><strong>定位框</strong></td>
+    <td align="center"><strong>切图结果</strong></td>
+  </tr>
+  <tr>
+    <td><img src="crop_pipeline/examples/screen_page/screen_page_with_gt.jpg" alt="原图：页面照片样例" width="260"></td>
+    <td><img src="crop_pipeline/examples/screen_page/preview/01_detected_boxes.png" alt="定位框预览" width="260"></td>
+    <td><img src="crop_pipeline/examples/screen_page/preview/02_cut_sheet.png" alt="切图结果预览" width="260"></td>
+  </tr>
+</table>
 
 方式 A：整块 / 区域直接识别。
 
