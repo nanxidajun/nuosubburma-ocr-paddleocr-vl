@@ -36,8 +36,8 @@
   <circle class="dot" cx="92" cy="398" r="10"/>
   <rect class="main" x="130" y="364" width="430" height="104"/>
   <text class="stage" x="156" y="392">第三阶段</text>
-  <text class="head" x="156" y="420">reviewed 真实集横向选择</text>
-  <text class="body" x="156" y="444">同时看整体 NED、LaTeX、ASCII、替换符和长输出。</text>
+  <text class="head" x="156" y="420">reviewed 真实集错误检测</text>
+  <text class="body" x="156" y="444">看普遍错误模式：漂移、漏行、LaTeX、ASCII 和长输出。</text>
 
   <path class="line" d="M 92 412 V 512"/>
   <circle class="dot" cx="92" cy="528" r="10"/>

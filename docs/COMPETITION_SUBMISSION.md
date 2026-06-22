@@ -16,7 +16,7 @@
 | 低资源场景 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 基本不能直接识别规范彝文；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
 | 任务难点 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
 | 训练数据 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
-| 模型策略 | 使用 PaddleOCR-VL-1.6 LoRA 微调；分阶段控制视觉覆盖和输出空间漂移；选模同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
+| 模型策略 | 使用 PaddleOCR-VL-1.6 LoRA 微调；分阶段控制视觉覆盖和输出空间漂移；第三阶段用真实集检测普遍错误模式，选模同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
 | 开源材料 | GitHub 提供配置、脚本、评估结果、模型入口和本地 demo；HF Model 托管模型权重；HF Dataset 托管最小评估集 | 本仓库，HF Model，HF Dataset |
 
 ## 提交材料清单
