@@ -1,6 +1,6 @@
-# NuosuBburma OCR Evaluation Set
+# 规范彝文 OCR 评估集 / NuosuBburma OCR Evaluation Set
 
-本目录是 `NuosuBburma OCR` 的评估集入口说明。
+本目录是 `规范彝文 OCR / NuosuBburma OCR` 的评估集入口说明。
 
 完整评估集不直接放在 GitHub，托管在 Hugging Face Dataset：
 
@@ -18,7 +18,7 @@ HF Dataset 当前包含复跑评估需要的最小文件：
 | `annotations.jsonl` | 主评估标注，603 条样本 |
 | `images/` | 全部被引用图片，603 张 |
 
-本仓库只保留评估集入口、评估脚本和提交模型重跑结果，不重复提交完整图片数据。
+本仓库只保留评估集入口、评估脚本和提交模型评估结果，不重复提交完整图片数据。
 
 ## 下载
 

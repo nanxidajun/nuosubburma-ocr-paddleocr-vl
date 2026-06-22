@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="360" viewBox="0 0 1120 360" role="img" aria-labelledby="title desc">
-  <title id="title">NuosuBburma OCR workflow</title>
+  <title id="title">规范彝文 OCR / NuosuBburma OCR workflow</title>
   <desc id="desc">Workflow from PDF or image input to cropped lines, OCR, merged text, pronunciation and review.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
@@ -23,7 +23,7 @@
   </defs>
   <rect class="bg" width="1120" height="360"/>
   <text class="title" x="40" y="48">从真实资料到可复查文本</text>
-  <text class="sub" x="40" y="74">项目交付的不是单点模型，而是一条可裁切、可识别、可合并、可校对的 OCR 链路。</text>
+  <text class="sub" x="40" y="74">项目现在包含切图、识别、合并、注音和人工复核，适合把真实资料整理成可校对文本。</text>
 
   <rect class="card" x="40" y="116" width="188" height="120"/>
   <text class="label" x="64" y="152">PDF / 图片</text>

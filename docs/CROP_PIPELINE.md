@@ -1,6 +1,6 @@
 # 书页切图流程复用说明
 
-这套流程的目标不是“万能切图”，而是把正式排版书页拆成可复核、可复用的 OCR 输入：
+这套流程先处理正式排版书页，把页面拆成可复核、可复用的 OCR 输入：
 
 ```text
 页面图
@@ -165,7 +165,7 @@ page_005.png,cover_or_low_quality,
 | `混排` | 正文混排页 |
 | 其他 | 普通正文页 |
 
-如果换新数据，最稳的方式不是改文件名，而是复制 `output_root/page_manifest_template.csv`，人工把少数页面的 `page_hint` 改准，然后重跑并加上 `--page-manifest`。
+换新数据时，最稳的方式是复制 `output_root/page_manifest_template.csv`，人工把少数页面的 `page_hint` 改准，然后带上 `--page-manifest` 再运行一次。
 
 ## 可复用边界
 
@@ -222,7 +222,7 @@ page_005.png,cover_or_low_quality,
 1. 把 PDF 转成整页图片，放入一个新目录。
 2. 先不写清单，跑一遍 `crop_pipeline/run.py`。
 3. 打开 `output_root/page_manifest_template.csv`，只修正明显错的页型。
-4. 用修正后的 CSV 加 `--page-manifest` 重跑一遍。
+4. 用修正后的 CSV 加 `--page-manifest` 再运行一遍。
 5. 只看 `03_cut_before_after_review/`，确认正文行、大块二切、region 保留和忽略项是否合理。
 6. 用 `04_successful_crop_summary/index.csv` 接训练、评估或人工标注。
 7. 如需进入 OCR，优先使用 `01_line_ocr_ready/` 中的行图；不确定是否该拆行的样本保留在 `03_region_ocr_keep/`。

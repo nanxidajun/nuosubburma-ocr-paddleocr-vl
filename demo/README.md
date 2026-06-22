@@ -1,6 +1,6 @@
 # Demo
 
-本目录提供 `NuosuBburma OCR` 的本地单图推理 Demo 原型。
+本目录提供 `规范彝文 OCR / NuosuBburma OCR` 的本地单图推理 Demo 原型。
 
 当前不提供线上 Space。PaddleOCR-VL 推理环境较重，模型权重约 1.8GB，并依赖 PaddleFormers / PaddlePaddle / GPU 环境；免费 CPU Space 难以稳定承载。线上演示可在后续具备 GPU 环境时补充。
 

@@ -4,7 +4,7 @@
 
 ## 项目概览
 
-`NuosuBburma OCR` 基于 `PaddleOCR-VL-1.6 (0.9B)` 进行 LoRA 微调，面向规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）真实场景 OCR。
+`规范彝文 OCR / NuosuBburma OCR` 基于 `PaddleOCR-VL-1.6 (0.9B)` 进行 LoRA 微调，面向规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）真实场景 OCR。
 
 项目目标是把书籍扫描页、裁切行图、文字区域、手写稿和彝汉混排材料中的规范彝文转成可复制、可检索、可继续加工的 Unicode 文本。它既服务于文献数字化，也服务于学习、检字、注音、校对和后续 NLP 语料建设。
 

@@ -6,7 +6,7 @@
 
 | 项目 | 内容 |
 |---|---|
-| 公开模型名 | `NuosuBburma OCR` |
+| 公开模型名 | `规范彝文 OCR / NuosuBburma OCR` |
 | 基座模型 | `PaddleOCR-VL-1.6 (0.9B)` |
 | 微调方式 | LoRA |
 | 任务提示词 | `<image>OCR:` |
@@ -89,7 +89,7 @@ configs/train_data_manifest_v5_16.json
 
 ## 三阶段训练路线
 
-模型不是一次性把所有数据混入训练，而是从简单到复杂逐步扩展。
+训练没有一开始就把所有数据混在一起。最早先用《勒俄特依》的真实裁切行确认模型能学会规范彝文字形，再加入合成覆盖、monitor 诊断和真实评估集横向比较。
 
 | 阶段 | 目标 | 关键判断 |
 |---|---|---|
@@ -112,11 +112,11 @@ configs/train_data_manifest_v5_16.json
 | v5.16 Synth Capped Rerender | train `21504` 行；同标签合成重渲染 `9069` 行；Latin 不放大，footnote 和 region-like 设上限 | 旧 611 口径 total `0.0342`，yi `0.0372`，Han `0.0225`；LaTeX 降到 2，最终胜出 |
 | v5.17 Micro Format Tail | train `21854` 行；新增 `350` 行格式长尾 guard | total 回升到 `0.0429`，LaTeX 回到 10，出现 long_pred 1，因此不替代 v5.16 |
 
-取舍结论：这组分支说明，模型调优的关键不是不断扩大数据量，而是控制数据分布的方向。layout、脚注、safe-ending 类样本虽然能修局部问题，但很容易同时打开 Latin、LaTeX 和 long prediction 通道。最终选择 v5.16，是因为它在旧 reviewed 口径下同时降低 total NED、yi NED、Han NED 和输出空间风险。
+取舍结论：这几条分支最后给出的判断很明确：继续加数据不会自动变好，真正要盯的是数据分布。layout、脚注、safe-ending 类样本能修局部问题，也会把 Latin、LaTeX 和 long prediction 风险带回来。最终保留 v5.16，是因为它在旧 reviewed 口径下同时压低 total NED、yi NED、Han NED，输出风险也最低。
 
 ## 最终提交模型
 
-最终公开模型命名为 **NuosuBburma OCR**。模型确定后，再用 `NuosuBburma OCR Evaluation Set` 的 `603` 条 clean submission samples 重跑一次，得到本次提交包使用的结果。
+最终公开模型命名为 **规范彝文 OCR / NuosuBburma OCR**。模型固定后，在 `NuosuBburma OCR Evaluation Set` 的 `603` 条 clean submission samples 上评估，作为本次提交包使用的结果。
 
 | 指标 | 结果 |
 |---|---:|

@@ -1,4 +1,4 @@
-# NuosuBburma OCR Model
+# 规范彝文 OCR 模型 / NuosuBburma OCR Model
 
 本目录是 GitHub 仓库中的模型入口说明，不直接托管大模型权重。
 
@@ -12,7 +12,7 @@ https://huggingface.co/nanxidajun/NuosuBburma-OCR
 
 | 项目 | 内容 |
 |---|---|
-| 公开模型名 | `NuosuBburma OCR` |
+| 公开模型名 | `规范彝文 OCR / NuosuBburma OCR` |
 | 基座模型 | `PaddleOCR-VL-1.6 (0.9B)` |
 | 微调方式 | LoRA |
 | 任务提示词 | `<image>OCR:` |

@@ -1,22 +1,22 @@
 # 提交材料总览
 
-本文档整理 `NuosuBburma OCR` 的公开提交材料、复现入口和核验边界。完整技术细节分别放在 [项目背景与任务定义](PROJECT_BACKGROUND.md)、[模型与训练说明](MODEL_AND_TRAINING.md) 和 [评估集说明](EVALUATION_DATASET.md)。
+本文档整理 `规范彝文 OCR / NuosuBburma OCR` 的公开提交材料、复现入口和核验边界。完整技术细节分别放在 [项目背景与任务定义](PROJECT_BACKGROUND.md)、[模型与训练说明](MODEL_AND_TRAINING.md) 和 [评估集说明](EVALUATION_DATASET.md)。
 
 ## 一句话概括
 
-`NuosuBburma OCR` 是一个基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 微调的规范彝文 OCR 项目，目标是把真实规范彝文资料从图片层转成可复制、可检索、可继续用于教学和语料建设的 Unicode 文本。
+`规范彝文 OCR / NuosuBburma OCR` 是一个基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 微调的 OCR 项目，目标是把真实规范彝文资料从图片层转成可复制、可检索、可继续用于教学和语料建设的 Unicode 文本。
 
-项目关注的不是通用 OCR 已经充分覆盖的常规汉字/英文场景，而是一个低资源民族文字 OCR 场景：规范彝文公开 OCR 数据和可复用模型都很少，真实资料又大量存在于旧书扫描、教材、手写稿、页面照片和彝汉混排文本中。
+项目选择的是低资源民族文字 OCR 场景：规范彝文公开 OCR 数据和可复用模型都很少，真实资料又大量存在于旧书扫描、教材、手写稿、页面照片和彝汉混排文本中。
 
 ## 项目内容摘要
 
 | 方向 | 项目说明 | 位置 |
 |---|---|---|
-| 真实评估 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、规范手写、页面照片和实拍场景；全部样本纳入正式评估，不使用合成样本证明真实能力 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/` |
-| 低资源场景 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 对规范彝文支持不足；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
+| 真实评估 | `603` 条真实来源样本，`603` 张图片；覆盖新印刷、旧印刷、手写、页面照片和实拍场景；全部样本纳入正式评估，合成样本不进入主结果 | [评估集说明](EVALUATION_DATASET.md)，`evaluation/` |
+| 低资源场景 | 规范彝文 OCR 缺少公开基准与可直接复用模型；现有通用 OCR 基本不能直接识别规范彝文；资料数字化、教学检字和后续 NLP 语料建设都有真实需求 | [项目背景与任务定义](PROJECT_BACKGROUND.md) |
 | 任务难点 | 1165 个规范彝文字符、形近字多；真实资料包含 page / region / line、旧印刷噪声、手写、彝汉混排、数字、脚注和少量拉丁注音 | [项目背景与任务定义](PROJECT_BACKGROUND.md)，[评估集说明](EVALUATION_DATASET.md) |
 | 训练数据 | 真实锚点 + 合成覆盖 + monitor 诊断；合成数据用于补低频字、形近字、旧印刷退化和输出边界，不进入最终真实评估；训练 manifest 记录数据构成和清理原则 | [模型与训练说明](MODEL_AND_TRAINING.md)，`configs/train_data_manifest_v5_16.json` |
-| 模型策略 | 使用 PaddleOCR-VL-1.6 LoRA 微调；通过分阶段实验控制视觉覆盖和输出空间漂移；最终模型不是只按单一 NED 选择，而是同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
+| 模型策略 | 使用 PaddleOCR-VL-1.6 LoRA 微调；分阶段控制视觉覆盖和输出空间漂移；选模同时看彝文、汉字、数字和 LaTeX/ASCII/长输出风险 | [模型与训练说明](MODEL_AND_TRAINING.md)，`model/README.md` |
 | 开源材料 | GitHub 提供配置、脚本、评估结果、模型入口和本地 demo；HF Model 托管模型权重；HF Dataset 托管最小评估集 | 本仓库，HF Model，HF Dataset |
 
 ## 提交材料清单
@@ -37,9 +37,9 @@
 | 提交评估结果 | 已放入仓库 | `evaluation/` |
 | Demo | 本地单图 demo | `demo/README.md`，`demo/infer_single_image.py` |
 
-## 核心结果
+## 主要结果
 
-最终提交模型在 `NuosuBburma OCR Evaluation Set` 的 `603` 条真实样本上重跑，结果如下：
+最终提交模型在 `NuosuBburma OCR Evaluation Set` 的 `603` 条真实样本上评估，结果如下：
 
 ![Evaluation snapshot](figures/evaluation_snapshot.svg)
 
@@ -111,7 +111,7 @@ python scripts/analyze_submission_eval.py \
 | 评估集是否真实 | 是。主评估集为真实来源样本，不使用合成样本作为主评分材料 |
 | 合成数据是否进入评估 | 否。合成数据只用于训练补覆盖和 monitor 诊断 |
 | GT 是否完全由模型生成 | 否。中间模型只用于预标注草稿，最终需要人工核对 |
-| 是否把最终评估集喂回训练 | 否。训练数据构建保留 denylist 和 overlap 清理，最终提交模型固定后再用 603 clean set 重跑 |
+| 是否把最终评估集喂回训练 | 否。训练数据构建保留 denylist 和 overlap 清理，最终提交模型固定后在 603 条 clean set 上评估 |
 | 结果是否可复查 | 可以。仓库保留评估脚本、逐样本结果、汇总统计和危险输出统计 |
 | 权重是否公开 | 是。模型权重托管在 Hugging Face Model |
 

@@ -1,4 +1,4 @@
-# NuosuBburma OCR
+# 规范彝文 OCR / NuosuBburma OCR
 
 <p align="center">
   <a href="https://huggingface.co/nanxidajun/NuosuBburma-OCR"><img alt="HF Model" src="https://img.shields.io/badge/HF_Model-NuosuBburma--OCR-f7c948"></a>
@@ -7,15 +7,15 @@
   <img alt="Fine tuning" src="https://img.shields.io/badge/Fine_tuning-LoRA-8a5cf6">
 </p>
 
-`NuosuBburma OCR` 是一个基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 微调的规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）OCR 项目。
+`规范彝文 OCR / NuosuBburma OCR` 是一个基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 微调的低资源 OCR 项目，面向规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）真实资料数字化。
 
-这个项目是从几乎没有规范彝文 OCR 数据的情况下做起来的。最早的入口是旧书《勒俄特依》的真实裁切行和人工核对；后来逐步补上切图、预标注、LoRA 微调、真实评估、页面文本合并和注音后处理。现在从整页/PDF 到行图，再到 OCR 和页面文本整理，链路已经跑通。
+这个项目是从几乎没有规范彝文 OCR 数据的情况下做起来的。最早的入口是旧书《勒俄特依》的真实裁切行和人工核对；接着把切图、预标注、LoRA 微调、真实评估、页面文本合并和注音后处理一项项接起来。现在从整页/PDF 到行图，再到 OCR 和页面文本整理，链路已经跑通。
 
 目标很朴素：把旧书扫描、教材页面、彝汉混排、少量手写和页面照片中的规范彝文，转成可复制、可检索、可校对、可继续用于教学、注音和语料建设的 Unicode 文本。
 
 [Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图 Pipeline](crop_pipeline/README.md) · [后处理工具](postprocess/README.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
 
-![NuosuBburma OCR workflow](docs/figures/ocr_workflow_photo.svg)
+![规范彝文 OCR workflow](docs/figures/ocr_workflow_photo.svg)
 
 ## 项目概览
 
@@ -59,7 +59,7 @@
 
 ## 为什么做这个
 
-规范彝文已经形成稳定字符体系，但大量资料仍停留在图片、扫描件和纸质书稿中。现有通用 OCR 基本不能直接识别规范彝文，公开可复用的数据集、模型和评估基准也很少。这个项目的起点不是拿现成数据微调，而是在几乎没有可用 OCR 数据的情况下，从真实书页、裁切行和人工校对开始建立训练与评估入口。
+规范彝文已经形成稳定字符体系，但大量资料仍停留在图片、扫描件和纸质书稿中。现有通用 OCR 基本不能直接识别规范彝文，公开可复用的数据集、模型和评估基准也很少。这个项目从几乎没有可用 OCR 数据的状态起步，先从真实书页、裁切行和人工校对建立训练与评估入口。
 
 低资源文字 OCR 很快会遇到几个问题：真实资料难整理，标注成本高，字符覆盖不均。为了补齐低频字、形近字和旧印刷视觉变化，又必须谨慎使用合成数据。合成数据比例和形态稍有偏差，就可能在训练调优中带来混排、符号、GT 外 Latin 尾巴、长输出等风险。本项目把这些训练风险纳入监控和评估，服务于后续校对、检字、注音和语料建设。
 
@@ -85,7 +85,7 @@
 
 ![Training branch strategy](docs/figures/training_branch.svg)
 
-最终模型不是靠“多加数据”堆出来的。低资源文字必须用合成样本补覆盖，但合成样本一旦失衡，就可能把模型推向错误的输出习惯。中间多次实验显示，版式、脚注、结尾格式一类样本会修局部问题，也可能重新打开 GT 外 Latin 尾巴、公式化输出或长输出风险。最终选择的分支使用受控重渲染扩大视觉分布，同时限制拉丁字母、脚注和近似多行区域这类高风险通道。
+最终模型没有靠“多加数据”堆出来。低资源文字必须用合成样本补覆盖，但合成样本一旦失衡，就可能把模型推向错误的输出习惯。中间多次实验显示，版式、脚注、结尾格式一类样本会修局部问题，也可能重新打开 GT 外 Latin 尾巴、公式化输出或长输出风险。最终选择的分支使用受控重渲染扩大视觉分布，同时限制拉丁字母、脚注和近似多行区域这类高风险通道。
 
 关键训练信息：
 
@@ -165,7 +165,7 @@ python demo/infer_single_image.py \
 
 ### 实用工作流：切图、合并、注音
 
-真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、页面照片或拍照图。因此仓库把流程拆成两层：`crop_pipeline/` 负责把页面切成可复核行图，`postprocess/` 负责把行 OCR 结果汇总回页面文本，默认保留切行换行，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
+真实使用时，输入经常是 PDF、整页扫描件、页面照片或拍照图，不会天然就是干净单行。因此仓库把流程拆成两层：`crop_pipeline/` 负责把页面切成可复核行图，`postprocess/` 负责把行 OCR 结果汇总回页面文本，默认保留切行换行，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
 
 同一张页面照片可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，切图示例见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
 

@@ -1,6 +1,6 @@
 # 切图 Pipeline
 
-本目录是 `NuosuBburma OCR` 的整页/页面切图入口。用户只需要调用 `run.py`，其余脚本是内部步骤。
+本目录是 `规范彝文 OCR / NuosuBburma OCR` 的整页/页面切图入口。用户只需要调用 `run.py`，其余脚本是内部步骤。
 
 支持输入：
 

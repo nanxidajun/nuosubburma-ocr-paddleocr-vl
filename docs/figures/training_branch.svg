@@ -17,7 +17,7 @@
   </defs>
   <rect class="bg" width="1120" height="640"/>
   <text class="title" x="40" y="48">三阶段训练路线：保留主干，剪掉漂移分支</text>
-  <text class="sub" x="40" y="74">调优重点不是堆更多样本，而是判断哪些数据分支能继承能力，哪些会打开错误输出通道。</text>
+  <text class="sub" x="40" y="74">调优重点放在数据分布判断：哪些分支能继承能力，哪些会打开错误输出通道。</text>
 
   <circle class="dot" cx="92" cy="138" r="10"/>
   <rect class="main" x="130" y="104" width="430" height="96"/>
@@ -37,7 +37,7 @@
   <rect class="main" x="130" y="364" width="430" height="104"/>
   <text class="stage" x="156" y="392">第三阶段</text>
   <text class="head" x="156" y="420">reviewed 真实集横向选择</text>
-  <text class="body" x="156" y="444">不只看单项 NED，同时检查 LaTeX、ASCII、替换符和长输出。</text>
+  <text class="body" x="156" y="444">同时看整体 NED、LaTeX、ASCII、替换符和长输出。</text>
 
   <path class="line" d="M 92 412 V 512"/>
   <circle class="dot" cx="92" cy="528" r="10"/>
