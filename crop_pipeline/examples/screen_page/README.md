@@ -18,6 +18,36 @@
 
 人工 GT：[`screen_page_gt.txt`](screen_page_gt.txt)
 
+## 切图结果预览
+
+下面两张图是直接用本目录样例图跑 `crop_pipeline/run.py` 得到的结果，不是示意图。
+
+检测框预览：
+
+<img src="preview/01_detected_boxes.png" alt="detected boxes" width="420">
+
+切好的行图拼接预览：
+
+<img src="preview/02_cut_sheet.png" alt="cut sheet" width="760">
+
+这次切图生成了 `27` 个汇总文件，其中 `25` 个进入 `01_line_ocr_ready/`，校验结果为 `ok: true`。
+
+可查看文件：
+
+- 切图索引：[`preview/crop_index.csv`](preview/crop_index.csv)
+- 切图校验：[`preview/crop_pipeline_validation.json`](preview/crop_pipeline_validation.json)
+
+## 合并与注音结果预览
+
+为了展示“多行结果合并为一段”的效果，这里用人工 GT 模拟逐行 OCR 全对时的 `line_ocr_result.jsonl`：
+
+- 逐行 GT 模拟 OCR 结果：[`preview/line_gt_result_sample.jsonl`](preview/line_gt_result_sample.jsonl)
+- 合并成一段后的 JSONL：[`preview/merged_gt_one_paragraph.jsonl`](preview/merged_gt_one_paragraph.jsonl)
+- 合并成一段后的 TXT：[`preview/merged_gt_text/screen_page_with_gt.txt`](preview/merged_gt_text/screen_page_with_gt.txt)
+- 加注音后的 JSONL：[`preview/merged_gt_pronounced.jsonl`](preview/merged_gt_pronounced.jsonl)
+
+实际使用时，`line_gt_result_sample.jsonl` 这一步会替换成模型产生的 `line_ocr_result.jsonl`。
+
 ## 1. 切图
 
 ```bash
