@@ -13,7 +13,7 @@
 
 项目从旧书《勒俄特依》的真实裁切行开始，逐步扩展到新旧印刷、彝汉混排、少量手写、屏幕图和整页/区域输入。目标很直接：把图片里的规范彝文转成可复制、可检索、可校对、可继续用于教学和语料建设的 Unicode 文本。
 
-[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图流程](docs/CROP_PIPELINE.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
+[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [HF 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [切图 Pipeline](crop_pipeline/README.md) · [文档目录](docs/README.md) · [本地 Demo](demo/README.md)
 
 ## 项目概览
 
@@ -174,12 +174,14 @@ python demo/infer_single_image.py \
 <image>OCR:
 ```
 
-### 屏幕图示例：整块识别或先切图
+### 实用工作流：切图、合并、注音
 
-同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。
+真实使用时，输入往往不是已经裁好的单行，而是 PDF、整页扫描件、屏幕截图或拍照图。因此仓库单独提供了 `crop_pipeline/` 和 `postprocess/`：可以先把页面切成可复核行图，再识别行图，最后合并回一段页面文本，并给规范彝文结果加注音。这是面向校对、教学、检字和语料整理的实用入口。
+
+同一张屏幕页可以有两种用法。文字区域比较干净、只想快速得到一段结果时，可以直接整块识别；如果页面较长、多行较多，建议先切图，再对行图做 OCR。下面使用的是一张带人工 GT 的样例图，完整链路见 [`crop_pipeline/examples/screen_page/`](crop_pipeline/examples/screen_page/)。
 
 <p>
-  <img src="demo/sample_images/screen_page.jpg" alt="screen page sample" width="320">
+  <img src="crop_pipeline/examples/screen_page/screen_page_with_gt.jpg" alt="screen page sample with GT" width="320">
 </p>
 
 方式 A：整块 / 区域直接识别。
@@ -187,18 +189,27 @@ python demo/infer_single_image.py \
 ```bash
 python demo/infer_single_image.py \
   --model models/NuosuBburma-OCR \
-  --image demo/sample_images/screen_page.jpg
+  --image crop_pipeline/examples/screen_page/screen_page_with_gt.jpg
 ```
 
 方式 B：先切图，再识别行图。
 
 ```bash
 mkdir -p outputs/screen_page_input
-cp demo/sample_images/screen_page.jpg outputs/screen_page_input/
+cp crop_pipeline/examples/screen_page/screen_page_with_gt.jpg outputs/screen_page_input/
 
-python3 scripts/run_book_crop_pipeline.py \
+python3 crop_pipeline/run.py \
   --input outputs/screen_page_input \
   --output-root outputs/screen_page_crop
+```
+
+PDF 也可以直接作为输入：
+
+```bash
+python3 crop_pipeline/run.py \
+  --input book.pdf \
+  --output-root outputs/book_crop \
+  --max-pages 20
 ```
 
 切图结果会生成：
@@ -208,29 +219,40 @@ outputs/screen_page_crop/
   03_cut_before_after_review/                 # 看切图是否合理
   04_successful_crop_summary/01_line_ocr_ready/ # 可进入 OCR 的行图
   04_successful_crop_summary/index.csv        # 行图顺序和来源索引
+  crop_pipeline_validation.json               # 切图索引校验结果
 ```
 
-然后从 `01_line_ocr_ready/` 中选择行图做 OCR：
+然后可以批量识别 `01_line_ocr_ready/` 中的行图：
 
 ```bash
-python demo/infer_single_image.py \
+python crop_pipeline/infer_line_crops.py \
   --model models/NuosuBburma-OCR \
-  --image "outputs/screen_page_crop/04_successful_crop_summary/01_line_ocr_ready/..."
+  --index outputs/screen_page_crop/04_successful_crop_summary/index.csv \
+  --summary-root outputs/screen_page_crop/04_successful_crop_summary \
+  --output outputs/screen_page_crop/line_ocr_result.jsonl
 ```
 
-如果已经批量识别了多张切行图，可以用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本。完整说明见 [切图流程](docs/CROP_PIPELINE.md) 和 [后处理工具](postprocess/README.md)。
+再用 `postprocess/merge_line_ocr_results.py` 按 `index.csv` 合并回页面文本，用 `postprocess/add_nuosu_pronunciation.py` 给识别结果添加注音。完整说明见 [切图 Pipeline](crop_pipeline/README.md)、[后处理工具](postprocess/README.md) 和 [端到端屏幕页示例](crop_pipeline/examples/screen_page/)。
+
+相关脚本：
+
+- `crop_pipeline/run.py`：输入图片文件夹、单张图片或 PDF，输出切图复核目录和行图索引。
+- `crop_pipeline/infer_line_crops.py`：批量识别切图 pipeline 生成的行图。
+- `postprocess/merge_line_ocr_results.py`：把切行 OCR 结果按顺序合并回页面文本。
+- `postprocess/add_nuosu_pronunciation.py`：给规范彝文 OCR 输出添加罗马注音。
 
 ## 仓库结构
 
 ```text
 configs/                         训练/导出配置与训练数据 manifest 快照
 NuosuBburma_OCR_Evaluation_Set/  评估集入口说明，完整数据托管在 Hugging Face Dataset
+crop_pipeline/                   整页/PDF 切图、切行 OCR、合并页面文本的实用工作流
 demo/                            单图推理 demo 与样例图
 docs/                            项目背景、评估集、模型训练和提交说明
 evaluation/                      603 条真实评估集结果与统计表
 model/                           模型托管入口、下载命令和使用边界说明
 postprocess/                     切行 OCR 结果合并、规范彝文注音工具
-scripts/                         训练、评估、统计和切图工具
+scripts/                         训练、评估和统计工具
 ```
 
 ## 文档
@@ -240,7 +262,8 @@ scripts/                         训练、评估、统计和切图工具
 - [项目背景与任务定义](docs/PROJECT_BACKGROUND.md)
 - [评估集说明](docs/EVALUATION_DATASET.md)
 - [模型与训练说明](docs/MODEL_AND_TRAINING.md)
-- [书页切图流程](docs/CROP_PIPELINE.md)
+- [切图 Pipeline](crop_pipeline/README.md)
+- [书页切图流程说明](docs/CROP_PIPELINE.md)
 - [后处理工具](postprocess/README.md)
 - [模型入口](model/README.md)
 - [评估集入口](NuosuBburma_OCR_Evaluation_Set/README.md)

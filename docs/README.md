@@ -16,5 +16,6 @@
 - 评估集入口：[`../NuosuBburma_OCR_Evaluation_Set/README.md`](../NuosuBburma_OCR_Evaluation_Set/README.md)
 - 评估集说明：[`EVALUATION_DATASET.md`](EVALUATION_DATASET.md)
 - 评估结果：[`../evaluation/`](../evaluation/)
-- 切图流程：[`CROP_PIPELINE.md`](CROP_PIPELINE.md)
+- 切图 Pipeline：[`../crop_pipeline/README.md`](../crop_pipeline/README.md)
+- 切图详细说明：[`CROP_PIPELINE.md`](CROP_PIPELINE.md)
 - 本地 Demo：[`../demo/README.md`](../demo/README.md)

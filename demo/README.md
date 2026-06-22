@@ -26,7 +26,7 @@ python demo/infer_single_image.py \
 - `sample_images/screen_page.jpg`
 - `sample_images/handwriting_region.jpg`
 
-整页扫描件不建议直接当作普通单行 demo 输入。可以先运行切图流程，再从 `04_successful_crop_summary/01_line_ocr_ready/` 中选择行图进入本地推理。说明见 [`../docs/CROP_PIPELINE.md`](../docs/CROP_PIPELINE.md)。
+整页、PDF、切图、切行后合并页面文本的完整流程不放在本目录，统一放在 [`../crop_pipeline/`](../crop_pipeline/)。
 
 模型权重：
 

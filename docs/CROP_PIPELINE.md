@@ -15,7 +15,7 @@
 在项目根目录执行：
 
 ```bash
-python3 scripts/run_book_crop_pipeline.py \
+python3 crop_pipeline/run.py \
   --input "/path/to/page_images" \
   --output-root "/path/to/output_root"
 ```
@@ -23,7 +23,7 @@ python3 scripts/run_book_crop_pipeline.py \
 如果新书页文件名不包含 `目录`、`混排`、`封面` 这类线索，建议先使用页型清单：
 
 ```bash
-python3 scripts/run_book_crop_pipeline.py \
+python3 crop_pipeline/run.py \
   --input "/path/to/page_images" \
   --output-root "/path/to/output_root" \
   --page-manifest "/path/to/page_manifest.csv"
@@ -37,6 +37,7 @@ output_root/
   02_v4_secondary_split/
   03_cut_before_after_review/
   04_successful_crop_summary/
+  crop_pipeline_validation.json
   page_manifest_template.csv
   run_summary.md
   README.md
@@ -48,6 +49,7 @@ output_root/
 |---|---|
 | `README.md` | 本次输出目录说明 |
 | `run_summary.md` | 本次运行数量摘要，快速看页型、v3 标签、v4 决策和最终 bucket |
+| `crop_pipeline_validation.json` | 切图汇总索引校验结果 |
 | `page_manifest_template.csv` | 自动按输入图片生成的页型清单模板，可复制修改后作为下一次 `--page-manifest` 输入 |
 
 ## 推荐查看顺序
@@ -108,6 +110,24 @@ python demo/infer_single_image.py \
 ```text
 .png / .jpg / .jpeg / .tif / .tiff / .webp
 ```
+
+也支持单个 PDF：
+
+```bash
+python3 crop_pipeline/run.py \
+  --input "/path/to/book.pdf" \
+  --output-root "/path/to/output_root" \
+  --pdf-dpi 220 \
+  --max-pages 20
+```
+
+PDF 会先渲染到：
+
+```text
+output_root/00_input_pages/
+```
+
+`--max-pages` 默认是 `20`，用于防止误把整本大 PDF 一次性渲染满磁盘；如果需要渲染全部页面，设置 `--max-pages 0`。PDF 输入依赖 Poppler 的 `pdftoppm`。
 
 当前 v3 支持两种页型来源：
 
@@ -188,7 +208,7 @@ page_005.png,cover_or_low_quality,
 
 为了保证流程能复用，当前已经固定：
 
-1. 单一入口脚本：`scripts/run_book_crop_pipeline.py`
+1. 单一入口脚本：`crop_pipeline/run.py`
 2. 固定四级输出目录。
 3. 每一步都有 CSV 报告。
 4. 给人看的目录和给训练的数据目录分开。
@@ -200,7 +220,7 @@ page_005.png,cover_or_low_quality,
 ## 换一本书时的最小流程
 
 1. 把 PDF 转成整页图片，放入一个新目录。
-2. 先不写清单，跑一遍 `scripts/run_book_crop_pipeline.py`。
+2. 先不写清单，跑一遍 `crop_pipeline/run.py`。
 3. 打开 `output_root/page_manifest_template.csv`，只修正明显错的页型。
 4. 用修正后的 CSV 加 `--page-manifest` 重跑一遍。
 5. 只看 `03_cut_before_after_review/`，确认正文行、大块二切、region 保留和忽略项是否合理。

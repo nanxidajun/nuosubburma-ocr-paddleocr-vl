@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import shutil
 import subprocess
 import sys
 from collections import Counter
@@ -19,6 +20,7 @@ from pathlib import Path
 
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".webp"}
+PDF_EXTS = {".pdf"}
 
 
 def run_step(cmd: list[str]) -> None:
@@ -28,6 +30,67 @@ def run_step(cmd: list[str]) -> None:
 
 def image_files(input_dir: Path) -> list[Path]:
     return sorted(path for path in input_dir.iterdir() if path.is_file() and path.suffix.lower() in IMAGE_EXTS)
+
+
+def safe_stem(path: Path) -> str:
+    cleaned = "".join(ch if ch.isalnum() or ch in {"-", "_"} else "_" for ch in path.stem)
+    return cleaned.strip("_") or "input"
+
+
+def copy_single_image(src: Path, pages_dir: Path) -> Path:
+    pages_dir.mkdir(parents=True, exist_ok=True)
+    dest = pages_dir / f"{safe_stem(src)}_p001{src.suffix.lower()}"
+    shutil.copy2(src, dest)
+    return dest
+
+
+def render_pdf_to_pages(pdf_path: Path, pages_dir: Path, *, dpi: int, max_pages: int) -> list[Path]:
+    pages_dir.mkdir(parents=True, exist_ok=True)
+    prefix = pages_dir / f"{safe_stem(pdf_path)}_page"
+    cmd = [
+        "pdftoppm",
+        "-png",
+        "-r",
+        str(dpi),
+        "-f",
+        "1",
+    ]
+    if max_pages > 0:
+        cmd.extend(["-l", str(max_pages)])
+    cmd.extend([str(pdf_path), str(prefix)])
+
+    try:
+        subprocess.run(cmd, check=True)
+    except FileNotFoundError as exc:
+        raise SystemExit("PDF input requires Poppler `pdftoppm`. Install poppler first.") from exc
+
+    pages = sorted(pages_dir.glob(f"{prefix.name}-*.png"))
+    renamed: list[Path] = []
+    for idx, page in enumerate(pages, start=1):
+        dest = pages_dir / f"{safe_stem(pdf_path)}_p{idx:03d}.png"
+        page.rename(dest)
+        renamed.append(dest)
+    if not renamed:
+        raise SystemExit(f"No pages were rendered from PDF: {pdf_path}")
+    return renamed
+
+
+def prepare_input_pages(input_path: Path, output_root: Path, *, pdf_dpi: int, max_pages: int) -> Path:
+    if input_path.is_dir():
+        return input_path
+    if not input_path.exists():
+        raise SystemExit(f"Input does not exist: {input_path}")
+
+    pages_dir = output_root / "00_input_pages"
+    if input_path.suffix.lower() in IMAGE_EXTS:
+        copy_single_image(input_path, pages_dir)
+        return pages_dir
+    if input_path.suffix.lower() in PDF_EXTS:
+        render_pdf_to_pages(input_path, pages_dir, dpi=pdf_dpi, max_pages=max_pages)
+        return pages_dir
+
+    allowed = ", ".join(sorted(IMAGE_EXTS | PDF_EXTS))
+    raise SystemExit(f"Unsupported input type `{input_path.suffix}`. Expected a folder or one of: {allowed}")
 
 
 def filename_page_hint(path: Path) -> str:
@@ -126,7 +189,7 @@ def write_run_summary(input_dir: Path, output_root: Path, page_manifest: Path | 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", type=Path, required=True, help="Folder containing page images")
+    parser.add_argument("--input", type=Path, required=True, help="Folder of page images, a single image, or a PDF")
     parser.add_argument("--output-root", type=Path, required=True, help="Folder for all pipeline outputs")
     parser.add_argument(
         "--page-manifest",
@@ -138,6 +201,13 @@ def main() -> None:
         default=sys.executable,
         help="Python executable. Defaults to the interpreter running this script.",
     )
+    parser.add_argument("--pdf-dpi", type=int, default=220, help="PDF render DPI when --input is a PDF")
+    parser.add_argument(
+        "--max-pages",
+        type=int,
+        default=20,
+        help="Maximum PDF pages to render. Use 0 to render all pages.",
+    )
     args = parser.parse_args()
 
     script_dir = Path(__file__).resolve().parent
@@ -146,15 +216,17 @@ def main() -> None:
     v4_root = output_root / "02_v4_secondary_split"
     visual_root = output_root / "03_cut_before_after_review"
     summary_root = output_root / "04_successful_crop_summary"
+    validation_report = output_root / "crop_pipeline_validation.json"
 
     output_root.mkdir(parents=True, exist_ok=True)
-    write_manifest_template(args.input, output_root)
+    input_pages = prepare_input_pages(args.input, output_root, pdf_dpi=args.pdf_dpi, max_pages=args.max_pages)
+    write_manifest_template(input_pages, output_root)
 
     v3_cmd = [
         args.python,
         str(script_dir / "line_segmentation_probe_v3.py"),
         "--input",
-        str(args.input),
+        str(input_pages),
         "--output",
         str(v3_root),
     ]
@@ -167,7 +239,7 @@ def main() -> None:
             args.python,
             str(script_dir / "line_segmentation_probe_v4.py"),
             "--input",
-            str(args.input),
+            str(input_pages),
             "--v3-summary",
             str(v3_root / "reports" / "hybrid_box_summary.csv"),
             "--output",
@@ -179,7 +251,7 @@ def main() -> None:
             args.python,
             str(script_dir / "build_crop_visual_review.py"),
             "--input",
-            str(args.input),
+            str(input_pages),
             "--v3-root",
             str(v3_root),
             "--v4-root",
@@ -200,10 +272,24 @@ def main() -> None:
             str(summary_root),
         ]
     )
+    run_step(
+        [
+            args.python,
+            str(script_dir / "validate_outputs.py"),
+            "--index",
+            str(summary_root / "index.csv"),
+            "--summary-root",
+            str(summary_root),
+            "--report",
+            str(validation_report),
+        ]
+    )
 
     with (output_root / "README.md").open("w", encoding="utf-8") as f:
         f.write("# Book Crop Pipeline Output\n\n")
         f.write(f"Input: `{args.input}`\n\n")
+        if input_pages != args.input:
+            f.write(f"Rendered/copied page images: `{input_pages}`\n\n")
         if args.page_manifest:
             f.write(f"Page manifest: `{args.page_manifest}`\n\n")
         else:
@@ -215,12 +301,13 @@ def main() -> None:
         f.write("| `02_v4_secondary_split/` | v4 local secondary splitting for v3 region-fallback boxes |\n")
         f.write("| `03_cut_before_after_review/` | Minimal before/after visual review, one folder per page |\n")
         f.write("| `04_successful_crop_summary/` | OCR/annotation-oriented crop summary with index.csv |\n\n")
+        f.write(f"Validation report: `{validation_report.name}`\n\n")
         f.write("Human review should start from `03_cut_before_after_review/`.\n")
         f.write("Training/annotation should start from `04_successful_crop_summary/`.\n")
         f.write("Run-level counts are in `run_summary.md`.\n")
         f.write("For a new book, copy/edit `page_manifest_template.csv` and rerun with `--page-manifest`.\n")
 
-    write_run_summary(args.input, output_root, args.page_manifest)
+    write_run_summary(input_pages, output_root, args.page_manifest)
 
     print(f"\nDone. Pipeline outputs are in: {output_root}")
 
