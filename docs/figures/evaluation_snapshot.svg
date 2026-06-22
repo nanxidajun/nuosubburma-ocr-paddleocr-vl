@@ -57,7 +57,7 @@
   <text class="label" x="604" y="361">新印刷</text>
   <rect class="bar2" x="752" y="342" width="64" height="24" rx="6"/>
   <text class="value" x="829" y="361">0.0291</text>
-  <text class="label" x="604" y="403">屏幕/场景</text>
+  <text class="label" x="604" y="403">照片/场景</text>
   <rect class="bar3" x="752" y="384" width="78" height="24" rx="6"/>
   <text class="value" x="843" y="403">0.0355</text>
   <text class="label" x="604" y="445">手写</text>

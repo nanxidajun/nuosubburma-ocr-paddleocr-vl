@@ -20,7 +20,7 @@
 <rect x="255" y="236" width="88.1" height="32" rx="7" fill="#7c3aed" opacity="0.88"/>
 <text class="value" x="355.1" y="258">0.0247</text>
 <text class="note" x="820" y="258">n=84</text>
-<text class="label" x="28" y="306">屏幕页面</text>
+<text class="label" x="28" y="306">页面照片</text>
 <rect x="255" y="284" width="104.6" height="32" rx="7" fill="#dc2626" opacity="0.88"/>
 <text class="value" x="371.6" y="306">0.0293</text>
 <text class="note" x="820" y="306">n=3</text>

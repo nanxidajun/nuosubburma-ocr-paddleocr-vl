@@ -12,7 +12,7 @@
 <rect x="245" y="140" width="107.5" height="32" rx="7" fill="#16a34a" opacity="0.88"/>
 <text class="value" x="364.5" y="162">0.0290</text>
 <text class="note" x="830" y="162">n=309</text>
-<text class="label" x="28" y="210">screen_or_scene</text>
+<text class="label" x="28" y="210">photo_or_scene</text>
 <rect x="245" y="188" width="131.3" height="32" rx="7" fill="#f97316" opacity="0.88"/>
 <text class="value" x="388.3" y="210">0.0355</text>
 <text class="note" x="830" y="210">n=6</text>

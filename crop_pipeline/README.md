@@ -44,7 +44,7 @@ outputs/crop_pipeline_demo/
 - `03_cut_before_after_review/`：检查切图是否合理。
 - `04_successful_crop_summary/01_line_ocr_ready/`：可送入 OCR 的行图。
 
-## 屏幕图快速示例
+## 页面照片快速示例
 
 ```bash
 mkdir -p outputs/screen_page_input

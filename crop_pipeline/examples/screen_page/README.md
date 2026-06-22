@@ -1,9 +1,9 @@
-# 切图示例：屏幕页
+# 切图示例：页面照片
 
 这个示例只展示一键切图 pipeline：
 
 ```text
-屏幕页图片
+页面照片
 -> crop_pipeline/run.py 切图
 -> 生成可送入 OCR 的行图
 ```
@@ -12,9 +12,9 @@
 
 ## 样例图
 
-这是一张真实屏幕页截图，带人工 GT，用来展示从整页图切成行图的流程。
+这是一张真实页面照片，带人工 GT，用来展示从整页图切成行图的流程。
 
-![屏幕页样例](screen_page_with_gt.jpg)
+![页面照片样例](screen_page_with_gt.jpg)
 
 人工 GT：[`screen_page_gt.txt`](screen_page_gt.txt)
 

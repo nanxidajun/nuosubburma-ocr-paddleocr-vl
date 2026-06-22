@@ -22,13 +22,13 @@
     </style>
   </defs>
   <rect class="bg" width="1120" height="360"/>
-  <text class="title" x="40" y="48">从真实页面到可复查文本</text>
+  <text class="title" x="40" y="48">从真实资料到可复查文本</text>
   <text class="sub" x="40" y="74">项目交付的不是单点模型，而是一条可裁切、可识别、可合并、可校对的 OCR 链路。</text>
 
   <rect class="card" x="40" y="116" width="188" height="120"/>
   <text class="label" x="64" y="152">PDF / 图片</text>
   <text class="body" x="64" y="180">旧书扫描、教材页面</text>
-  <text class="body" x="64" y="204">手写稿、屏幕截图</text>
+  <text class="body" x="64" y="204">手写稿、实拍照片</text>
   <rect class="chip" x="64" y="255" width="108" height="26"/>
   <text class="tag" x="76" y="273">真实来源输入</text>
 

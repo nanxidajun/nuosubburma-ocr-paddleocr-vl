@@ -23,7 +23,7 @@
   <text class="small" x="238" y="158">新印刷 PDF 309</text>
   <text class="small" x="660" y="158">旧印刷/旧书扫描 235</text>
   <text class="outside" x="960" y="198">手写 53</text>
-  <text class="outside" x="1032" y="198">屏幕/场景 6</text>
+  <text class="outside" x="1032" y="198">照片/场景 6</text>
 
   <text class="label" x="72" y="270">输入粒度</text>
   <rect class="c1" x="220" y="246" width="700" height="34" rx="8"/>
