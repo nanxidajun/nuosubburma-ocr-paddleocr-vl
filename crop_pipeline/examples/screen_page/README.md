@@ -10,17 +10,13 @@
 -> postprocess/add_nuosu_pronunciation.py 添加注音
 ```
 
-样例图：
+## 样例图
 
-```text
-crop_pipeline/examples/screen_page/screen_page_with_gt.jpg
-```
+这是一张真实屏幕页截图，带人工 GT，用来展示从整页图到可校对文本的完整流程。
 
-人工 GT：
+![屏幕页样例](screen_page_with_gt.jpg)
 
-```text
-crop_pipeline/examples/screen_page/screen_page_gt.txt
-```
+人工 GT：[`screen_page_gt.txt`](screen_page_gt.txt)
 
 ## 1. 切图
 
