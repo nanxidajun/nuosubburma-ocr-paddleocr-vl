@@ -23,6 +23,9 @@ https://huggingface.co/nanxidajun/NuosuBburma-OCR
 ## 下载方式
 
 ```bash
+# 国内网络较慢时，取消下一行注释使用 HF 镜像：
+# export HF_ENDPOINT=https://hf-mirror.com
+
 hf download nanxidajun/NuosuBburma-OCR \
   --repo-type model \
   --local-dir models/NuosuBburma-OCR

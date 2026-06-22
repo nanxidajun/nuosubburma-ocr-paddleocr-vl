@@ -71,6 +71,9 @@ evaluation/raw/submission_model_result.jsonl
 下载模型：
 
 ```bash
+# 国内网络较慢时，取消下一行注释使用 HF 镜像：
+# export HF_ENDPOINT=https://hf-mirror.com
+
 hf download nanxidajun/NuosuBburma-OCR \
   --repo-type model \
   --local-dir models/NuosuBburma-OCR
@@ -79,6 +82,9 @@ hf download nanxidajun/NuosuBburma-OCR \
 下载评估集：
 
 ```bash
+# 国内网络较慢时，取消下一行注释使用 HF 镜像：
+# export HF_ENDPOINT=https://hf-mirror.com
+
 hf download nanxidajun/NuosuBburma-OCR-Evaluation-Set \
   --repo-type dataset \
   --local-dir datasets/NuosuBburma_OCR_Evaluation_Set

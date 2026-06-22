@@ -25,6 +25,9 @@ HF Dataset 当前包含复跑评估需要的最小文件：
 复跑评估时，可以下载到本地 `datasets/` 目录：
 
 ```bash
+# 国内网络较慢时，取消下一行注释使用 HF 镜像：
+# export HF_ENDPOINT=https://hf-mirror.com
+
 hf download nanxidajun/NuosuBburma-OCR-Evaluation-Set \
   --repo-type dataset \
   --local-dir datasets/NuosuBburma_OCR_Evaluation_Set
