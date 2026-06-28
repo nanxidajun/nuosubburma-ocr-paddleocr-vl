@@ -9,9 +9,9 @@
 
 本项目是面向 **PaddleOCR 全球衍生模型挑战赛** 的规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）OCR 衍生模型。赛事鼓励开发者基于 PaddleOCR-VL 选择长尾 OCR 场景、自定义任务方向并开源可复现成果；本项目选择的任务是 **自然场景中的规范彝文 OCR**。
 
-这里的“自然场景”包括旧书扫描、教材页面、工具书页面、手机拍照、屏幕图、实拍标牌、规范手写和彝汉混排材料。规范彝文已有稳定书写体系，也有大量真实资料，但许多内容仍停留在图片和纸页里，不能搜索，不能复制，也很难进入后续语料建设。这正对应本次比赛希望推动的方向：让 PaddleOCR-VL 从通用文档理解能力，走向更细、更稀缺、更真实的 OCR 应用场景。
+这里的“自然场景”包括旧书扫描、教材工具书页面、场景实拍、屏幕实拍、手写照片等等。规范彝文已有稳定书写体系，也有大量真实资料，但作为低资源少数民族语言，许多内容仍停留在图片和纸页里，不能搜索，不能复制，也很难进入后续NLP语料建设。
 
-因此，项目把重心放在一条从真实资料到可用文本的链路上：先把整页、PDF、手机拍照和拍屏处理成可识别的 OCR 单元，再完成 OCR、页面文本合并、异常审计和按需注音。最终目标是产出可复制、可检索、可校对、可进入语料库的 Unicode 文本，而不止是在几张样例图上“看起来会读”。这也是本项目作为衍生模型的赛事定位：补 PaddleOCR-VL 在低资源民族文字场景中的真实评估、训练数据和复现入口。
+因此，项目把重心放在一条从真实复杂资料到可用文本的链路上：先把整页图片处理成可识别的 OCR 单元，再完成 OCR、合并输出文本和按需注音。最终目标是产出可检索、可校对、可进入语料库的 Unicode 文本，而不止是在几张样例图上“看起来会读”。这也是本项目作为衍生模型的赛事定位：补充 PaddleOCR-VL 在低资源民族文字场景中的真实评估、训练数据和复现入口。
 
 [Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [Hugging Face Space Demo](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [提交说明](docs/COMPETITION_SUBMISSION.md) · [评估集说明](docs/EVALUATION_DATASET.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
