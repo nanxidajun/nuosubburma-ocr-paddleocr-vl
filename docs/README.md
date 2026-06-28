@@ -1,25 +1,22 @@
-# 文档目录
+# 文档入口
 
-本目录存放项目提交需要的中文说明文档。建议按以下顺序阅读：
+文档按 PaddleOCR 全球衍生模型挑战赛的评分项组织。评审若只看一份文件，建议先看 [COMPETITION_SUBMISSION.md](COMPETITION_SUBMISSION.md)；若要复查证据，再按官方六个维度进入专题文档。
 
-| 顺序 | 文档 | 作用 |
-|---:|---|---|
-| 1 | [提交材料总览](COMPETITION_SUBMISSION.md) | 快速查看提交材料、复现入口和核验说明 |
-| 2 | [项目背景与任务定义](PROJECT_BACKGROUND.md) | 说明为什么选择规范彝文 OCR、任务稀缺性和任务复杂度 |
-| 3 | [评估集说明](EVALUATION_DATASET.md) | 说明真实评估集的来源、分布、构建流程、指标和结果解读 |
-| 4 | [评估集质检报告](EVALUATION_QUALITY_REPORT.md) | 对齐评分表说明评估集真实性、标注检查、多样性和难度分布 |
-| 5 | [训练数据构建报告](TRAINING_DATA_CONSTRUCTION_REPORT.md) | 对齐评分表说明训练数据来源、标注、质控和统计 |
-| 6 | [模型与训练说明](MODEL_AND_TRAINING.md) | 说明 LoRA 微调策略、分支选择和最终模型结果 |
-| 7 | [书页切图流程](CROP_PIPELINE.md) | 说明整页扫描件如何切成可复核、可进入 OCR 的行图或区域图 |
+| 评分/核验问题 | 文档 | 内容 |
+|---|---|---|
+| 总体提交与评分映射 | [COMPETITION_SUBMISSION.md](COMPETITION_SUBMISSION.md) | 评委快速核验、官方评分点映射、结果统计、复现入口和边界说明 |
+| 评估集质量 | [EVALUATION_DATASET.md](EVALUATION_DATASET.md) | `603` 条真实主评估集的来源、分布、指标和结果解读 |
+| 标注与质检 | [EVALUATION_QUALITY_REPORT.md](EVALUATION_QUALITY_REPORT.md) | 标注流程、质检、去重、删除归档和训练/评估隔离 |
+| 训练数据科学性 | [TRAINING_DATA_CONSTRUCTION_REPORT.md](TRAINING_DATA_CONSTRUCTION_REPORT.md) | 训练数据来源、真实/合成边界、受控重渲染、质量控制和 manifest |
+| 微调策略与创新 | [MODEL_AND_TRAINING.md](MODEL_AND_TRAINING.md) | 模型设置、训练参数、v5.8-v5.17 分支选择和提交模型结果 |
+| 场景稀缺性 | [PROJECT_BACKGROUND.md](PROJECT_BACKGROUND.md) | 规范彝文 OCR 的低资源场景、应用价值和任务边界 |
+| 任务复杂度 | [页面切割流程说明](PAGE_PROCESSING.md) | 整页、PDF、页面照片的页面切割、阅读顺序和 OCR 单元识别链路 |
 
-相关入口：
+补充复查入口：
 
-- 模型入口：[`../model/README.md`](../model/README.md)
-- 评估集入口：[`../NuosuBburma_OCR_Evaluation_Set/README.md`](../NuosuBburma_OCR_Evaluation_Set/README.md)
-- 评估集说明：[`EVALUATION_DATASET.md`](EVALUATION_DATASET.md)
-- 评估集质检报告：[`EVALUATION_QUALITY_REPORT.md`](EVALUATION_QUALITY_REPORT.md)
-- 训练数据构建报告：[`TRAINING_DATA_CONSTRUCTION_REPORT.md`](TRAINING_DATA_CONSTRUCTION_REPORT.md)
-- 评估结果：[`../evaluation/`](../evaluation/)
-- 切图 Pipeline：[`../crop_pipeline/README.md`](../crop_pipeline/README.md)
-- 切图详细说明：[`CROP_PIPELINE.md`](CROP_PIPELINE.md)
-- 本地 Demo：[`../demo/README.md`](../demo/README.md)
+| 材料 | 入口 |
+|---|---|
+| 模型下载与使用边界 | [../model/README.md](../model/README.md) |
+| 本地 demo | [../demo/README.md](../demo/README.md) |
+| 评估脚本 | [../scripts/README.md](../scripts/README.md) |
+| 提交模型评估结果 | [../evaluation/README.md](../evaluation/README.md) |

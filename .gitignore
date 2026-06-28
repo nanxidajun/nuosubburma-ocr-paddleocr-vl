@@ -29,3 +29,4 @@ datasets/
 # The public model folder is an index only; weights live on Hugging Face.
 /model/*
 !/model/README.md
+!/model/HUGGINGFACE_MODEL_CARD.md

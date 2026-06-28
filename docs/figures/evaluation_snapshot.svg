@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
   <title id="title">NuosuBburma OCR evaluation snapshot</title>
-  <desc id="desc">Evaluation summary on 603 real samples: NED metrics by input granularity and scene plus output safety counts.</desc>
+  <desc id="desc">Historical evaluation summary on 603 real samples: NED metrics by input granularity and scene plus output safety counts.</desc>
   <style>
     text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
     .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
@@ -15,7 +15,7 @@
   <text class="sub" x="40" y="74">主展示只看 NED、分组难度和输出风险；完全匹配率保留在原始结果中，不作为主要判断。</text>
 
   <rect class="card2" x="40" y="104" width="245" height="92"/>
-  <text class="mtitle" x="62" y="134">真实评估样本</text>
+  <text class="mtitle" x="62" y="134">历史评估样本</text>
   <text class="metric" x="62" y="172">603</text>
   <text class="note" x="134" y="171">line / region / page</text>
 

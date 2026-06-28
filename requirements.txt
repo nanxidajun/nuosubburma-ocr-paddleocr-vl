@@ -1,0 +1,48 @@
+# NuosuBburma OCR Python 依赖
+# 用于安装运行本地 demo、评估脚本和页面切割流程所需的 Python 包。
+#
+# 参考环境：
+# - Python 3.11
+# - Linux + CUDA GPU
+# - CUDA runtime 11.8，cuDNN 8.9
+# - PaddlePaddle 3.3.0
+#
+# 最小安装步骤：
+# 1. 创建环境
+#    conda create -n paddleocr-vl python=3.11 -y
+#    conda activate paddleocr-vl
+#    python -m pip install -U pip setuptools wheel
+#
+# 2. 安装 PaddlePaddle GPU 版
+#    python -m pip install paddlepaddle-gpu==3.3.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+#
+#    如果没有 GPU，只做轻量检查，可改装 CPU 版：
+#    python -m pip install paddlepaddle==3.3.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+#
+# 3. 安装本文件依赖
+#    python -m pip install -r requirements.txt
+#
+#    安装后自检：
+#    python -m pip check
+#    python -c "import paddle, importlib.metadata as m; print('paddle', paddle.__version__, paddle.device.get_device()); print('paddleocr', m.version('paddleocr')); print('paddleformers', m.version('paddleformers'))"
+
+# 页面切割依赖。
+paddleocr==3.4.0
+
+# PaddleOCR-VL 模型加载与推理依赖。
+paddleformers==1.1.1
+
+# 图片读取。
+Pillow>=10.0.0,<11.0.0
+
+# 进度条。
+tqdm>=4.66.0,<5.0.0
+
+# 编辑距离与 NED 计算。
+python-Levenshtein>=0.25.0,<1.0.0
+
+# 数值处理。
+numpy>=1.24.0,<3.0.0
+
+# Hugging Face 模型和数据集下载。
+huggingface_hub[cli]>=0.23.0,<2.0.0

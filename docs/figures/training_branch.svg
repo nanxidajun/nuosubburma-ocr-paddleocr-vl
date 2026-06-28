@@ -23,14 +23,14 @@
   <rect class="main" x="130" y="104" width="430" height="96"/>
   <text class="stage" x="156" y="132">第一阶段</text>
   <text class="head" x="156" y="160">真实单书可行性验证</text>
-  <text class="body" x="156" y="184">从《勒俄特依》真实裁切行开始，跑通 GT、LoRA、NED 闭环。</text>
+  <text class="body" x="156" y="184">从《勒俄特依》真实裁切行开始，跑通标注、LoRA、NED 闭环。</text>
 
   <path class="line" d="M 92 152 V 252"/>
   <circle class="dot" cx="92" cy="268" r="10"/>
   <rect class="main" x="130" y="234" width="430" height="104"/>
   <text class="stage" x="156" y="262">第二阶段</text>
   <text class="head" x="156" y="290">真实锚点 + 受控合成覆盖</text>
-  <text class="body" x="156" y="314">补低频字、形近字、旧印刷退化和 region，同时用 monitor 看漂移。</text>
+  <text class="body" x="156" y="314">补低频字、形近字、旧印刷退化和 region，同时用诊断样本看漂移。</text>
 
   <path class="line" d="M 92 282 V 382"/>
   <circle class="dot" cx="92" cy="398" r="10"/>
@@ -43,8 +43,8 @@
   <circle class="dot" cx="92" cy="528" r="10"/>
   <rect class="final" x="130" y="494" width="430" height="104"/>
   <text class="stage" x="156" y="522">最终提交</text>
-  <text class="head" x="156" y="550">v5.16 synth capped rerender</text>
-  <text class="body" x="156" y="574">603 clean set：Avg NED 0.0361，严格风险 0 / 2 / 0 / 0。</text>
+  <text class="head" x="156" y="550">Synth capped rerender</text>
+  <text class="body" x="156" y="574">603 历史结果：Avg NED 0.0361，严格风险 0 / 2 / 0 / 0。</text>
 
   <path class="branch" d="M 560 286 C 620 286 630 140 690 140"/>
   <rect class="drop" x="690" y="102" width="360" height="86"/>
