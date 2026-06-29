@@ -9,7 +9,7 @@
 
 本项目是面向 **PaddleOCR 全球衍生模型挑战赛** 的规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）OCR 项目，基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 构建。
 
-项目目标不是只识别裁好的单行图，而是把旧书扫描、教材工具书页面、手机照片、屏幕拍照、手写拍照样本和彝汉混排资料，转换为可搜索、可校对、可进入语料库的 Unicode 文本。
+项目目标不是只识别裁好的单行图，而是把旧书扫描、教材工具书页面、手机照片、屏幕拍照、手写拍照样本和彝汉混排资料，转换为可搜索、可校对、可进入语料库的 Unicode 文本。OCR 是第一步：这些结构化文本会成为后续规范彝文 NLP 的基础材料，支撑分词、检索、语料建设、注音校对、语言资源整理和低资源模型训练。
 
 [Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [线上演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [提交说明](docs/COMPETITION_SUBMISSION.md) · [评估集说明](docs/EVALUATION_DATASET.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
