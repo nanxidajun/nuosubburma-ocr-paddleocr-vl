@@ -1,37 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="540" viewBox="0 0 1120 540" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
   <title id="title">NuosuBburma OCR evaluation dataset composition</title>
-  <desc id="desc">Latest integrated evaluation dataset composition for the 758 real samples.</desc>
+  <desc id="desc">Composition of the final 758 real-source evaluation samples by visual scene, input granularity, script mix, and difficulty.</desc>
   <style>
     text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-    .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
-    .panel{fill:#fff;stroke:#d9e1de;stroke-width:1.3;rx:14}.label{font-size:16px;font-weight:760;fill:#172026}
-    .note{font-size:13px;fill:#637081}.small{font-size:13px;fill:#172026;font-weight:760}.muted{fill:#eef3f1}.accent{fill:#176b87}.accent2{fill:#12a37f}.accent3{fill:#f0a22e}
+    .bg{fill:#f7f8fb}
+    .ink{fill:#18222d}
+    .muted{fill:#657284}
+    .title{font-size:32px;font-weight:780}
+    .sub{font-size:16px}
+    .panel{fill:#fff;stroke:#dce3ea;stroke-width:1.2;rx:18}
+    .row-title{font-size:20px;font-weight:760;fill:#18222d}
+    .row-note{font-size:13px;fill:#657284}
+    .bar-bg{fill:#edf1f5}
+    .legend{font-size:14px;fill:#293645;font-weight:650}
+    .count{font-size:13px;fill:#657284}
+    .metric{font-size:26px;font-weight:800;fill:#18222d}
+    .metric-label{font-size:13px;fill:#657284}
+    .c1{fill:#2f6f9f}.c2{fill:#5aa1d6}.c3{fill:#18a07b}.c4{fill:#f0a23a}.c5{fill:#c65d5d}
+    .c6{fill:#7a67c7}.c7{fill:#45a3a8}.c8{fill:#d18637}
+    .c9{fill:#315c7c}.c10{fill:#8bbf5a}.c11{fill:#d7aa2f}.c12{fill:#9a6a4f}.c13{fill:#687587}
   </style>
-  <rect class="bg" width="1120" height="540"/>
-  <text class="title" x="40" y="48">最终评估集构成</text>
-  <text class="sub" x="40" y="74">758 条真实来源评估样本；空 GT、缺图、重复 ID、合成样本标记均为 0。</text>
 
-  <rect class="panel" x="40" y="112" width="1040" height="370"/>
+  <rect class="bg" width="1200" height="760"/>
 
-  <text class="label" x="72" y="154">视觉场景分布</text>
-  <rect class="muted" x="220" y="132" width="820" height="30" rx="7"/>
-  <rect class="accent" x="220" y="132" width="160" height="30" rx="7"/>
-  <text class="small" x="400" y="152">新印刷 100 / 旧印刷 507 / 手写拍照 53 / 照片 11 / 屏幕拍照 87</text>
+  <text id="title-text" class="title ink" x="48" y="54">最终评估集构成</text>
+  <text class="sub muted" x="48" y="82">758 条真实来源样本；空 GT、缺图、重复 ID、合成样本标记均为 0。</text>
 
-  <text class="label" x="72" y="250">输入粒度</text>
-  <rect class="muted" x="220" y="228" width="820" height="30" rx="7"/>
-  <rect class="accent2" x="220" y="228" width="160" height="30" rx="7"/>
-  <text class="small" x="400" y="248">line 470 / region 119 / page 169</text>
+  <rect class="panel" x="820" y="28" width="104" height="72"/>
+  <text class="metric" x="848" y="62">758</text>
+  <text class="metric-label" x="846" y="84">样本</text>
+  <rect class="panel" x="940" y="28" width="104" height="72"/>
+  <text class="metric" x="968" y="62">758</text>
+  <text class="metric-label" x="966" y="84">图片</text>
+  <rect class="panel" x="1058" y="28" width="94" height="72"/>
+  <text class="metric" x="1094" y="62">0</text>
+  <text class="metric-label" x="1082" y="84">合成评估</text>
 
-  <text class="label" x="72" y="344">文字混合</text>
-  <rect class="muted" x="220" y="322" width="820" height="30" rx="7"/>
-  <rect class="accent3" x="220" y="322" width="160" height="30" rx="7"/>
-  <text class="small" x="400" y="342">yi 276 / yi_han 453 / yi_han_latin 26 / han 2 / other 1</text>
+  <rect class="panel" x="48" y="120" width="1104" height="130"/>
+  <text class="row-title" x="78" y="158">视觉场景</text>
+  <text class="row-note" x="78" y="181">真实来源图像覆盖旧印刷、新印刷、屏幕拍照、手写拍照和场景照片。</text>
+  <rect class="bar-bg" x="340" y="146" width="760" height="30" rx="8"/>
+  <rect class="c1" x="340" y="146" width="508.5" height="30" rx="8"/>
+  <rect class="c2" x="848.5" y="146" width="100.3" height="30"/>
+  <rect class="c3" x="948.8" y="146" width="87.2" height="30"/>
+  <rect class="c4" x="1036" y="146" width="53.1" height="30"/>
+  <rect class="c5" x="1089.1" y="146" width="10.9" height="30"/>
+  <rect class="c1" x="340" y="204" width="12" height="12" rx="2"/><text class="legend" x="358" y="215">旧印刷</text><text class="count" x="414" y="215">507 · 66.9%</text>
+  <rect class="c2" x="535" y="204" width="12" height="12" rx="2"/><text class="legend" x="553" y="215">新印刷</text><text class="count" x="609" y="215">100 · 13.2%</text>
+  <rect class="c3" x="730" y="204" width="12" height="12" rx="2"/><text class="legend" x="748" y="215">屏幕拍照</text><text class="count" x="818" y="215">87 · 11.5%</text>
+  <rect class="c4" x="925" y="204" width="12" height="12" rx="2"/><text class="legend" x="943" y="215">手写拍照</text><text class="count" x="1013" y="215">53 · 7.0%</text>
+  <rect class="c5" x="340" y="228" width="12" height="12" rx="2"/><text class="legend" x="358" y="239">场景照片</text><text class="count" x="428" y="239">11 · 1.5%</text>
 
-  <text class="label" x="72" y="438">难度分层</text>
-  <rect class="muted" x="220" y="416" width="820" height="30" rx="7"/>
-  <rect class="accent" x="220" y="416" width="160" height="30" rx="7"/>
-  <text class="small" x="400" y="436">easy 83 / medium 467 / hard 208</text>
+  <rect class="panel" x="48" y="270" width="1104" height="120"/>
+  <text class="row-title" x="78" y="308">输入粒度</text>
+  <text class="row-note" x="78" y="331">同一评估集同时覆盖行图、区域图和整页输入。</text>
+  <rect class="bar-bg" x="340" y="296" width="760" height="30" rx="8"/>
+  <rect class="c6" x="340" y="296" width="471.5" height="30" rx="8"/>
+  <rect class="c7" x="811.5" y="296" width="119.4" height="30"/>
+  <rect class="c8" x="930.9" y="296" width="169.1" height="30"/>
+  <rect class="c6" x="340" y="354" width="12" height="12" rx="2"/><text class="legend" x="358" y="365">line</text><text class="count" x="394" y="365">470 · 62.0%</text>
+  <rect class="c7" x="535" y="354" width="12" height="12" rx="2"/><text class="legend" x="553" y="365">region</text><text class="count" x="606" y="365">119 · 15.7%</text>
+  <rect class="c8" x="730" y="354" width="12" height="12" rx="2"/><text class="legend" x="748" y="365">page</text><text class="count" x="789" y="365">169 · 22.3%</text>
 
-  <text class="note" x="72" y="512">最终文档按四个维度报告构成：视觉场景、输入粒度、文字混合和难度分层。</text>
+  <rect class="panel" x="48" y="410" width="1104" height="130"/>
+  <text class="row-title" x="78" y="448">文字混合</text>
+  <text class="row-note" x="78" y="471">以彝文和彝汉混排为主体，同时保留少量注音和其他真实边界样本。</text>
+  <rect class="bar-bg" x="340" y="436" width="760" height="30" rx="8"/>
+  <rect class="c9" x="340" y="436" width="454.5" height="30" rx="8"/>
+  <rect class="c10" x="794.5" y="436" width="276.9" height="30"/>
+  <rect class="c11" x="1071.4" y="436" width="26.1" height="30"/>
+  <rect class="c13" x="1097.5" y="436" width="2.5" height="30"/>
+  <rect class="c9" x="340" y="494" width="12" height="12" rx="2"/><text class="legend" x="358" y="505">彝汉混排</text><text class="count" x="428" y="505">453 · 59.8%</text>
+  <rect class="c10" x="535" y="494" width="12" height="12" rx="2"/><text class="legend" x="553" y="505">纯彝文</text><text class="count" x="609" y="505">276 · 36.4%</text>
+  <rect class="c11" x="730" y="494" width="12" height="12" rx="2"/><text class="legend" x="748" y="505">彝汉拉丁注音</text><text class="count" x="858" y="505">26 · 3.4%</text>
+  <rect class="c13" x="925" y="494" width="12" height="12" rx="2"/><text class="legend" x="943" y="505">其他</text><text class="count" x="980" y="505">3 · 0.4%</text>
+
+  <rect class="panel" x="48" y="560" width="1104" height="120"/>
+  <text class="row-title" x="78" y="598">难度分层</text>
+  <text class="row-note" x="78" y="621">难度由来源、视觉质量、输入粒度、版面结构和文字混合情况确定。</text>
+  <rect class="bar-bg" x="340" y="586" width="760" height="30" rx="8"/>
+  <rect class="c2" x="340" y="586" width="468.6" height="30" rx="8"/>
+  <rect class="c5" x="808.6" y="586" width="208.5" height="30"/>
+  <rect class="c3" x="1017.1" y="586" width="82.9" height="30"/>
+  <rect class="c2" x="340" y="644" width="12" height="12" rx="2"/><text class="legend" x="358" y="655">medium</text><text class="count" x="420" y="655">467 · 61.6%</text>
+  <rect class="c5" x="535" y="644" width="12" height="12" rx="2"/><text class="legend" x="553" y="655">hard</text><text class="count" x="592" y="655">208 · 27.4%</text>
+  <rect class="c3" x="730" y="644" width="12" height="12" rx="2"/><text class="legend" x="748" y="655">easy</text><text class="count" x="786" y="655">83 · 10.9%</text>
+
+  <text class="row-note" x="48" y="724">统计口径：最终整合评估集，全部样本来自真实资料；比例按 758 条样本计算。</text>
 </svg>

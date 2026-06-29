@@ -7,148 +7,124 @@
   <img alt="微调方式" src="https://img.shields.io/badge/Fine_tuning-LoRA-8a5cf6">
 </p>
 
-本项目是面向 **PaddleOCR 全球衍生模型挑战赛** 的规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）文档解析与 OCR 项目，基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 构建。
+本项目是面向 **PaddleOCR 全球衍生模型挑战赛** 的规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）OCR 项目，基于 `PaddleOCR-VL-1.6 (0.9B)` + LoRA 构建。
 
-任务不是只识别已经裁好的单行图，而是把旧书扫描、教材工具书页面、手机照片、屏幕拍照、手写拍照样本和彝汉混排资料变成可检索、可校对、可进入语料库的 Unicode 文本。除 line / region OCR 外，项目覆盖页面级输入、阅读顺序恢复、页面文本合并、结构化输出和可选注音。
+项目目标不是只识别裁好的单行图，而是把旧书扫描、教材工具书页面、手机照片、屏幕拍照、手写拍照样本和彝汉混排资料，转换为可搜索、可校对、可进入语料库的 Unicode 文本。
 
 [Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [线上演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [提交说明](docs/COMPETITION_SUBMISSION.md) · [评估集说明](docs/EVALUATION_DATASET.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
-线上演示空间是交互入口；没有配置 GPU 时，完整模型推理、页面切割复现和批量评估以本地演示脚本为准。
-
-## 数据集
+## 当前口径
 
 | 项目 | 当前状态 |
 |---|---|
+| 任务 | 规范彝文 OCR，覆盖 `line`、`region`、`page` 输入 |
+| 基座模型 | `PaddleOCR-VL-1.6 (0.9B)` |
+| 微调方式 | LoRA |
 | 最新评估集 | `758` 条真实来源样本，`758` 张图片 |
-| 输入粒度 | `line 470` / `region 119` / `page 169` |
-| 场景分布 | 新印刷 `100`，旧印刷 `507`，手写拍照 `53`，真实照片 `11`，屏幕拍照 `87` |
-| 难度分布 | `easy 83` / `medium 467` / `hard 208` |
-| 文字混合 | 纯彝文 `276`，彝汉混排 `453`，彝汉拉丁注音 `26`，纯汉字 `2`，其他 `1` |
-| 雪族整页子集 | 《雪族子史篇》`65` 页，已计入最新 `758` 条总评估集 |
-| 数据质检 | 空 GT `0`，缺图 `0`，重复 ID `0`，合成样本标记 `0` |
-
-评估集只使用真实来源样本，不使用合成样本作为评估材料。完整图片和标注托管在 Hugging Face 评估集仓库；GitHub 保留说明、脚本和结果摘要。
+| 页面级流程 | `PP-DocLayout_plus-L` 页面切割、OCR 单元识别、页面文本合并、结构化输出、可选注音 |
+| 数据托管 | 模型权重和完整评估图片托管在 Hugging Face，GitHub 保留代码、配置、文档和结果摘要 |
 
 ## 评审入口
 
-| 评分维度 | 本项目证据 | 快速入口 |
+| 评分点 | 本项目证据 | 入口 |
 |---|---|---|
-| 评估集质量 | 最新整合评估集 `758` 条真实样本，含 `169` 个 page 样本、`119` 个 region 样本、`98` 个真实照片/屏幕拍照样本；`easy 83` / `medium 467` / `hard 208`；空 GT、缺图、重复 ID、合成样本标记均为 `0` | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md) |
-| 场景稀缺性 | 规范彝文公开文字识别资源少；项目覆盖旧书、教材、工具书、彝汉混排、注音、手写、照片和屏幕拍照资料 | [项目背景](docs/PROJECT_BACKGROUND.md) |
-| 任务复杂度 | 支持整页、PDF 和照片输入，结合 Paddle DocLayout 文本区域检测、OCR、阅读顺序恢复、页面文本合并和结构化页面输出；《雪族子史篇》65 页对比显示页面切割优于直接整页 OCR | [页面切割](page_processing/README.md)，[演示](demo/README.md)，[页面处理说明](docs/PAGE_PROCESSING.md) |
-| 训练数据科学性 | 训练包 `21504` 行；真实材料、训练侧合成样本和视觉变化样本分开记录；每次构建检查缺图、空标签、替换符、反斜杠、公式化片段和高风险格式比例 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[训练包清单](configs/train_data_manifest_v5_16.json) |
-| 微调策略与创新 | 三阶段 LoRA 微调；先证明单书真实行图可学，再补低频字符和旧印刷视觉变化，最后用固定开发诊断集比较分支 | [模型与训练](docs/MODEL_AND_TRAINING.md)，[训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md) |
-| 开源与复现 | Hugging Face 模型、Hugging Face 评估集、线上演示、本地命令行演示、训练配置、评估脚本、逐样本输出和分组图表 | [演示](demo/README.md)，[scripts](scripts/README.md)，[model](model/README.md) |
+| 评估集质量 | `758` 条真实来源样本；`line 470` / `region 119` / `page 169`；空 GT、缺图、重复 ID、合成样本标记均为 `0` | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md) |
+| 场景稀缺性 | 覆盖旧书、新印刷资料、教材、工具书、彝汉混排、拉丁注音、手写、场景照片和屏幕拍照资料 | [项目背景](docs/PROJECT_BACKGROUND.md) |
+| 任务复杂度 | 支持整页、PDF 和照片输入；先做页面切割，再识别文本区域、恢复阅读顺序、合并页面文本并生成结构化结果 | [页面切割](page_processing/README.md)，[页面级说明](docs/PAGE_PROCESSING.md)，[演示](demo/README.md) |
+| 训练数据科学性 | 训练包 `21504` 行；真实材料、训练侧合成样本和视觉变化样本分开记录；缺图、空标签、替换符和公式化片段标签均为 `0` | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[训练包清单](configs/train_data_manifest_v5_16.json) |
+| 微调策略 | 三阶段 LoRA 微调；用固定开发诊断集比较分支，不把开发诊断集或最终评估集写回训练包 | [模型与训练](docs/MODEL_AND_TRAINING.md)，[评估摘要](evaluation/README.md) |
+| 开源复现 | 提供模型下载、评估集下载、线上演示、本地演示、训练配置、评估脚本、逐样本结果和分组图表 | [model](model/README.md)，[scripts](scripts/README.md)，[evaluation](evaluation/README.md) |
 
-## 当前结果
+## 真实评估集
 
-当前 LoRA 指标来自历史 `603` 条 OCR 主指标：平均归一化编辑距离（Avg NED）为 `0.036068`，只看彝文字符为 `0.038309`，只看汉字为 `0.022447`。最新 `758` 条真实样本作为最终评估集口径。
+评估集只使用真实来源样本，不使用合成样本证明模型效果。完整图片、标注和统计托管在 [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set)。
 
-输出风险检查结果为：替换符 `0`，公式化片段 `2`，多余拉丁字母 `0`，异常长输出 `0`。
+下图汇总最终 `758` 条真实来源样本的视觉场景、输入粒度、文字混合和难度分层。逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
 
-最终评估看全量系统总分；同时保留按 `line` / `region` / `page`、场景和难度拆开的分表，用来解释强弱项。清晰单行图和区域图是当前最可靠的输入，复杂整页和手写拍照需要单独解读，但不从总评估集中剔除。
-
-## 交付内容
-
-| 交付 | 内容 | 入口 |
-|---|---|---|
-| 模型 | 基于 `PaddleOCR-VL-1.6 (0.9B)` 的 LoRA 微调模型，固定提示词为 `<image>OCR:` | [model](model/README.md)，[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) |
-| 真实评估集 | 真实来源样本，按视觉场景、输入粒度、文字混合和难度分层统计；评估集不使用合成样本 | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md)，[Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) |
-| 页面级识别能力 | 支持整页、PDF、照片输入，生成文本区域、阅读顺序、页面文本和结构化页面结果 | [页面切割](page_processing/README.md)，[演示](demo/README.md)，[后处理工具](postprocess/README.md) |
-| 训练数据构建 | 真实材料定边界，合成样本补字符长尾，视觉变化样本覆盖字体、清晰度和旧印刷状态；训练包清单记录每类来源、比例上限、质检和隔离检查 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[configs](configs/) |
-| 复现工具 | 线上演示入口、单图演示、整页演示、评估脚本、训练脚本、模型/评估集下载说明 | [演示](demo/README.md)，[scripts](scripts/README.md)，[提交说明](docs/COMPETITION_SUBMISSION.md) |
+![Evaluation dataset composition](docs/figures/dataset_composition.svg)
 
 ## 页面级识别能力
 
-真实规范彝文资料常包含旧书页、页面照片、彝汉混排、脚注、注音和手写内容。本项目不是只做裁好的单行识别，也覆盖整页、PDF、照片到可校对页面文本的页面级识别能力。
+真实规范彝文资料常见输入不是干净单行图，而是旧书整页、PDF、手机照片、屏幕图、脚注、页码、注音和彝汉混排页面。本项目提供可检查的页面级流程：
+
+```text
+整页 / PDF / 手机照片 / 屏幕图
+-> PP-DocLayout_plus-L 页面切割
+-> OCR 单元识别
+-> 阅读顺序恢复
+-> 页面文本合并
+-> 结构化页面输出
+-> 异常审计
+-> 可选注音
+```
 
 ![规范彝文页面级识别能力](docs/figures/ocr_workflow_photo.svg)
 
-核心能力包括：Paddle DocLayout 页面切割、OCR 单元识别、阅读顺序恢复、页面文本合并、结构化页面结果、异常检查和可选注音。入口见 [页面切割](page_processing/README.md)、[整页演示](demo/README.md)、[拼合脚本](page_processing/assemble_pages.py)、[结构化脚本](page_processing/structure_pages.py) 和 [注音工具](postprocess/add_nuosu_pronunciation.py)。
+《雪族 子史篇》65 页用于页面切割对照实验：
 
-### 整页切割对比实验
-
-最新 `758` 条总评估集中的《雪族子史篇》65 页用于对比两种路径：整页图像直接进入模型识别，以及先用 Paddle DocLayout 做页面切割后再识别并合并页面文本。这是方法对照实验，用来证明页面切割的作用；正式最终评估仍按完整 `758` 条样本生成一个系统总分。
-
-![《雪族子史篇》页面切割对比](docs/figures/xuezu_page_cutting_case.svg)
-
-| 识别路径 | 平均归一化编辑距离（Avg NED） | 主要差异 |
+| 识别路径 | Avg NED | 说明 |
 |---|---:|---|
 | 页面切割后识别 | `0.0504` | 阅读顺序更稳，彝汉配对更接近人工标注，非文字干扰更少 |
-| 直接整页识别 | `0.5448` | 容易出现跨行、错行、彝汉配对拆散和图案误识别 |
+| 直接整页识别 | `0.5448` | 容易跨行、错行、拆散彝汉配对，并把图案误识别为文字 |
 
-该子集包含 `65` 页、`2501` 个 OCR 单元：OCR 结果 `2501/2501` 正常，结构化页面结果包含 `1123` 行彝文原文和 `1060` 组彝汉对照行；替换符、空页和重复页均为 `0`。详细说明见 [页面处理说明](docs/PAGE_PROCESSING.md)。
+## 训练数据与模型策略
 
-## 评估与训练
+训练集遵循“真实材料定边界、训练侧合成样本补长尾、视觉变化样本补图像状态”的原则。最终训练包为 `v5_16_synth_capped_rerender_official`。
 
-最终结果按 `NuosuBburma OCR Evaluation Set` 统计。PaddleOCR-VL 原始模型和当前提交模型使用同一评估集、脚本和指标。
+| 项目 | 数量或设置 |
+|---|---:|
+| 清理后训练行数 | `21504` |
+| 继承基础样本 | `12435` |
+| 新增视觉变化样本 | `9069` |
+| 保持不变的真实样本 | `1861` |
+| 原始合成样本 | `10574` |
+| 普通视觉变化样本 | `8360` |
+| 脚注视觉变化样本 | `60` |
+| 多行区域视觉变化样本 | `649` |
+| 拉丁注音视觉变化样本 | `0` |
+| 缺图 / 空标签 / 替换符标签 | `0 / 0 / 0` |
+| 公式化片段标签 / 反斜杠标签 | `0 / 0` |
 
-结果表见 [提交说明](docs/COMPETITION_SUBMISSION.md)。评估集分布和质检见 [评估集说明](docs/EVALUATION_DATASET.md) 与 [质检报告](docs/EVALUATION_QUALITY_REPORT.md)。
+三阶段调优策略：
 
-训练侧用真实材料打底，合成样本补未见字和低频字；视觉变化样本用于覆盖字体、清晰度和旧印刷状态，并限制拉丁注音、脚注、多行区域等容易造成异常输出的样本比例。
+| 阶段 | 目标 | 判断方式 |
+|---|---|---|
+| 第一阶段 | 验证 `PaddleOCR-VL-1.6` + LoRA 能否学习规范彝文字形和基本输出格式 | 单书真实行图可学性 |
+| 第二阶段 | 补低频字符、字体变化、旧印刷退化和彝汉混排覆盖 | 分组观察彝文、汉字、数字、混排和异常输出 |
+| 第三阶段 | 比较不同训练包分支是否真正更稳 | 固定开发诊断集，只比较输出，不回写训练 |
 
-训练数据构成见 [训练数据构建报告](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，模型设置和分支选择见 [模型与训练说明](docs/MODEL_AND_TRAINING.md)。
+训练配置和分支结论见 [模型与训练](docs/MODEL_AND_TRAINING.md)，训练数据构建细节见 [训练数据构建报告](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)。
 
-## 复现
+## 快速复现
 
-### 1. 准备环境
-
-模型推理和批量评估建议使用 CUDA GPU 环境。CPU 环境可用于依赖检查和部分脚本连通性检查，不作为评估推荐路径。
+模型推理和批量评估建议使用 CUDA GPU 环境。CPU 环境可用于依赖检查和部分脚本连通性检查。
 
 ```bash
 conda create -n paddleocr-vl python=3.11 -y
 conda activate paddleocr-vl
 python -m pip install -U pip setuptools wheel
-```
-
-安装 PaddlePaddle GPU 版：
-
-```bash
 python -m pip install paddlepaddle-gpu==3.3.0 \
   -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-```
-
-安装本项目依赖：
-
-```bash
 python -m pip install -r requirements.txt
 ```
 
-`requirements.txt` 已包含 Hugging Face CLI；安装完成后即可使用 `hf download`。
-
-如果国内网络较慢，可先设置 Hugging Face 镜像：
-
-```bash
-export HF_ENDPOINT=https://hf-mirror.com
-```
-
-### 2. 下载模型和评估集
-
-下载模型：
+下载模型和评估集：
 
 ```bash
 hf download nanxidajun/NuosuBburma-OCR \
   --repo-type model \
   --local-dir models/NuosuBburma-OCR
-```
 
-下载评估集：
-
-```bash
 hf download nanxidajun/NuosuBburma-OCR-Evaluation-Set \
   --repo-type dataset \
   --local-dir datasets/NuosuBburma_OCR_Evaluation_Set
 ```
 
-### 3. 安装后自检
+安装后自检：
 
 ```bash
 scripts/smoke_check.sh
 ```
-
-这一步会检查 Python 依赖、样例图和模型目录；如果模型已经下载，会继续跑一张单图识别。
-
-### 4. 运行演示
 
 运行单图演示：
 
@@ -171,91 +147,18 @@ python demo/run_page_workflow.py \
   --with-pronunciation
 ```
 
-### 5. 运行评估
-
-最终评估主口径是完整 `758` 条样本的系统总分。执行时按样本类型走两条路线：`line` / `region` 直接 OCR，`page` 走页面切割、OCR 单元识别和页面文本拼合；两路结果合并后，对原始全量 `annotations.jsonl` 打主分。分路线结果只作为诊断表。
-
-先拆分评估集：
-
-```bash
-python scripts/split_eval_for_final_routes.py \
-  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --out-dir outputs/final_eval_routes \
-  --copy-mode symlink
-```
-
-运行 `line` / `region` 直接 OCR：
-
-```bash
-scripts/run_eval.sh \
-  models/NuosuBburma-OCR \
-  outputs/final_eval_routes/direct/annotations.jsonl \
-  outputs/final_eval_routes/direct_result.jsonl
-```
-
-运行 `page` 页面 workflow：
-
-```bash
-python demo/run_page_workflow.py \
-  --input outputs/final_eval_routes/page/images \
-  --model models/NuosuBburma-OCR \
-  --output-root outputs/final_eval_routes/page_workflow \
-  --device gpu \
-  --max-new-tokens 2048 \
-  --max-pages 0
-
-python scripts/page_workflow_to_eval_result.py \
-  --annotations outputs/final_eval_routes/page/annotations.jsonl \
-  --assembled-pages outputs/final_eval_routes/page_workflow/03_page_text/submission_pages.jsonl \
-  --output outputs/final_eval_routes/page_workflow_result.jsonl
-```
-
-合并两路输出，得到最终系统结果：
-
-```bash
-python scripts/merge_final_route_results.py \
-  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --direct-result outputs/final_eval_routes/direct_result.jsonl \
-  --page-result outputs/final_eval_routes/page_workflow_result.jsonl \
-  --output outputs/final_eval_routes/final_system_result_758.jsonl
-```
-
-对完整 `758` 条样本打主分：
-
-```bash
-python scripts/analyze_submission_eval.py \
-  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result outputs/final_eval_routes/final_system_result_758.jsonl \
-  --out-dir outputs/final_eval_routes/final_system_analysis \
-  --title "NuosuBburma OCR final system: 758 samples"
-```
-
-需要定位问题时，再分别生成 direct 和 page 分表：
-
-```bash
-python scripts/analyze_submission_eval.py \
-  --annotations outputs/final_eval_routes/direct/annotations.jsonl \
-  --result outputs/final_eval_routes/direct_result.jsonl \
-  --out-dir outputs/final_eval_routes/direct_analysis \
-  --title "NuosuBburma OCR direct route: line/region"
-
-python scripts/analyze_submission_eval.py \
-  --annotations outputs/final_eval_routes/page/annotations.jsonl \
-  --result outputs/final_eval_routes/page_workflow_result.jsonl \
-  --out-dir outputs/final_eval_routes/page_workflow_analysis \
-  --title "NuosuBburma OCR page route: DocLayout + OCR + assembly"
-```
+批量评估入口见 [scripts/README.md](scripts/README.md)。最终评估按样本类型分两条路线：`line` / `region` 直接 OCR，`page` 走页面切割、OCR 单元识别和页面文本合并；两路结果合并后，对完整 `annotations.jsonl` 计算主分。
 
 ## 仓库结构
 
 ```text
 configs/                         训练/导出配置与训练数据清单
-NuosuBburma_OCR_Evaluation_Set/  评估集入口说明，完整数据托管在 Hugging Face 评估集仓库
-page_processing/                 页面切割、页面文本拼合与结构化输出入口
+NuosuBburma_OCR_Evaluation_Set/  评估集入口说明；完整图片托管在 Hugging Face 评估集
+page_processing/                 页面切割、页面文本合并与结构化输出
 demo/                            单图推理、整页演示与样例图
 docs/                            提交说明、评估集、训练数据、模型训练和项目背景
 evaluation/                      开发诊断结果、分组统计和逐样本输出
-model/                           模型托管入口、下载命令和使用边界说明
+model/                           模型托管入口、下载命令和使用边界
 postprocess/                     规范彝文注音工具
 scripts/                         训练、评估和统计工具
 ```
