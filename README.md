@@ -39,7 +39,7 @@
 
 评估集只使用真实来源样本，不使用合成样本证明模型效果。完整图片、标注和统计托管在 [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set)。
 
-下图汇总最终 `758` 条真实来源样本的视觉场景、输入粒度、文字混合和难度分层。逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
+下图汇总最终 `758` 条真实来源样本的视觉场景、输入粒度、文本构成和难度分层。逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
 
 ![Evaluation dataset composition](docs/figures/dataset_composition.svg)
 
