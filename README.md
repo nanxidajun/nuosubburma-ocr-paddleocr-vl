@@ -48,7 +48,7 @@
 
 输出风险检查结果为：替换符 `0`，公式化片段 `2`，多余拉丁字母 `0`，异常长输出 `0`。
 
-清晰单行图和区域图是当前最可靠的输入；复杂整页和手写拍照单独报告，不和清晰印刷体混成一个结论。
+最终评估看全量系统总分；同时保留按 `line` / `region` / `page`、场景和难度拆开的分表，用来解释强弱项。清晰单行图和区域图是当前最可靠的输入，复杂整页和手写拍照需要单独解读，但不从总评估集中剔除。
 
 ## 交付内容
 
@@ -70,7 +70,7 @@
 
 ### 整页切割对比实验
 
-最新 `758` 条总评估集中的《雪族子史篇》65 页用于对比两种路径：整页图像直接进入模型识别，以及先用 Paddle DocLayout 做页面切割后再识别并合并页面文本。历史 `603` 条 OCR 指标、最新 `758` 条正式 rerun 和雪族 65 页整页切割对照分口径报告，避免把不同输入粒度混成一个平均数。
+最新 `758` 条总评估集中的《雪族子史篇》65 页用于对比两种路径：整页图像直接进入模型识别，以及先用 Paddle DocLayout 做页面切割后再识别并合并页面文本。这是方法对照实验，用来证明页面切割的作用；正式最终评估仍按完整 `758` 条样本生成一个系统总分。
 
 ![《雪族子史篇》页面切割对比](docs/figures/xuezu_page_cutting_case.svg)
 
@@ -175,18 +175,77 @@ python demo/run_page_workflow.py \
 
 ### 5. 运行评估
 
-运行评估：
+最终评估主口径是完整 `758` 条样本的系统总分。执行时按样本类型走两条路线：`line` / `region` 直接 OCR，`page` 走页面切割、OCR 单元识别和页面文本拼合；两路结果合并后，对原始全量 `annotations.jsonl` 打主分。分路线结果只作为诊断表。
+
+先拆分评估集：
+
+```bash
+python scripts/split_eval_for_final_routes.py \
+  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --out-dir outputs/final_eval_routes \
+  --copy-mode symlink
+```
+
+运行 `line` / `region` 直接 OCR：
 
 ```bash
 scripts/run_eval.sh \
   models/NuosuBburma-OCR \
-  datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl
+  outputs/final_eval_routes/direct/annotations.jsonl \
+  outputs/final_eval_routes/direct_result.jsonl
+```
 
+运行 `page` 页面 workflow：
+
+```bash
+python demo/run_page_workflow.py \
+  --input outputs/final_eval_routes/page/images \
+  --model models/NuosuBburma-OCR \
+  --output-root outputs/final_eval_routes/page_workflow \
+  --device gpu \
+  --max-new-tokens 2048 \
+  --max-pages 0
+
+python scripts/page_workflow_to_eval_result.py \
+  --annotations outputs/final_eval_routes/page/annotations.jsonl \
+  --assembled-pages outputs/final_eval_routes/page_workflow/03_page_text/submission_pages.jsonl \
+  --output outputs/final_eval_routes/page_workflow_result.jsonl
+```
+
+合并两路输出，得到最终系统结果：
+
+```bash
+python scripts/merge_final_route_results.py \
+  --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
+  --direct-result outputs/final_eval_routes/direct_result.jsonl \
+  --page-result outputs/final_eval_routes/page_workflow_result.jsonl \
+  --output outputs/final_eval_routes/final_system_result_758.jsonl
+```
+
+对完整 `758` 条样本打主分：
+
+```bash
 python scripts/analyze_submission_eval.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result outputs/NuosuBburma_OCR_Evaluation_Set/result.jsonl \
-  --out-dir outputs/NuosuBburma_OCR_Evaluation_Set/analysis
+  --result outputs/final_eval_routes/final_system_result_758.jsonl \
+  --out-dir outputs/final_eval_routes/final_system_analysis \
+  --title "NuosuBburma OCR final system: 758 samples"
+```
+
+需要定位问题时，再分别生成 direct 和 page 分表：
+
+```bash
+python scripts/analyze_submission_eval.py \
+  --annotations outputs/final_eval_routes/direct/annotations.jsonl \
+  --result outputs/final_eval_routes/direct_result.jsonl \
+  --out-dir outputs/final_eval_routes/direct_analysis \
+  --title "NuosuBburma OCR direct route: line/region"
+
+python scripts/analyze_submission_eval.py \
+  --annotations outputs/final_eval_routes/page/annotations.jsonl \
+  --result outputs/final_eval_routes/page_workflow_result.jsonl \
+  --out-dir outputs/final_eval_routes/page_workflow_analysis \
+  --title "NuosuBburma OCR page route: DocLayout + OCR + assembly"
 ```
 
 ## 仓库结构
