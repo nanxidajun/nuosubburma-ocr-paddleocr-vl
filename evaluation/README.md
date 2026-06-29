@@ -20,20 +20,25 @@
 
 ## 多角度统计
 
-| 维度 | 入口 |
+| 公开主维度 | 入口 |
 |---|---|
+| 难度 简单 / 复杂 / 困难 | `tables/by_difficulty.csv` |
 | 输入粒度 line / region / page | `tables/by_sample_type.csv` |
 | 真实场景 old_print / new_print / screen / handwriting / photo | `tables/by_scene.csv` |
-| 数据来源/书目 | `tables/by_source.csv` |
-| 难度 easy / medium / hard | `tables/by_difficulty.csv` |
-| 文本构成 yi / yi_han / yi_han_latin | `tables/by_script_mix.csv` |
-| 是否含数字 | `tables/by_has_digit.csv` |
-| GT 文本长度 | `tables/by_text_length.csv` |
-| GT 行数 | `tables/by_gt_lines.csv` |
-| 最差 50 条 | `tables/worst_50.csv` |
 | 风险输出样本 | `tables/risk_rows.csv` |
+| 最差 50 条 | `tables/worst_50.csv` |
+
+其他诊断和追溯表保留在 `tables/` 中，不作为公开主图展示。
 
 ## 核心拆分
+
+### 按难度
+
+| 分组 | rows | Avg NED | WS NED | Exact | Yi-only NED | Han-only NED | Digit-only NED | 风险 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| easy 简单 | 83 | 0.031944 | 0.030882 | 67/83 (80.7%) | 0.029882 |  | 0.200000 | 0/0/0/0 |
+| medium 复杂 | 467 | 0.038885 | 0.037800 | 367/467 (78.6%) | 0.042977 | 0.021321 | 0.111111 | 0/1/0/0 |
+| hard 困难 | 208 | 0.156290 | 0.157824 | 13/208 (6.2%) | 0.146574 | 0.118657 | 0.316220 | 0/5/1/1 |
 
 ### 按输入粒度
 
@@ -69,6 +74,10 @@
 
 ![NED Overview](charts/ned_overview.svg)
 
+### 不同难度
+
+![Avg NED by Difficulty](charts/ned_by_difficulty.svg)
+
 ### 不同输入粒度
 
 ![Avg NED by Input Granularity](charts/ned_by_sample_type.svg)
@@ -76,10 +85,6 @@
 ### 不同真实场景
 
 ![Avg NED by Scene](charts/ned_by_scene.svg)
-
-### 不同来源
-
-![Avg NED by Source](charts/ned_by_source.svg)
 
 ### 输出风险
 
@@ -94,10 +99,9 @@ raw/
   submission_model_result.jsonl
   submission_model_predictions.jsonl
 tables/
+  by_difficulty.csv
   by_sample_type.csv
   by_scene.csv
-  by_source.csv
-  by_difficulty.csv
   by_script_mix.csv
   by_has_digit.csv
   by_text_length.csv
@@ -107,8 +111,8 @@ tables/
   risk_rows.csv
 charts/
   ned_overview.svg
+  ned_by_difficulty.svg
   ned_by_sample_type.svg
-  ned_by_source.svg
   ned_by_scene.svg
   safety_failures.svg
 ```

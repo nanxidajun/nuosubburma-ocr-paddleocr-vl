@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="222" viewBox="0 0 980 222" role="img">
+<rect width="100%" height="100%" fill="#fbfaf7"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:14px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}</style>
+<text class="title" x="28" y="38">Avg NED by Difficulty</text>
+<text class="sub" x="28" y="63">Final LoRA model, latest 758-sample GT. Lower is better.</text>
+<text class="label" x="28" y="118">easy 简单</text>
+<rect x="255" y="98" width="111.3" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="376.3" y="117">0.031944</text>
+<text class="note" x="845" y="117">83 rows, 80.7% exact</text>
+<text class="label" x="28" y="160">medium 复杂</text>
+<rect x="255" y="140" width="135.5" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="400.5" y="159">0.038885</text>
+<text class="note" x="845" y="159">467 rows, 78.6% exact</text>
+<text class="label" x="28" y="202">hard 困难</text>
+<rect x="255" y="182" width="545.0" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
+<text class="value" x="810.0" y="201">0.156290</text>
+<text class="note" x="845" y="201">208 rows, 6.2% exact</text>
+</svg>
