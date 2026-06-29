@@ -14,7 +14,7 @@
 |---|---|---|
 | 最终评估集 | `758` 条真实样本，`line 470` / `region 119` / `page 169`，空 GT `0`，缺图 `0`，重复 ID `0`，合成标记 `0` | 提交主口径 |
 | 未微调基座 | `PaddleOCR-VL-1.6` 已完成最终评估 | 作为 LoRA 微调效果的对照 |
-| LoRA 微调后 | 已完成 | Avg NED `0.070342`，Exact `447/758`，逐样本输出和多维统计已放入 `evaluation/` |
+| LoRA 微调后 | 已完成 | Avg NED `0.070123`，Exact `447/758`，逐样本输出和多维统计已放入 `evaluation/` |
 
 ## 0. 评委快速核验
 
@@ -23,7 +23,7 @@
 | 核验问题 | 本项目回答 | 入口 |
 |---|---|---|
 | 评估集是否真实 | 是。最新整合评估集为 `758` 条真实来源样本，含 `169` 个 page 样本、`119` 个 region 样本、`98` 个场景照片/屏幕拍照样本；空 GT、缺图、重复 ID 和合成样本标记均为 `0`。 | [EVALUATION_DATASET.md](EVALUATION_DATASET.md)，[EVALUATION_QUALITY_REPORT.md](EVALUATION_QUALITY_REPORT.md)，[Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) |
-| 模型结果是否已经跑完 | 未微调基座已在最终 `758` 条评估集完成：Avg NED `0.726733`，Yi-only Avg NED `1.000000`，Han-only Avg NED `0.209245`。LoRA 微调后结果已完成：Avg NED `0.070342`，Yi-only Avg NED `0.069870`，输出风险降至 `0/6/1/1`。 | [evaluation/summary.md](../evaluation/summary.md) |
+| 模型结果是否已经跑完 | 未微调基座已在最终 `758` 条评估集完成：Avg NED `0.726733`，Yi-only Avg NED `1.000000`，Han-only Avg NED `0.209245`。LoRA 微调后结果已完成：Avg NED `0.070123`，Yi-only Avg NED `0.069797`，输出风险降至 `0/6/1/1`。 | [evaluation/summary.md](../evaluation/summary.md) |
 | 是否只是单行识别 | 否。仓库支持整页、PDF、照片输入，使用 Paddle DocLayout 生成文本区域和阅读顺序，再识别文本区域、合并页面文本并生成结构化页面结果；复杂整页仍建议人工复核。 | [页面切割](../page_processing/README.md)，[演示](../demo/README.md)，[后处理工具](../postprocess/README.md) |
 | 训练数据是否科学 | 是。训练包 `v5_16_synth_capped_rerender_official` 共 `21504` 行；真实材料、训练侧合成样本和视觉变化样本分开记录；缺图、空标签、替换符、反斜杠和公式化片段标签均为 `0`。 | [TRAINING_DATA_CONSTRUCTION_REPORT.md](TRAINING_DATA_CONSTRUCTION_REPORT.md)，[configs/train_data_manifest_v5_16.json](../configs/train_data_manifest_v5_16.json) |
 | 模型选择是否有实验依据 | 有。多个训练分支使用同一组开发诊断集比较；对照实验显示，继续追加长尾格式样本会带来公式化片段和异常长输出风险回升。 | [MODEL_AND_TRAINING.md](MODEL_AND_TRAINING.md)，[evaluation](../evaluation/) |
@@ -56,16 +56,16 @@
 
 ## 3. 结果统计
 
-最终提交模型来自第三阶段调优中的稳定分支。最终 `758` 条真实样本作为未微调基座和 LoRA 微调模型的统一评估口径；最新结果已合并 `real_screen_photo_nonbook_004` 和 `real_screen_photo_nonbook_005` 的人工 GT 修正。
+最终提交模型来自第三阶段调优中的稳定分支。最终 `758` 条真实样本作为未微调基座和 LoRA 微调模型的统一评估口径；最新结果已合并 `real_screen_photo_nonbook_004`、`real_screen_photo_nonbook_005` 和 `xuezu_page_001` 的人工 GT 修正。
 
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | 758 | 758 |
-| Avg NED | 0.726733 | 0.070342 |
-| NFKC+WS Avg NED | 0.706794 | 0.069796 |
+| Avg NED | 0.726733 | 0.070123 |
+| NFKC+WS Avg NED | 0.706794 | 0.069627 |
 | Exact | 0 / 758 | 447 / 758 (59.0%) |
-| Yi-only Avg NED | 1.000000 | 0.069870 |
-| Han-only Avg NED | 0.209245 | 0.055882 |
+| Yi-only Avg NED | 1.000000 | 0.069797 |
+| Han-only Avg NED | 0.209245 | 0.055544 |
 | Digit-only Avg NED | 0.369451 | 0.260416 |
 | replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 6 / 1 / 1 |
 
@@ -73,11 +73,11 @@
 
 | 维度 | 关键结果 |
 |---|---|
-| 输入粒度 | line `470` 条 Avg NED `0.025444`；region `119` 条 `0.082315`；page `169` 条 `0.186774`。 |
-| 真实场景 | 旧印刷 `507` 条 `0.036873`；新印刷 `100` 条 `0.053856`；屏幕拍照/页面上传图 `87` 条 `0.258809`；手写拍照 `53` 条 `0.124483`；真实场景照片 `11` 条 `0.011364`。 |
-| 难度 | easy `0.031944`；medium `0.038885`；hard `0.156290`。 |
-| 文本构成 | 纯彝文 `0.050043`；彝汉混排 `0.079351`；彝汉/拉丁注音 `0.072946`。 |
-| 数字 | 不含数字 `0.051365`；含数字 `0.132631`，数字-only Avg NED `0.260416`。 |
+| 输入粒度 | line `470` 条 Avg NED `0.025444`；region `119` 条 `0.082315`；page `169` 条 `0.185795`。 |
+| 真实场景 | 旧印刷 `507` 条 `0.036547`；新印刷 `100` 条 `0.053856`；屏幕拍照/页面上传图 `87` 条 `0.258809`；手写拍照 `53` 条 `0.124483`；真实场景照片 `11` 条 `0.011364`。 |
+| 难度 | easy `0.031944`；medium `0.038885`；hard `0.155494`。 |
+| 文本构成 | 纯彝文 `0.050043`；彝汉混排 `0.078986`；彝汉/拉丁注音 `0.072946`。 |
+| 数字 | 不含数字 `0.051080`；含数字 `0.132631`，数字-only Avg NED `0.260416`。 |
 
 单行图输入最稳定。区域图和整页图用于暴露漏行、阅读顺序和换行边界问题。手写拍照、屏幕拍照和复杂整页仍单独报告，不和清晰印刷体混成一个结论。
 

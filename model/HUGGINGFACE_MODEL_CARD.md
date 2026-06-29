@@ -31,13 +31,13 @@ model-index:
         metrics:
           - type: avg_ned
             name: Avg NED
-            value: 0.070342
+            value: 0.070123
           - type: yi_avg_ned
             name: Yi-only Avg NED
-            value: 0.069870
+            value: 0.069797
           - type: han_avg_ned
             name: Han-only Avg NED
-            value: 0.055882
+            value: 0.055544
 ---
 
 # NuosuBburma OCR：规范彝文识别模型
@@ -72,7 +72,7 @@ model-index:
 
 ## 当前评估口径
 
-最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座和 LoRA 微调后结果均已完成，LoRA Avg NED 为 `0.070342`。
+最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座和 LoRA 微调后结果均已完成，LoRA Avg NED 为 `0.070123`。
 
 模型卡 metadata 中的 NED 指标是 LoRA 微调模型在最终 `758` 条评估集、最新人工 GT 上的结果。
 
@@ -167,16 +167,16 @@ scripts/smoke_check.sh
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | `758` | `758` |
-| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | `0.070342` |
-| 忽略空白后的平均编辑距离 | `0.719600` | `0.069978` |
-| NFKC+WS Avg NED | `0.706794` | `0.069796` |
+| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | `0.070123` |
+| 忽略空白后的平均编辑距离 | `0.719600` | `0.069809` |
+| NFKC+WS Avg NED | `0.706794` | `0.069627` |
 | Exact | `0 / 758` | `447 / 758 (59.0%)` |
-| Yi-only Avg NED | `1.000000` | `0.069870` |
-| Han-only Avg NED | `0.209245` | `0.055882` |
+| Yi-only Avg NED | `1.000000` | `0.069797` |
+| Han-only Avg NED | `0.209245` | `0.055544` |
 | Digit-only Avg NED | `0.369451` | `0.260416` |
 | replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 6 / 1 / 1` |
 
-按输入粒度拆分：line `470` 条 Avg NED `0.025444`，region `119` 条 `0.082315`，page `169` 条 `0.186774`。整页 exact 低，主要因为长文本、换行、阅读顺序和页面边界对完全匹配非常敏感。
+按输入粒度拆分：line `470` 条 Avg NED `0.025444`，region `119` 条 `0.082315`，page `169` 条 `0.185795`。整页 exact 低，主要因为长文本、换行、阅读顺序和页面边界对完全匹配非常敏感。
 
 指标解释：
 

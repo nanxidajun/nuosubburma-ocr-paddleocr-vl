@@ -4,15 +4,15 @@
 <text class="title" x="28" y="38">Avg NED by Input Granularity</text>
 <text class="sub" x="28" y="63">Final LoRA model, latest 758-sample GT.</text>
 <text class="label" x="28" y="118">line 单行图</text>
-<rect x="255" y="98" width="74.2" height="26" rx="6" fill="#176b87" opacity="0.86"/>
-<text class="value" x="339.2" y="117">0.025444</text>
+<rect x="255" y="98" width="74.6" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="339.6" y="117">0.025444</text>
 <text class="note" x="845" y="117">470 rows</text>
 <text class="label" x="28" y="160">region 区域图</text>
-<rect x="255" y="140" width="240.2" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
-<text class="value" x="505.2" y="159">0.082315</text>
+<rect x="255" y="140" width="241.5" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="506.5" y="159">0.082315</text>
 <text class="note" x="845" y="159">119 rows</text>
 <text class="label" x="28" y="202">page 整页图</text>
 <rect x="255" y="182" width="545.0" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
-<text class="value" x="810.0" y="201">0.186774</text>
+<text class="value" x="810.0" y="201">0.185795</text>
 <text class="note" x="845" y="201">169 rows</text>
 </svg>

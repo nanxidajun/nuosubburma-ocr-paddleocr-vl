@@ -8,8 +8,8 @@
 <text class="value" x="810.0" y="117">0.726733</text>
 <text class="note" x="845" y="117">unfine-tuned</text>
 <text class="label" x="28" y="160">LoRA Avg NED</text>
-<rect x="255" y="140" width="52.8" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
-<text class="value" x="317.8" y="159">0.070342</text>
+<rect x="255" y="140" width="52.6" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="317.6" y="159">0.070123</text>
 <text class="note" x="845" y="159">fine-tuned</text>
 <text class="label" x="28" y="202">LoRA line</text>
 <rect x="255" y="182" width="19.1" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
@@ -20,7 +20,7 @@
 <text class="value" x="326.7" y="243">0.082315</text>
 <text class="note" x="845" y="243">119 rows</text>
 <text class="label" x="28" y="286">LoRA page</text>
-<rect x="255" y="266" width="140.1" height="26" rx="6" fill="#7c3aed" opacity="0.86"/>
-<text class="value" x="405.1" y="285">0.186774</text>
+<rect x="255" y="266" width="139.3" height="26" rx="6" fill="#7c3aed" opacity="0.86"/>
+<text class="value" x="404.3" y="285">0.185795</text>
 <text class="note" x="845" y="285">169 rows</text>
 </svg>

@@ -56,19 +56,19 @@ flex-ckpt.auto_generated.metadata
 https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 ```
 
-最终评估集为 `758` 条真实来源样本。未微调基座和 LoRA 微调后结果均已按同一评估脚本完成，最新 GT 已合并 `real_screen_photo_nonbook_004` 和 `real_screen_photo_nonbook_005` 的人工修正。
+最终评估集为 `758` 条真实来源样本。未微调基座和 LoRA 微调后结果均已按同一评估脚本完成，最新 GT 已合并 `real_screen_photo_nonbook_004`、`real_screen_photo_nonbook_005` 和 `xuezu_page_001` 的人工修正。
 
 ![Evaluation snapshot](../docs/figures/evaluation_snapshot.svg)
 
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | 758 | 758 |
-| Avg NED | 0.726733 | 0.070342 |
-| WS Avg NED | 0.719600 | 0.069978 |
-| NFKC+WS Avg NED | 0.706794 | 0.069796 |
+| Avg NED | 0.726733 | 0.070123 |
+| WS Avg NED | 0.719600 | 0.069809 |
+| NFKC+WS Avg NED | 0.706794 | 0.069627 |
 | Exact | 0 / 758 | 447 / 758 (59.0%) |
-| Yi-only Avg NED | 1.000000 | 0.069870 |
-| Han-only Avg NED | 0.209245 | 0.055882 |
+| Yi-only Avg NED | 1.000000 | 0.069797 |
+| Han-only Avg NED | 0.209245 | 0.055544 |
 | Digit-only Avg NED | 0.369451 | 0.260416 |
 | replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 6 / 1 / 1 |
 

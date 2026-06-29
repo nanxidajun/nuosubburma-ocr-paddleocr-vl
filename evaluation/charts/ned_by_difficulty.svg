@@ -4,15 +4,15 @@
 <text class="title" x="28" y="38">Avg NED by Difficulty</text>
 <text class="sub" x="28" y="63">Final LoRA model, latest 758-sample GT. Lower is better.</text>
 <text class="label" x="28" y="118">easy 简单</text>
-<rect x="255" y="98" width="111.3" height="26" rx="6" fill="#176b87" opacity="0.86"/>
-<text class="value" x="376.3" y="117">0.031944</text>
+<rect x="255" y="98" width="112.0" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="377.0" y="117">0.031944</text>
 <text class="note" x="845" y="117">83 rows, 80.7% exact</text>
 <text class="label" x="28" y="160">medium 复杂</text>
-<rect x="255" y="140" width="135.5" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
-<text class="value" x="400.5" y="159">0.038885</text>
+<rect x="255" y="140" width="136.3" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="401.3" y="159">0.038885</text>
 <text class="note" x="845" y="159">467 rows, 78.6% exact</text>
 <text class="label" x="28" y="202">hard 困难</text>
 <rect x="255" y="182" width="545.0" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
-<text class="value" x="810.0" y="201">0.156290</text>
+<text class="value" x="810.0" y="201">0.155494</text>
 <text class="note" x="845" y="201">208 rows, 6.2% exact</text>
 </svg>

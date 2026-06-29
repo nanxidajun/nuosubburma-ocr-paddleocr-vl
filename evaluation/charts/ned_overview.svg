@@ -10,28 +10,28 @@
 <text class="label" x="28" y="124">Avg NED</text>
 <rect class="base" x="275" y="102" width="396.1" height="18" rx="4" opacity="0.75"/>
 <text class="value" x="679.1" y="116">base 0.726733</text>
-<rect class="lora" x="275" y="126" width="38.3" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.3" y="140">LoRA 0.070342</text>
+<rect class="lora" x="275" y="126" width="38.2" height="18" rx="4" opacity="0.88"/>
+<text class="value" x="321.2" y="140">LoRA 0.070123</text>
 <text class="label" x="28" y="190">WS Avg NED</text>
 <rect class="base" x="275" y="168" width="392.2" height="18" rx="4" opacity="0.75"/>
 <text class="value" x="675.2" y="182">base 0.719600</text>
-<rect class="lora" x="275" y="192" width="38.1" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.1" y="206">LoRA 0.069978</text>
+<rect class="lora" x="275" y="192" width="38.0" height="18" rx="4" opacity="0.88"/>
+<text class="value" x="321.0" y="206">LoRA 0.069809</text>
 <text class="label" x="28" y="256">NFKC+WS NED</text>
 <rect class="base" x="275" y="234" width="385.2" height="18" rx="4" opacity="0.75"/>
 <text class="value" x="668.2" y="248">base 0.706794</text>
-<rect class="lora" x="275" y="258" width="38.0" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.0" y="272">LoRA 0.069796</text>
+<rect class="lora" x="275" y="258" width="37.9" height="18" rx="4" opacity="0.88"/>
+<text class="value" x="320.9" y="272">LoRA 0.069627</text>
 <text class="label" x="28" y="322">Yi-only NED</text>
 <rect class="base" x="275" y="300" width="545.0" height="18" rx="4" opacity="0.75"/>
 <text class="value" x="828.0" y="314">base 1.000000</text>
-<rect class="lora" x="275" y="324" width="38.1" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.1" y="338">LoRA 0.069870</text>
+<rect class="lora" x="275" y="324" width="38.0" height="18" rx="4" opacity="0.88"/>
+<text class="value" x="321.0" y="338">LoRA 0.069797</text>
 <text class="label" x="28" y="388">Han-only NED</text>
-<rect class="base" x="275" y="366" width="114.1" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="397.1" y="380">base 0.209245</text>
-<rect class="lora" x="275" y="390" width="30.5" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="313.5" y="404">LoRA 0.055882</text>
+<rect class="base" x="275" y="366" width="114.0" height="18" rx="4" opacity="0.75"/>
+<text class="value" x="397.0" y="380">base 0.209245</text>
+<rect class="lora" x="275" y="390" width="30.3" height="18" rx="4" opacity="0.88"/>
+<text class="value" x="313.3" y="404">LoRA 0.055544</text>
 <text class="label" x="28" y="454">Digit-only NED</text>
 <rect class="base" x="275" y="432" width="201.4" height="18" rx="4" opacity="0.75"/>
 <text class="value" x="484.4" y="446">base 0.369451</text>

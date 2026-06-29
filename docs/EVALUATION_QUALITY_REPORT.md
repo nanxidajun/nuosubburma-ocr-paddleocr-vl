@@ -171,15 +171,15 @@ dataset_summary.json
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | 758 | 758 |
-| 平均归一化编辑距离（Avg NED，越低越好） | 0.726733 | 0.070342 |
-| 忽略空白后的平均编辑距离 | 0.719600 | 0.069978 |
-| NFKC+WS Avg NED | 0.706794 | 0.069796 |
+| 平均归一化编辑距离（Avg NED，越低越好） | 0.726733 | 0.070123 |
+| 忽略空白后的平均编辑距离 | 0.719600 | 0.069809 |
+| NFKC+WS Avg NED | 0.706794 | 0.069627 |
 | Exact | 0 / 758 | 447 / 758 (59.0%) |
-| Yi-only Avg NED | 1.000000 | 0.069870 |
-| Han-only Avg NED | 0.209245 | 0.055882 |
+| Yi-only Avg NED | 1.000000 | 0.069797 |
+| Han-only Avg NED | 0.209245 | 0.055544 |
 | Digit-only Avg NED | 0.369451 | 0.260416 |
 | replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 6 / 1 / 1 |
 
-按数据集维度拆分，line `470` 条 Avg NED `0.025444`，region `119` 条 Avg NED `0.082315`，page `169` 条 Avg NED `0.186774`；旧印刷 `507` 条 Avg NED `0.036873`，屏幕拍照/页面上传图 `87` 条 Avg NED `0.258809`，手写拍照 `53` 条 Avg NED `0.124483`。
+按数据集维度拆分，line `470` 条 Avg NED `0.025444`，region `119` 条 Avg NED `0.082315`，page `169` 条 Avg NED `0.185795`；旧印刷 `507` 条 Avg NED `0.036547`，屏幕拍照/页面上传图 `87` 条 Avg NED `0.258809`，手写拍照 `53` 条 Avg NED `0.124483`。
 
 结果可由 `scripts/run_eval.sh` 和 `scripts/analyze_submission_eval.py` 按最终评估集复跑。公开逐样本结果保留在 `evaluation/raw/submission_model_result.jsonl`，多维统计表保留在 `evaluation/tables/`。

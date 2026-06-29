@@ -207,7 +207,7 @@
   "final_lock": {
     "version": "20260629_final_locked_gt_complete",
     "locked_at": "2026-06-29T21:22:14",
-    "annotations_sha256": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95",
+    "annotations_sha256": "066a762962b17db57069fb0d714e7f2454825e7dc5f3b134bf4b4c383f8a069d",
     "checksum_file": "FINAL_LOCK_CHECKSUMS_20260629.sha256",
     "manifest_file": "FINAL_LOCK_MANIFEST_20260629.json",
     "backups": {
@@ -238,8 +238,8 @@
     {
       "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl",
       "exists": true,
-      "size": 1814112,
-      "sha256": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95"
+      "size": 1808567,
+      "sha256": "066a762962b17db57069fb0d714e7f2454825e7dc5f3b134bf4b4c383f8a069d"
     },
     {
       "path": "local_artifacts/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
