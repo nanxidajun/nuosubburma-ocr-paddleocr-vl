@@ -1,6 +1,8 @@
 # 页面切割流程
 
-本目录只有一个页面切割入口：`run.py`。它使用 Paddle 的 `PP-DocLayout` 版面检测模型对整页图片或 PDF 做页面切割，生成可送入 OCR 的文本块，并保留 `page_id`、`crop_id`、`reading_order` 等字段，供后续 OCR、页面文本合并、异常审计和可选注音使用。
+本目录有两个页面处理入口：`run.py` 负责页面切割，`assemble_pages.py` 负责把 OCR 单元拼合成页级文本。`run.py` 使用 Paddle 的 `PP-DocLayout` 版面检测模型对整页图片或 PDF 做页面切割，生成可送入 OCR 的文本块。
+
+输出会保留 `page_id`、`crop_id`、`reading_order`、`bbox` 等字段，供后续 OCR、visual-line 页面文本合并、异常审计和可选注音使用。
 
 ## 一键运行
 
@@ -57,6 +59,17 @@ python demo/run_page_workflow.py \
 -> 页面文本合并
 -> 异常审计
 -> 可选注音
+```
+
+## 单独拼合 OCR 结果
+
+`assemble_pages.py` 是页面文本拼合的唯一主脚本。它使用 OCR 单元的 `bbox` / `reading_order` 做 visual-line 拼合，输出 `submission_pages.*`、`official_submission.*`、`page_audit.csv` 和 `audit_summary.json`。
+
+```bash
+python page_processing/assemble_pages.py \
+  --results outputs/demo_page_workflow/02_ocr_units/ocr_units_results.jsonl \
+  --out-dir outputs/demo_page_workflow/03_page_text \
+  --image-root outputs/demo_page_workflow/01_page_cutting/02_ocr_units
 ```
 
 如果已经跑过页面切割，也可以复用切割结果：

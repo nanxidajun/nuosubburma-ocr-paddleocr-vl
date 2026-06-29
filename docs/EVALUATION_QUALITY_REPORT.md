@@ -1,6 +1,6 @@
 # 评估集质检报告
 
-本文档对应比赛评分中的“评估集质量”，重点说明当前 `NuosuBburma OCR Evaluation Set` 为什么是真实、可复查、可稳定评估的。对本次 PaddleOCR 衍生模型挑战赛来说，评估集不是结果表的附件，而是判断衍生模型是否真正覆盖长尾 OCR 场景的基础证据。数据集的来源、分布和结果解读另见 [评估集说明](EVALUATION_DATASET.md)。
+本文档说明 `NuosuBburma OCR Evaluation Set` 的真实性、标注、质检和复查入口。数据来源、分布和结果解读见 [评估集说明](EVALUATION_DATASET.md)。
 
 ## 质检结论
 
@@ -17,7 +17,7 @@
 | removed or archived during build | 27 |
 | official eval version | NuosuBburma OCR Evaluation Set |
 
-这些检查来自构建摘要、逐样本输出和公开复查入口。GitHub 仓库保留可复查的最终材料，方便评委从 summary 追到分组统计和逐样本输出：
+这些检查来自构建摘要、逐样本输出和公开复查入口：
 
 ```text
 NuosuBburma_OCR_Evaluation_Set/README.md
@@ -79,7 +79,7 @@ evaluation/raw/submission_model_result.jsonl
 - 规范手写、多行 region、页面图像、脚注、数字和彝汉混排不因难度高而简单删除。
 - 多行样本保留换行，避免把 region/page 强行压成单行。
 - Latin 注音只在人工标注可见时保留；人工标注无 Latin 的样本用于检查模型是否出现多余 Latin 输出。
-- 评估样本不进入最终训练目标，训练侧只使用排除清单规避精确重合。
+- 评估样本不进入训练包，训练侧只使用排除清单规避精确重合。
 
 ## 数据规模与粒度
 
@@ -91,7 +91,7 @@ evaluation/raw/submission_model_result.jsonl
 | region | 84 |
 | page | 4 |
 
-这组分布的定位是主评估集：行图用于观察文字识别稳定性，region/page 用于暴露漏行、版面边界、阅读顺序和非标注换行问题。复杂整页资料建议配合页面切割流程和人工复核；压力测试材料与主评估集分开维护。
+行图用于观察文字识别稳定性；region/page 用于暴露漏行、版面边界、阅读顺序和非标注换行问题。复杂整页压力测试与主评估集分开维护。
 
 ## 多样性
 
@@ -120,7 +120,9 @@ evaluation/raw/submission_model_result.jsonl
 | medium | 324 |
 | hard | 107 |
 
-难度不是按模型预测结果倒推，而是结合来源、视觉质量、输入粒度和文本混合情况标注。主集保留了规范手写、region、页面图像、旧印刷、数字、脚注和彝汉混排样本，因此不会只评估清晰 PDF 行图。
+难度不是按模型预测结果倒推，而是结合来源、视觉质量、输入粒度和文本混合情况标注。
+
+主集保留了规范手写、region、页面图像、旧印刷、数字、脚注和彝汉混排样本，因此不会只评估清晰 PDF 行图。
 
 ## 删除与归档记录
 
@@ -131,7 +133,7 @@ evaluation/raw/submission_model_result.jsonl
 - 用户补充的更清晰副本替换旧版本。
 - 页面图像使用人工整理后的完整标准答案。
 
-这些删除不用于“刷高指标”，而是为了避免重复、不可稳定判读和低信息量样本影响评估集质量。保留样本全部计入主评分，不再拆成“展示样本”和“评分样本”两套。
+这些删除用于去重、替换坏图和移除低信息量样本。保留样本全部计入主评分。
 
 ## 评估复查入口
 
@@ -159,7 +161,11 @@ samples.csv
 dataset_summary.json
 ```
 
-评估脚本会输出整体 NED、空白处理后的 NED、Unicode 规范化后的 NED、Yi-only / Han-only / Digit-only NED，以及 replacement、LaTeX-like、extra Latin 和 long prediction 等输出风险指标。首页不把 exact match 作为唯一判断依据，因为逐字全等对空白、换行和标点过于敏感，不适合作为低资源 OCR 的主展示指标。
+评估脚本会输出整体 NED、空白处理后的 NED、Unicode 规范化后的 NED，以及 Yi-only / Han-only / Digit-only NED。
+
+脚本还会统计 replacement、LaTeX-like、extra Latin 和 long prediction 等输出风险指标。
+
+首页不把 exact match 作为主指标，因为它对空白、换行和标点过于敏感。
 
 ## 当前结果摘要
 
@@ -176,4 +182,4 @@ dataset_summary.json
 | Digit-only Avg NED | 最终评估后补充 | 0.139918 |
 | replacement / LaTeX / extra Latin / long_pred | 最终评估后补充 | 0 / 2 / 0 / 0 |
 
-结果可由 `scripts/run_eval.sh` 和 `scripts/analyze_submission_eval.py` 复跑；逐条输出保存在 `evaluation/raw/submission_model_result.jsonl`，用于解释分支选择和错误风险。
+结果可由 `scripts/run_eval.sh` 和 `scripts/analyze_submission_eval.py` 复跑。逐条输出保存在 `evaluation/raw/submission_model_result.jsonl`，用于解释分支选择和错误风险。

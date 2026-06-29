@@ -1,6 +1,6 @@
 # Demo
 
-本目录提供本地 demo。Hugging Face Space 是线上交互入口；没有配置 Space GPU 时，完整模型推理、页面切割复现和批量评估以本地脚本为准。
+本目录提供本地 demo。Hugging Face Space 是线上入口；没有配置 Space GPU 时，模型推理、页面切割和批量评估以本地脚本为准。
 
 本地 demo 分两类，按输入复杂度选择：
 
@@ -17,7 +17,7 @@
 python -m pip install -r requirements.txt
 ```
 
-`requirements.txt` 顶部写有推荐环境和 PaddlePaddle 安装命令。完整推理建议使用 CUDA GPU 环境。
+`requirements.txt` 顶部写有推荐环境和 PaddlePaddle 安装命令。模型推理建议使用 CUDA GPU 环境。
 
 ## 先下载模型
 
@@ -137,7 +137,7 @@ python demo/run_page_workflow.py \
 | `outputs/demo_page_workflow/03_page_text/submission_pages.html` | 本地 HTML 复核页，展示异常摘要、页面文本和 OCR 单元小图 |
 | `outputs/demo_page_workflow/03_page_text/audit_summary.json` | 空结果、异常状态、重复页等自动审计摘要 |
 | `outputs/demo_page_workflow/03_page_text/page_audit.csv` | 逐页审计表 |
-| `outputs/demo_page_workflow/03_page_text/submission_pages_pronounced.jsonl` | 使用 `--with-pronunciation` 时生成的注音附加输出 |
+| `outputs/demo_page_workflow/03_page_text/submission_pages_pronounced.jsonl` | 使用 `--with-pronunciation` 时生成的注音结果 |
 
 如果已经有页面切割输出或 OCR 结果，可以复用中间结果：
 

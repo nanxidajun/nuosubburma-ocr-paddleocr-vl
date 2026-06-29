@@ -4,20 +4,20 @@
 from __future__ import annotations
 
 import argparse
-import base64
 import csv
-import html
 import json
-import mimetypes
 import subprocess
 import sys
-from collections import Counter, defaultdict
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from page_processing.assemble_pages import assemble_ocr_results
+
 DEFAULT_MODEL = REPO_ROOT / "models" / "NuosuBburma-OCR"
 DEFAULT_INPUT = REPO_ROOT / "demo" / "sample_images" / "screen_page.jpg"
 DEFAULT_OUTPUT_ROOT = REPO_ROOT / "outputs" / "demo_page_workflow"
@@ -94,15 +94,6 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def image_data_uri(path_text: str) -> str:
-    path = Path(path_text)
-    if not path.exists() or not path.is_file():
-        return ""
-    mime_type = mimetypes.guess_type(path.name)[0] or "image/png"
-    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
-    return f"data:{mime_type};base64,{encoded}"
-
-
 def read_index(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
@@ -131,34 +122,6 @@ def unit_sort_key(row: dict[str, Any]) -> tuple[Any, ...]:
         as_int(meta.get("part_index")),
         str(meta.get("crop_id") or row.get("id") or ""),
     )
-
-
-def route_for(meta: dict[str, Any]) -> str:
-    role = str(meta.get("role") or "").lower()
-    label = str(meta.get("label_or_decision") or meta.get("sub_bucket") or "").lower()
-    note = str(meta.get("note") or "").lower()
-    combined = " ".join([role, label, note])
-    if "page_number" in combined:
-        return "page_number"
-    if "header" in combined:
-        return "header"
-    if "footer" in combined:
-        return "footer"
-    if "title" in combined:
-        return "title"
-    if role == "region_keep" or "region" in combined:
-        return "region"
-    return "body"
-
-
-def clean_replacement_chars(text: str) -> tuple[str, int, bool]:
-    replacement_count = text.count("�")
-    if not replacement_count:
-        return text, 0, False
-    mostly_replacement = replacement_count >= max(8, int(len(text) * 0.8))
-    if mostly_replacement:
-        return "", replacement_count, True
-    return text.replace("�", ""), replacement_count, False
 
 
 def ensure_model_exists(model_path: Path) -> None:
@@ -321,355 +284,6 @@ def run_ocr_units(
             print(f"[{pos}/{len(rows)}] {status} {out['id']}", flush=True)
 
 
-def merge_page_text(ocr_results_path: Path, page_text_dir: Path, keep_empty_units: bool, max_image_side: int) -> dict[str, Path]:
-    rows = sorted(read_jsonl(ocr_results_path), key=unit_sort_key)
-    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    route_counts: Counter[str] = Counter()
-    status_counts: Counter[str] = Counter()
-    replacement_rows: list[dict[str, Any]] = []
-    removed_replacement_chars = 0
-
-    for row in rows:
-        meta = row.get("meta") if isinstance(row.get("meta"), dict) else {}
-        page_id = str(meta.get("page_id") or "unknown_page")
-        raw_text = str(row.get("answer") or "").strip()
-        clean_text, replacement_count, cleared = clean_replacement_chars(raw_text)
-        removed_replacement_chars += replacement_count
-        route = route_for(meta)
-        route_counts[route] += 1
-        status = str(row.get("status") or "ok")
-        status_counts[status] += 1
-
-        if replacement_count:
-            replacement_rows.append(
-                {
-                    "id": row.get("id", ""),
-                    "page_id": page_id,
-                    "replacement_chars": replacement_count,
-                    "cleared_unit": cleared,
-                }
-            )
-
-        unit = {
-            "id": row.get("id", ""),
-            "page_id": page_id,
-            "page_file": meta.get("page_file", ""),
-            "route": route,
-            "status": status,
-            "image": row.get("image") or (row.get("images") or [""])[0],
-            "source_box": meta.get("source_box", ""),
-            "part_index": meta.get("part_index", ""),
-            "reading_order": meta.get("reading_order", ""),
-            "raw_text": raw_text,
-            "text": clean_text,
-            "replacement_chars": replacement_count,
-        }
-        grouped[page_id].append(unit)
-
-    pages: list[dict[str, Any]] = []
-    page_audit: list[dict[str, Any]] = []
-    official_rows: list[dict[str, str]] = []
-
-    for page_id, units in sorted(grouped.items()):
-        units = sorted(units, key=unit_sort_key)
-        text = "\n".join(unit["text"] for unit in units if keep_empty_units or str(unit.get("text") or "").strip())
-        page_file = next((str(unit.get("page_file") or "") for unit in units if unit.get("page_file")), "")
-        page_route_counts = Counter(str(unit.get("route") or "") for unit in units)
-        page = {
-            "page_id": page_id,
-            "page_file": page_file,
-            "text": text,
-            "ocr_units": units,
-            "routes": dict(sorted(page_route_counts.items())),
-        }
-        pages.append(page)
-        official_rows.append({"image_id": page_id, "prediction": text})
-        page_audit.append(
-            {
-                "page_id": page_id,
-                "page_file": page_file,
-                "char_count": len(text),
-                "line_count": len([line for line in text.splitlines() if line.strip()]),
-                "ocr_units": len(units),
-                "routes": json.dumps(dict(sorted(page_route_counts.items())), ensure_ascii=False),
-                "empty": not bool(text.strip()),
-            }
-        )
-
-    text_groups: dict[str, list[str]] = defaultdict(list)
-    for page in pages:
-        text = str(page.get("text") or "").strip()
-        if text:
-            text_groups[text].append(str(page.get("page_id") or ""))
-    duplicate_groups = [ids for ids in text_groups.values() if len(ids) > 1]
-
-    page_text_dir.mkdir(parents=True, exist_ok=True)
-    submission_jsonl = page_text_dir / "submission_pages.jsonl"
-    official_jsonl = page_text_dir / "official_submission.jsonl"
-    official_csv = page_text_dir / "official_submission.csv"
-    page_audit_csv = page_text_dir / "page_audit.csv"
-    audit_summary_json = page_text_dir / "audit_summary.json"
-    submission_md = page_text_dir / "submission_pages.md"
-    submission_html = page_text_dir / "submission_pages.html"
-
-    write_jsonl(submission_jsonl, pages)
-    write_jsonl(official_jsonl, official_rows)
-    write_csv(official_csv, official_rows)
-    write_csv(page_audit_csv, page_audit)
-    write_markdown(submission_md, pages)
-
-    audit_summary = {
-        "pages": len(pages),
-        "official_rows": len(official_rows),
-        "ocr_units": len(rows),
-        "ocr_status": dict(sorted(status_counts.items())),
-        "route_counts": dict(sorted(route_counts.items())),
-        "replacement_char_rows": replacement_rows,
-        "removed_replacement_chars": removed_replacement_chars,
-        "final_contains_replacement_char": any("�" in str(page.get("text") or "") for page in pages),
-        "empty_pages": [row["page_id"] for row in page_audit if row["empty"]],
-        "duplicate_page_text_groups": duplicate_groups,
-        "avg_chars_per_page": sum(row["char_count"] for row in page_audit) / max(len(page_audit), 1),
-        "avg_lines_per_page": sum(row["line_count"] for row in page_audit) / max(len(page_audit), 1),
-    }
-    audit_summary_json.write_text(json.dumps(audit_summary, ensure_ascii=False, indent=2), encoding="utf-8")
-    write_html(submission_html, pages, audit_summary, max_image_side)
-
-    return {
-        "submission_jsonl": submission_jsonl,
-        "official_jsonl": official_jsonl,
-        "official_csv": official_csv,
-        "page_audit_csv": page_audit_csv,
-        "audit_summary_json": audit_summary_json,
-        "submission_md": submission_md,
-        "submission_html": submission_html,
-    }
-
-
-def write_markdown(path: Path, pages: list[dict[str, Any]]) -> None:
-    lines = ["# 本地整页 OCR demo 结果", ""]
-    for page in pages:
-        lines.extend([f"## {page['page_id']}", "", str(page.get("text") or ""), ""])
-    path.write_text("\n".join(lines), encoding="utf-8")
-
-
-def write_html(path: Path, pages: list[dict[str, Any]], audit: dict[str, Any], max_image_side: int) -> None:
-    page_cards = []
-    for page in pages:
-        unit_cards = []
-        for unit in page.get("ocr_units", []):
-            img_src = image_data_uri(str(unit.get("image") or ""))
-            image_html = (
-                f'<img src="{img_src}" alt="OCR unit">'
-                if img_src
-                else '<div class="missing-image">OCR 单元图片未找到</div>'
-            )
-            status = html.escape(str(unit.get("status") or ""))
-            route = html.escape(str(unit.get("route") or ""))
-            reading_order = html.escape(str(unit.get("reading_order") or ""))
-            text = html.escape(str(unit.get("text") or unit.get("raw_text") or ""))
-            unit_cards.append(
-                f"""
-<article class="unit">
-  <div class="unit-image">{image_html}</div>
-  <div class="unit-body">
-    <p class="unit-meta">状态：{status or "n/a"} · 类型：{route or "n/a"} · 顺序：{reading_order or "n/a"}</p>
-    <pre>{text}</pre>
-  </div>
-</article>
-"""
-            )
-
-        page_cards.append(
-            f"""
-<article class="page">
-  <h2>页面：{html.escape(str(page.get("page_id") or ""))}</h2>
-  <p class="page-meta">文件：{html.escape(str(page.get("page_file") or ""))} · OCR 单元：{len(page.get("ocr_units", []))}</p>
-  <section class="result-card">
-    <h3>页面文本</h3>
-    <pre>{html.escape(str(page.get("text") or ""))}</pre>
-  </section>
-  <section class="units">
-    <h3>OCR 单元复核</h3>
-    {''.join(unit_cards)}
-  </section>
-</article>
-"""
-        )
-
-    route_text = ", ".join(f"{html.escape(str(k))}: {v}" for k, v in audit.get("route_counts", {}).items())
-    status_text = ", ".join(f"{html.escape(str(k))}: {v}" for k, v in audit.get("ocr_status", {}).items())
-    empty_pages = ", ".join(html.escape(str(x)) for x in audit.get("empty_pages", [])) or "无"
-    duplicate_groups = audit.get("duplicate_page_text_groups", [])
-    duplicate_text = html.escape(json.dumps(duplicate_groups, ensure_ascii=False)) if duplicate_groups else "无"
-    size_note = (
-        f"输入页面超过长边限制 {max_image_side} 时，会先等比例压缩后再进入页面切割和 OCR；原始文件不会被修改。"
-        if max_image_side > 0
-        else "当前未启用长边压缩限制。"
-    )
-    doc = f"""<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NuosuBburma OCR 本地整页 demo</title>
-  <style>
-    :root {{
-      --bg: #f4ead8;
-      --ink: #211d18;
-      --muted: #706657;
-      --card: #fffaf1;
-      --line: #dacbb5;
-      --accent: #8a4329;
-      --accent-soft: #f0d7bf;
-    }}
-    body {{
-      margin: 0;
-      background:
-        radial-gradient(circle at 10% 0%, #fff8de 0, transparent 34%),
-        linear-gradient(135deg, #f8f1df, var(--bg));
-      color: var(--ink);
-      font-family: "Songti SC", "Noto Serif CJK SC", serif;
-    }}
-    main {{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 34px 18px 54px;
-    }}
-    header {{
-      margin-bottom: 18px;
-    }}
-    h1 {{ margin: 0 0 8px; font-size: 31px; letter-spacing: 0.02em; }}
-    .sub {{ margin: 0; color: var(--muted); line-height: 1.7; }}
-    .audit, .page, .result-card {{
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 16px 38px rgba(74, 53, 28, 0.12);
-    }}
-    .audit {{
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      padding: 14px;
-      margin: 18px 0;
-    }}
-    .metric {{
-      background: #fff3da;
-      border: 1px solid var(--accent-soft);
-      border-radius: 12px;
-      padding: 12px;
-    }}
-    .metric strong {{
-      display: block;
-      font-size: 25px;
-      color: var(--accent);
-      line-height: 1.1;
-    }}
-    .metric span {{
-      display: block;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 13px;
-    }}
-    .audit-note {{
-      grid-column: 1 / -1;
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }}
-    .page {{
-      padding: 16px;
-      margin: 18px 0;
-    }}
-    h2 {{ margin: 0 0 6px; font-size: 21px; color: var(--accent); }}
-    h3 {{ margin: 0 0 10px; font-size: 16px; color: var(--accent); }}
-    .page-meta, .unit-meta {{
-      margin: 0 0 12px;
-      color: var(--muted);
-      font-size: 13px;
-    }}
-    .result-card {{
-      padding: 14px;
-      margin: 14px 0;
-      box-shadow: none;
-    }}
-    pre {{
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin: 0;
-      line-height: 1.8;
-      font-size: 19px;
-      font-family: "Kaiti SC", "Songti SC", "Noto Serif CJK SC", serif;
-    }}
-    .units {{
-      margin-top: 14px;
-    }}
-    .unit {{
-      display: grid;
-      grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
-      gap: 12px;
-      padding: 12px 0;
-      border-top: 1px solid var(--line);
-    }}
-    .unit:first-of-type {{
-      border-top: 0;
-    }}
-    .unit-image {{
-      background: #2a241d;
-      border-radius: 12px;
-      padding: 8px;
-      align-self: start;
-    }}
-    .unit-image img {{
-      display: block;
-      width: 100%;
-      max-height: 240px;
-      object-fit: contain;
-      border-radius: 8px;
-      background: white;
-    }}
-    .missing-image {{
-      color: #f8ead4;
-      font-size: 13px;
-      padding: 20px;
-      text-align: center;
-    }}
-    @media (max-width: 820px) {{
-      .audit {{
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }}
-      .unit {{
-        grid-template-columns: 1fr;
-      }}
-    }}
-  </style>
-</head>
-<body>
-  <main>
-    <header>
-      <h1>NuosuBburma OCR 本地整页 demo</h1>
-      <p class="sub">本页展示同一条本地流程：页面切割、OCR 单元识别、页面文本合并、异常审计和可选注音。异常审计只提示风险，不自动改写 OCR 正文。</p>
-      <p class="sub">{html.escape(size_note)}</p>
-    </header>
-    <section class="audit">
-      <div class="metric"><strong>{audit.get("pages", 0)}</strong><span>页面</span></div>
-      <div class="metric"><strong>{audit.get("ocr_units", 0)}</strong><span>OCR 单元</span></div>
-      <div class="metric"><strong>{len(audit.get("replacement_char_rows", []))}</strong><span>含替换符单元</span></div>
-      <div class="metric"><strong>{len(audit.get("empty_pages", []))}</strong><span>空结果页面</span></div>
-      <p class="audit-note">生成时间：{html.escape(datetime.now().astimezone().isoformat(timespec="seconds"))}</p>
-      <p class="audit-note">大图限制：{html.escape(str(max_image_side if max_image_side > 0 else "不压缩"))}。</p>
-      <p class="audit-note">OCR 状态：{status_text or "n/a"}；页面块类型：{route_text or "n/a"}。</p>
-      <p class="audit-note">空结果页面：{empty_pages}；重复页面文本：{duplicate_text}。</p>
-    </section>
-    {''.join(page_cards)}
-  </main>
-</body>
-</html>
-"""
-    path.write_text(doc, encoding="utf-8")
-
-
 def maybe_add_pronunciation(args: argparse.Namespace, submission_jsonl: Path, page_text_dir: Path) -> Path | None:
     if not args.with_pronunciation:
         return None
@@ -725,7 +339,13 @@ def main() -> None:
             limit=args.limit,
         )
 
-    outputs = merge_page_text(ocr_results, page_text_dir, args.keep_empty_units, args.max_image_side)
+    outputs = assemble_ocr_results(
+        ocr_results,
+        page_text_dir,
+        image_root=summary_root,
+        keep_empty_units=args.keep_empty_units,
+        max_image_side=args.max_image_side,
+    ).as_dict()
     pronounced = maybe_add_pronunciation(args, outputs["submission_jsonl"], page_text_dir)
 
     manifest = {

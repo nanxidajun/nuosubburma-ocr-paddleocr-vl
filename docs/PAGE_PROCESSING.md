@@ -1,6 +1,6 @@
 # 页面切割流程说明
 
-本项目只有一条页面切割流程：使用 Paddle 的 `PP-DocLayout` 版面检测模型对整页图片或 PDF 做页面切割，得到 OCR 单元和阅读顺序。Hugging Face Space 是在线交互入口，本地 `demo/run_page_workflow.py` 是命令行入口，二者讲的是同一件事。
+本项目只有一条页面切割与拼合流程：使用 Paddle 的 `PP-DocLayout` 版面检测模型对整页图片或 PDF 做页面切割，得到 OCR 单元、阅读顺序和 bbox；OCR 后统一由 `page_processing/assemble_pages.py` 做 visual-line 页面文本拼合。Hugging Face Space 是在线入口，本地 `demo/run_page_workflow.py` 是命令行入口。
 
 ## 流程
 
@@ -9,7 +9,7 @@
 -> PP-DocLayout 页面切割
 -> 生成 OCR 单元和 reading_order
 -> OCR 单元识别
--> 页面文本合并
+-> visual-line 页面文本合并
 -> 异常审计
 -> 可选注音
 ```
@@ -56,7 +56,7 @@ outputs/page_cutting_demo/
 
 ## OCR 单元索引
 
-`02_ocr_units/index.csv` 是后续 OCR 的桥。核心字段如下：
+`02_ocr_units/index.csv` 记录后续 OCR 需要的索引字段：
 
 | 字段 | 说明 |
 |---|---|
@@ -69,9 +69,20 @@ outputs/page_cutting_demo/
 | `bbox` | 版面检测框 |
 | `crop_bbox` | 加边距后的实际裁剪框 |
 
+## 页面文本拼合
+
+`page_processing/assemble_pages.py` 是公开仓库中的唯一主拼合脚本。它会按 OCR 单元的几何位置恢复视觉行，压掉保守判定的重叠重复块，再导出页级文本。
+
+```bash
+python page_processing/assemble_pages.py \
+  --results outputs/demo_page_workflow/02_ocr_units/ocr_units_results.jsonl \
+  --out-dir outputs/demo_page_workflow/03_page_text \
+  --image-root outputs/demo_page_workflow/01_page_cutting/02_ocr_units
+```
+
 ## 为什么需要页面切割
 
-复杂整页直接 OCR 时，模型可能出现漏行、跨行、换行不稳定、页码/脚注/正文边界混乱等问题。页面切割把整页先变成可检查的 OCR 单元，再按 `reading_order` 合并页面文本，便于人工复核和异常定位。
+复杂整页直接 OCR 时，模型可能出现漏行、跨行、换行不稳定、页码/脚注/正文边界混乱等问题。页面切割把整页先变成可检查的 OCR 单元，再用 `assemble_pages.py` 按 visual-line 拼合页面文本，便于人工复核和异常定位。
 
 ## 《雪族子史篇》整页对比案例
 
@@ -79,7 +90,7 @@ outputs/page_cutting_demo/
 
 | 识别路径 | Avg NED | 说明 |
 |---|---:|---|
-| 页面切割后识别 | `0.0654` | 阅读顺序更稳，彝汉配对更接近 GT，非文字干扰更少 |
+| 页面切割后识别 | `0.0654` | 阅读顺序更稳，彝汉配对更接近人工标注，非文字干扰更少 |
 | 直接整页 OCR | `0.5540` | 容易出现跨行、错行、彝汉配对拆散和花纹误识别 |
 
 NED 下降主要来自三点：第一，页面切割减少阅读顺序错位、跨行和页码混入正文；第二，更小的 OCR 单元让彝汉混排、标点和注释的局部对应关系更稳定；第三，版面检测可以减少花纹、边框和噪声等非文字区域被误识别成文字。
@@ -108,4 +119,6 @@ brew install poppler
 
 ## 边界
 
-页面切割不等于自动校对。它只负责把页面转成可识别、可追踪、可复核的 OCR 单元。严重倾斜、反光、遮挡、弯曲或低清页面仍可能切割不完整；这种情况应查看 `03_cut_review/` 和 demo 的异常提示，再决定是否复拍、复跑或改用直接识别对照。
+页面切割不等于自动校对。它只负责把页面转成可识别、可追踪、可复核的 OCR 单元。
+
+严重倾斜、反光、遮挡、弯曲或低清页面仍可能切割不完整；这种情况应查看 `03_cut_review/` 和 demo 的异常提示，再决定是否复拍或复跑。
