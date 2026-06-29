@@ -27,17 +27,17 @@ model-index:
           name: OCR
         dataset:
           type: nanxidajun/NuosuBburma-OCR-Evaluation-Set
-          name: NuosuBburma OCR Evaluation Set final 758 baseline
+          name: NuosuBburma OCR Evaluation Set final 758
         metrics:
           - type: avg_ned
             name: Avg NED
-            value: 0.726733
+            value: 0.070342
           - type: yi_avg_ned
             name: Yi-only Avg NED
-            value: 1.0
+            value: 0.069870
           - type: han_avg_ned
             name: Han-only Avg NED
-            value: 0.209245
+            value: 0.055882
 ---
 
 # NuosuBburma OCR：规范彝文识别模型
@@ -72,9 +72,9 @@ model-index:
 
 ## 当前评估口径
 
-最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座已完成最终评估；LoRA 微调后结果未出，完成后按同一脚本回填。
+最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座和 LoRA 微调后结果均已完成，LoRA Avg NED 为 `0.070342`。
 
-模型卡 metadata 中的 NED 指标是未微调基座在最终 `758` 条评估集上的对照结果。
+模型卡 metadata 中的 NED 指标是 LoRA 微调模型在最终 `758` 条评估集、最新人工 GT 上的结果。
 
 ## 快速使用
 
@@ -162,18 +162,21 @@ scripts/smoke_check.sh
 
 ## 评估结果
 
-当前公开 NED 结果使用最终 `758` 条整合评估集。未微调基座已完成；LoRA 微调后结果未出。合成样本不进入评估结果。归一化编辑距离（NED）越低越好。
+当前公开 NED 结果使用最终 `758` 条整合评估集。未微调基座和 LoRA 微调后均已完成；合成样本不进入评估结果。归一化编辑距离（NED）越低越好。
 
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
-| 评估样本 | `758` | 待回填 |
-| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | 待回填 |
-| 忽略空白后的平均编辑距离 | `0.7196` | 待回填 |
-| NFKC+WS Avg NED | `0.706794` | 待回填 |
-| Yi-only Avg NED | `1.000000` | 待回填 |
-| Han-only Avg NED | `0.209245` | 待回填 |
-| Digit-only Avg NED | `0.369451` | 待回填 |
-| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | 待回填 |
+| 评估样本 | `758` | `758` |
+| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | `0.070342` |
+| 忽略空白后的平均编辑距离 | `0.719600` | `0.069978` |
+| NFKC+WS Avg NED | `0.706794` | `0.069796` |
+| Exact | `0 / 758` | `447 / 758 (59.0%)` |
+| Yi-only Avg NED | `1.000000` | `0.069870` |
+| Han-only Avg NED | `0.209245` | `0.055882` |
+| Digit-only Avg NED | `0.369451` | `0.260416` |
+| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 6 / 1 / 1` |
+
+按输入粒度拆分：line `470` 条 Avg NED `0.025444`，region `119` 条 `0.082315`，page `169` 条 `0.186774`。整页 exact 低，主要因为长文本、换行、阅读顺序和页面边界对完全匹配非常敏感。
 
 指标解释：
 
@@ -187,7 +190,7 @@ scripts/smoke_check.sh
 | Digit-only Avg NED | 只抽取数字后计算平均归一化编辑距离 |
 | 替换符 / 公式化片段 / 多余拉丁字母 / 异常长输出 | 输出风险检查项；括号中的英文名保留在评估脚本和模型卡元数据中 |
 
-本文仅报告已完成并可核验的最终同口径结果；LoRA 微调后结果未出，不提前填写。
+完整逐样本结果和多维表格见 GitHub `evaluation/` 目录。
 
 ## 训练策略摘要
 

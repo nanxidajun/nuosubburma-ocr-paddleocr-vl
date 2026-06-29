@@ -1,66 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
-  <title id="title">NuosuBburma OCR final evaluation comparison</title>
-  <desc id="desc">Final 758-sample comparison: PaddleOCR-VL-1.6 original baseline completed, LoRA fine-tuned result pending.</desc>
-  <style>
-    text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-    .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
-    .card{fill:#fff;stroke:#d9e1de;stroke-width:1.3;rx:12}.ready{fill:#f7fffc;stroke:#12a37f;stroke-width:1.7;rx:12}.pending{fill:#fff8e7;stroke:#e8c575;stroke-width:1.6;rx:12}
-    .metric{font-size:30px;font-weight:820;fill:#102a27}.mtitle{font-size:14px;font-weight:760;fill:#52606d}.note{font-size:12px;fill:#6b7785}
-    .panel-title{font-size:18px;font-weight:780;fill:#172026}.label{font-size:13px;fill:#25313a}.value{font-size:13px;font-weight:740;fill:#172026}
-    .axis{stroke:#e2e8e5;stroke-width:1}.bar-base{fill:#176b87}.bar-wait{fill:#d9e1de}.risk{fill:#d94b43}.ok{fill:#12a37f}
-  </style>
-  <rect class="bg" width="1120" height="560"/>
-  <text class="title" x="40" y="48">最终评估集对比口径</text>
-  <text class="sub" x="40" y="74">统一使用 758 条真实来源样本；未微调基座已完成，LoRA 微调后结果待回填。</text>
-
-  <rect class="ready" x="40" y="104" width="245" height="92"/>
-  <text class="mtitle" x="62" y="134">评估样本</text>
-  <text class="metric" x="62" y="172">758</text>
-  <text class="note" x="134" y="171">line / region / page</text>
-
-  <rect class="card" x="305" y="104" width="245" height="92"/>
-  <text class="mtitle" x="327" y="134">未微调基座 Avg NED</text>
-  <text class="metric" x="327" y="172">0.7267</text>
-  <text class="note" x="455" y="171">越低越好</text>
-
-  <rect class="pending" x="570" y="104" width="245" height="92"/>
-  <text class="mtitle" x="592" y="134">LoRA 微调后</text>
-  <text class="metric" x="592" y="172">待回填</text>
-  <text class="note" x="592" y="188">同一评估集与脚本</text>
-
-  <rect class="card" x="835" y="104" width="245" height="92"/>
-  <text class="mtitle" x="857" y="134">基座输出风险</text>
-  <text class="metric" x="857" y="172">16 / 105 / 321 / 34</text>
-  <text class="note" x="857" y="188">replacement / LaTeX / extra Latin / long prediction</text>
-
-  <rect class="card" x="40" y="228" width="500" height="274"/>
-  <text class="panel-title" x="64" y="264">未微调基座主指标</text>
-  <line class="axis" x1="216" y1="292" x2="466" y2="292"/>
-  <text class="label" x="64" y="323">Avg NED</text>
-  <rect class="bar-base" x="216" y="304" width="218" height="28" rx="7"/>
-  <text class="value" x="446" y="323">0.726733</text>
-  <text class="label" x="64" y="374">NFKC+WS</text>
-  <rect class="bar-base" x="216" y="355" width="212" height="28" rx="7"/>
-  <text class="value" x="440" y="374">0.706794</text>
-  <text class="label" x="64" y="425">Han-only</text>
-  <rect class="ok" x="216" y="406" width="63" height="28" rx="7"/>
-  <text class="value" x="291" y="425">0.209245</text>
-  <text class="note" x="64" y="472">基座结果说明：原始 PaddleOCR-VL 对规范彝文识别不足，只作为微调对照。</text>
-
-  <rect class="card" x="580" y="228" width="500" height="274"/>
-  <text class="panel-title" x="604" y="264">未微调基座分组 Avg NED</text>
-  <line class="axis" x1="752" y1="292" x2="1020" y2="292"/>
-  <text class="label" x="604" y="319">line</text>
-  <rect class="bar-base" x="752" y="300" width="216" height="24" rx="6"/>
-  <text class="value" x="981" y="319">0.719674</text>
-  <text class="label" x="604" y="361">region</text>
-  <rect class="risk" x="752" y="342" width="238" height="24" rx="6"/>
-  <text class="value" x="1003" y="361">0.792116</text>
-  <text class="label" x="604" y="403">page</text>
-  <rect class="bar-base" x="752" y="384" width="210" height="24" rx="6"/>
-  <text class="value" x="975" y="403">0.700326</text>
-  <text class="label" x="604" y="445">LoRA</text>
-  <rect class="bar-wait" x="752" y="426" width="132" height="24" rx="6"/>
-  <text class="value" x="897" y="445">待回填</text>
-  <text class="note" x="604" y="480">所有结果使用同一 annotations、同一图片和同一评分脚本。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="306" viewBox="0 0 980 306" role="img">
+<rect width="100%" height="100%" fill="#fbfaf7"/>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:14px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}</style>
+<text class="title" x="28" y="38">Evaluation Snapshot</text>
+<text class="sub" x="28" y="63">Baseline vs LoRA on the final 758-sample NuosuBburma OCR evaluation set.</text>
+<text class="label" x="28" y="118">Base Avg NED</text>
+<rect x="255" y="98" width="545.0" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="810.0" y="117">0.726733</text>
+<text class="note" x="845" y="117">unfine-tuned</text>
+<text class="label" x="28" y="160">LoRA Avg NED</text>
+<rect x="255" y="140" width="52.8" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="317.8" y="159">0.070342</text>
+<text class="note" x="845" y="159">fine-tuned</text>
+<text class="label" x="28" y="202">LoRA line</text>
+<rect x="255" y="182" width="19.1" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
+<text class="value" x="284.1" y="201">0.025444</text>
+<text class="note" x="845" y="201">470 rows</text>
+<text class="label" x="28" y="244">LoRA region</text>
+<rect x="255" y="224" width="61.7" height="26" rx="6" fill="#c2410c" opacity="0.86"/>
+<text class="value" x="326.7" y="243">0.082315</text>
+<text class="note" x="845" y="243">119 rows</text>
+<text class="label" x="28" y="286">LoRA page</text>
+<rect x="255" y="266" width="140.1" height="26" rx="6" fill="#7c3aed" opacity="0.86"/>
+<text class="value" x="405.1" y="285">0.186774</text>
+<text class="note" x="845" y="285">169 rows</text>
 </svg>

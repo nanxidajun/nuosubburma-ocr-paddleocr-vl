@@ -44,7 +44,7 @@
   <rect class="final" x="130" y="494" width="430" height="104"/>
   <text class="stage" x="156" y="522">最终评估</text>
   <text class="head" x="156" y="550">758 条真实来源样本</text>
-  <text class="body" x="156" y="574">未微调基座已完成：Avg NED 0.7267；LoRA 微调后结果待回填。</text>
+  <text class="body" x="156" y="574">最终结果：Base Avg NED 0.7267；LoRA Avg NED 0.0703。</text>
 
   <path class="branch" d="M 560 286 C 620 286 630 140 690 140"/>
   <rect class="drop" x="690" y="102" width="360" height="86"/>

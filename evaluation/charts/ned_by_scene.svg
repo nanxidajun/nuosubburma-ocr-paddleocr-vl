@@ -1,29 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="338" viewBox="0 0 980 338" role="img" aria-labelledby="title desc">
-<title id="title">Baseline Avg NED by Scene</title>
-<desc id="desc">Original PaddleOCR-VL baseline NED by visual scene on final 758-sample evaluation set.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="306" viewBox="0 0 980 306" role="img">
 <rect width="100%" height="100%" fill="#fbfaf7"/>
-<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:26px;font-weight:700;fill:#111827}.sub{font-size:15px;fill:#6b7280}.label{font-size:15px;fill:#111827}.value{font-size:15px;font-weight:650;fill:#111827}.axis{stroke:#e5e7eb;stroke-width:1}.note{font-size:13px;fill:#6b7280}</style>
-<text class="title" x="28" y="38">Baseline Avg NED by Scene</text>
-<text class="sub" x="28" y="64">Final 758 set; lower is better; LoRA result pending</text>
-<line class="axis" x1="255" y1="74" x2="790" y2="74"/>
-<text class="label" x="28" y="114">old print</text>
-<rect x="255" y="92" width="399.1" height="32" rx="7" fill="#2563eb" opacity="0.88"/>
-<text class="value" x="666.1" y="114">0.692952</text>
-<text class="note" x="820" y="114">n=507</text>
-<text class="label" x="28" y="162">new print</text>
-<rect x="255" y="140" width="411.8" height="32" rx="7" fill="#16a34a" opacity="0.88"/>
-<text class="value" x="678.8" y="162">0.715006</text>
-<text class="note" x="820" y="162">n=100</text>
-<text class="label" x="28" y="210">screen photo</text>
-<rect x="255" y="188" width="500" height="32" rx="7" fill="#f97316" opacity="0.88"/>
-<text class="value" x="767" y="210">0.868220</text>
-<text class="note" x="820" y="210">n=87</text>
-<text class="label" x="28" y="258">handwriting photo</text>
-<rect x="255" y="236" width="503.6" height="32" rx="7" fill="#7c3aed" opacity="0.88"/>
-<text class="value" x="770.6" y="258">0.874385</text>
-<text class="note" x="820" y="258">n=53</text>
-<text class="label" x="28" y="306">scene photo</text>
-<rect x="255" y="284" width="322.4" height="32" rx="7" fill="#0891b2" opacity="0.88"/>
-<text class="value" x="589.4" y="306">0.559926</text>
-<text class="note" x="820" y="306">n=11</text>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:14px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}</style>
+<text class="title" x="28" y="38">Avg NED by Scene</text>
+<text class="sub" x="28" y="63">Final LoRA model by real-world scene.</text>
+<text class="label" x="28" y="118">旧印刷/扫描资料</text>
+<rect x="255" y="98" width="77.6" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="342.6" y="117">0.036873</text>
+<text class="note" x="845" y="117">507 rows</text>
+<text class="label" x="28" y="160">新印刷/PDF</text>
+<rect x="255" y="140" width="113.4" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="378.4" y="159">0.053856</text>
+<text class="note" x="845" y="159">100 rows</text>
+<text class="label" x="28" y="202">屏幕拍照/页面上传图</text>
+<rect x="255" y="182" width="545.0" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
+<text class="value" x="810.0" y="201">0.258809</text>
+<text class="note" x="845" y="201">87 rows</text>
+<text class="label" x="28" y="244">手写拍照</text>
+<rect x="255" y="224" width="262.1" height="26" rx="6" fill="#c2410c" opacity="0.86"/>
+<text class="value" x="527.1" y="243">0.124483</text>
+<text class="note" x="845" y="243">53 rows</text>
+<text class="label" x="28" y="286">真实场景照片</text>
+<rect x="255" y="266" width="23.9" height="26" rx="6" fill="#7c3aed" opacity="0.86"/>
+<text class="value" x="288.9" y="285">0.011364</text>
+<text class="note" x="845" y="285">11 rows</text>
 </svg>

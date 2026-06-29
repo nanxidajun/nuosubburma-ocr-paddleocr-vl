@@ -1,26 +1,57 @@
 # 最终评估结果
 
-本目录作为公开评估结果入口。当前统一口径为最终 `758` 条真实来源样本，对比对象为：
-
-| 模型 | 状态 | 说明 |
-|---|---|---|
-| `PaddleOCR-VL-1.6` 未微调基座 | 已完成 | 使用最终 `758` 条评估集，作为未微调对照 |
-| NuosuBburma OCR LoRA 微调模型 | 结果未出 | 将使用同一评估集、同一评估脚本和同一指标回填 |
+本目录作为公开评估结果入口。当前统一口径为最终 `758` 条真实来源样本，使用最新人工 GT；`real_screen_photo_nonbook_004` 和 `real_screen_photo_nonbook_005` 的 GT 修正已合并。
 
 ## 当前结果
 
-归一化编辑距离（NED）越低越好。
+归一化编辑距离（NED）越低越好。LoRA 微调后整体 Avg NED 为 `0.070342`，未微调基座为 `0.726733`。
 
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
-| 评估样本 | `758` | 待回填 |
-| Avg NED | `0.726733` | 待回填 |
-| WS Avg NED | `0.7196` | 待回填 |
-| NFKC+WS Avg NED | `0.706794` | 待回填 |
-| Yi-only Avg NED | `1.000000` | 待回填 |
-| Han-only Avg NED | `0.209245` | 待回填 |
-| Digit-only Avg NED | `0.369451` | 待回填 |
-| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | 待回填 |
+| 评估样本 | `758` | `758` |
+| Avg NED | `0.726733` | `0.070342` |
+| WS Avg NED | `0.719600` | `0.069978` |
+| NFKC+WS Avg NED | `0.706794` | `0.069796` |
+| Exact | `0 / 758` | `447 / 758 (59.0%)` |
+| Yi-only Avg NED | `1.000000` | `0.069870` |
+| Han-only Avg NED | `0.209245` | `0.055882` |
+| Digit-only Avg NED | `0.369451` | `0.260416` |
+| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 6 / 1 / 1` |
+
+## 多角度统计
+
+| 维度 | 入口 |
+|---|---|
+| 输入粒度 line / region / page | `tables/by_sample_type.csv` |
+| 真实场景 old_print / new_print / screen / handwriting / photo | `tables/by_scene.csv` |
+| 数据来源/书目 | `tables/by_source.csv` |
+| 难度 easy / medium / hard | `tables/by_difficulty.csv` |
+| 文本构成 yi / yi_han / yi_han_latin | `tables/by_script_mix.csv` |
+| 是否含数字 | `tables/by_has_digit.csv` |
+| GT 文本长度 | `tables/by_text_length.csv` |
+| GT 行数 | `tables/by_gt_lines.csv` |
+| 最差 50 条 | `tables/worst_50.csv` |
+| 风险输出样本 | `tables/risk_rows.csv` |
+
+## 核心拆分
+
+### 按输入粒度
+
+| 分组 | rows | Avg NED | WS NED | Exact | Yi-only NED | Han-only NED | Digit-only NED | 风险 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| line 单行图 | 470 | 0.025444 | 0.024531 | 386/470 (82.1%) | 0.029608 | 0.012273 | 0.151515 | 0/1/0/0 |
+| region 区域图 | 119 | 0.082315 | 0.084714 | 57/119 (47.9%) | 0.077560 | 0.085192 | 0.200000 | 0/0/0/0 |
+| page 整页图 | 169 | 0.186774 | 0.185993 | 4/169 (2.4%) | 0.177059 | 0.113003 | 0.310749 | 0/5/1/1 |
+
+### 按真实场景
+
+| 分组 | rows | Avg NED | WS NED | Exact | Yi-only NED | Han-only NED | Digit-only NED | 风险 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| 旧印刷/扫描资料 | 507 | 0.036873 | 0.036473 | 356/507 (70.2%) | 0.039709 | 0.026736 | 0.335681 | 0/1/1/0 |
+| 新印刷/PDF | 100 | 0.053856 | 0.050283 | 71/100 (71.0%) | 0.062095 | 0.023500 | 0.085106 | 0/0/0/0 |
+| 屏幕拍照/页面上传图 | 87 | 0.258809 | 0.257171 | 3/87 (3.4%) | 0.213667 | 0.172971 | 0.292430 | 0/5/0/1 |
+| 手写拍照 | 53 | 0.124483 | 0.132436 | 7/53 (13.2%) | 0.147964 | 1.000000 | 1.000000 | 0/0/0/0 |
+| 真实场景照片 | 11 | 0.011364 | 0.011858 | 10/11 (90.9%) | 0.014354 | 0.000000 |  | 0/0/0/0 |
 
 ## 指标怎么读
 
@@ -29,13 +60,8 @@
 | Avg NED | 平均归一化编辑距离。预测文本改成人工标注需要多少编辑量，再按文本长度归一 |
 | WS Avg NED | 忽略空白差异后的 Avg NED |
 | NFKC+WS Avg NED | 做 Unicode 兼容规范化并忽略空白差异后的 Avg NED |
-| Yi-only Avg NED | 只抽取彝文字符后计算 NED |
-| Han-only Avg NED | 只抽取汉字后计算 NED |
-| Digit-only Avg NED | 只抽取数字后计算 NED |
-| replacement | 预测中出现替换符 |
-| LaTeX-like | 脚注、圈号或符号被模型输出成公式样文本 |
-| extra Latin | 人工标注无拉丁字母但预测多出拉丁字母 |
-| long prediction | 预测明显长于标注，属于异常长输出风险 |
+| Yi-only / Han-only / Digit-only Avg NED | 分别只抽取彝文、汉字、数字后计算 NED |
+| replacement / LaTeX-like / extra Latin / long prediction | 输出风险检查项 |
 
 ## 结果图表
 
@@ -64,6 +90,21 @@
 ```text
 summary.md
 summary.json
+raw/
+  submission_model_result.jsonl
+  submission_model_predictions.jsonl
+tables/
+  by_sample_type.csv
+  by_scene.csv
+  by_source.csv
+  by_difficulty.csv
+  by_script_mix.csv
+  by_has_digit.csv
+  by_text_length.csv
+  by_gt_lines.csv
+  all_scored_rows.csv
+  worst_50.csv
+  risk_rows.csv
 charts/
   ned_overview.svg
   ned_by_sample_type.svg
@@ -71,5 +112,3 @@ charts/
   ned_by_scene.svg
   safety_failures.svg
 ```
-
-LoRA 微调模型在最终评估集上的逐条输出和分组表将在结果完成后回填。
