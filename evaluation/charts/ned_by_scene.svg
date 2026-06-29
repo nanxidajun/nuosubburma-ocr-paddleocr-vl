@@ -1,23 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="334" viewBox="0 0 980 334">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="338" viewBox="0 0 980 338" role="img" aria-labelledby="title desc">
+<title id="title">Baseline Avg NED by Scene</title>
+<desc id="desc">Original PaddleOCR-VL baseline NED by visual scene on final 758-sample evaluation set.</desc>
 <rect width="100%" height="100%" fill="#fbfaf7"/>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:26px;font-weight:700;fill:#111827}.sub{font-size:15px;fill:#6b7280}.label{font-size:15px;fill:#111827}.value{font-size:15px;font-weight:650;fill:#111827}.axis{stroke:#e5e7eb;stroke-width:1}.note{font-size:13px;fill:#6b7280}</style>
-<text class="title" x="28" y="38">Avg NED by Scene</text>
-<text class="sub" x="28" y="64">Lower is better; handwriting remains the hardest split</text>
-<line class="axis" x1="245" y1="74" x2="800" y2="74"/>
-<text class="label" x="28" y="114">old_print_pdf</text>
-<rect x="245" y="92" width="95.4" height="32" rx="7" fill="#2563eb" opacity="0.88"/>
-<text class="value" x="352.4" y="114">0.0258</text>
-<text class="note" x="830" y="114">n=235</text>
-<text class="label" x="28" y="162">new_print_pdf</text>
-<rect x="245" y="140" width="107.5" height="32" rx="7" fill="#16a34a" opacity="0.88"/>
-<text class="value" x="364.5" y="162">0.0290</text>
-<text class="note" x="830" y="162">n=309</text>
-<text class="label" x="28" y="210">photo_or_scene</text>
-<rect x="245" y="188" width="131.3" height="32" rx="7" fill="#f97316" opacity="0.88"/>
-<text class="value" x="388.3" y="210">0.0355</text>
-<text class="note" x="830" y="210">n=6</text>
-<text class="label" x="28" y="258">neat_handwriting</text>
-<rect x="245" y="236" width="454.0" height="32" rx="7" fill="#7c3aed" opacity="0.88"/>
-<text class="value" x="711.0" y="258">0.1227</text>
-<text class="note" x="830" y="258">n=53</text>
+<text class="title" x="28" y="38">Baseline Avg NED by Scene</text>
+<text class="sub" x="28" y="64">Final 758 set; lower is better; LoRA result pending</text>
+<line class="axis" x1="255" y1="74" x2="790" y2="74"/>
+<text class="label" x="28" y="114">old print</text>
+<rect x="255" y="92" width="399.1" height="32" rx="7" fill="#2563eb" opacity="0.88"/>
+<text class="value" x="666.1" y="114">0.692952</text>
+<text class="note" x="820" y="114">n=507</text>
+<text class="label" x="28" y="162">new print</text>
+<rect x="255" y="140" width="411.8" height="32" rx="7" fill="#16a34a" opacity="0.88"/>
+<text class="value" x="678.8" y="162">0.715006</text>
+<text class="note" x="820" y="162">n=100</text>
+<text class="label" x="28" y="210">screen photo</text>
+<rect x="255" y="188" width="500" height="32" rx="7" fill="#f97316" opacity="0.88"/>
+<text class="value" x="767" y="210">0.868220</text>
+<text class="note" x="820" y="210">n=87</text>
+<text class="label" x="28" y="258">handwriting photo</text>
+<rect x="255" y="236" width="503.6" height="32" rx="7" fill="#7c3aed" opacity="0.88"/>
+<text class="value" x="770.6" y="258">0.874385</text>
+<text class="note" x="820" y="258">n=53</text>
+<text class="label" x="28" y="306">scene photo</text>
+<rect x="255" y="284" width="322.4" height="32" rx="7" fill="#0891b2" opacity="0.88"/>
+<text class="value" x="589.4" y="306">0.559926</text>
+<text class="note" x="820" y="306">n=11</text>
 </svg>

@@ -28,7 +28,7 @@
   <rect class="card" x="40" y="116" width="188" height="120"/>
   <text class="label" x="64" y="152">PDF / 图片</text>
   <text class="body" x="64" y="180">旧书扫描、教材页面</text>
-  <text class="body" x="64" y="204">手写稿、实拍照片</text>
+  <text class="body" x="64" y="204">手写稿、场景照片</text>
   <rect class="chip" x="64" y="255" width="108" height="26"/>
   <text class="tag" x="76" y="273">真实来源输入</text>
 
@@ -44,7 +44,7 @@
   <rect class="card" x="568" y="116" width="188" height="120"/>
   <text class="label" x="592" y="152">LoRA OCR</text>
   <text class="body" x="592" y="180">PaddleOCR-VL-1.6 0.9B</text>
-  <text class="body" x="592" y="204">固定提示词 &lt;image&gt;OCR:</text>
+  <text class="body" x="592" y="204">统一图像 OCR 输入</text>
   <rect class="chip" x="592" y="255" width="94" height="26"/>
   <text class="tag" x="604" y="273">Unicode 输出</text>
 

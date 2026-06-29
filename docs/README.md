@@ -5,7 +5,7 @@
 | 评分/核验问题 | 文档 | 内容 |
 |---|---|---|
 | 总体提交与评分映射 | [COMPETITION_SUBMISSION.md](COMPETITION_SUBMISSION.md) | 评委快速核验、官方评分点映射、结果统计、复现入口和边界说明 |
-| 评估集质量 | [EVALUATION_DATASET.md](EVALUATION_DATASET.md) | 最终 `758` 条真实评估集的来源、分布、四维度评价、质检和历史 `603` 条指标口径 |
+| 评估集质量 | [EVALUATION_DATASET.md](EVALUATION_DATASET.md) | 最终 `758` 条真实评估集的来源、分布、四维度评价、质检和最终对比口径 |
 | 标注与质检 | [EVALUATION_QUALITY_REPORT.md](EVALUATION_QUALITY_REPORT.md) | 标注边界、质检结果、样本纳入标准和核验入口 |
 | 训练数据科学性 | [TRAINING_DATA_CONSTRUCTION_REPORT.md](TRAINING_DATA_CONSTRUCTION_REPORT.md) | 训练材料、合成样本、文本不变的视觉变化样本、训练包质检和训练包清单 |
 | 微调策略与创新 | [MODEL_AND_TRAINING.md](MODEL_AND_TRAINING.md) | 模型设置、训练参数、三阶段调优和提交模型结果 |

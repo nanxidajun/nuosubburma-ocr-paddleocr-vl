@@ -1,47 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="626" viewBox="0 0 980 626">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420" role="img" aria-labelledby="title desc">
+<title id="title">Baseline Avg NED by Source</title>
+<desc id="desc">Original PaddleOCR-VL baseline source-level NED summary on the final 758-sample evaluation set.</desc>
 <rect width="100%" height="100%" fill="#fbfaf7"/>
 <style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:26px;font-weight:700;fill:#111827}.sub{font-size:15px;fill:#6b7280}.label{font-size:15px;fill:#111827}.value{font-size:15px;font-weight:650;fill:#111827}.axis{stroke:#e5e7eb;stroke-width:1}.note{font-size:13px;fill:#6b7280}</style>
-<text class="title" x="28" y="38">Avg NED by Source</text>
-<text class="sub" x="28" y="64">Lower is better; shows real-source robustness without over-penalizing small formatting differences</text>
-<line class="axis" x1="255" y1="74" x2="790" y2="74"/>
-<text class="label" x="28" y="114">凉山彝语语法</text>
-<rect x="255" y="92" width="40.5" height="32" rx="7" fill="#2563eb" opacity="0.88"/>
-<text class="value" x="307.5" y="114">0.0114</text>
-<text class="note" x="820" y="114">n=30</text>
-<text class="label" x="28" y="162">勒俄玛牧导读教程</text>
-<rect x="255" y="140" width="46.9" height="32" rx="7" fill="#16a34a" opacity="0.88"/>
-<text class="value" x="313.9" y="162">0.0131</text>
-<text class="note" x="820" y="162">n=126</text>
-<text class="label" x="28" y="210">凉山彝文资料选译第2集</text>
-<rect x="255" y="188" width="74.9" height="32" rx="7" fill="#f97316" opacity="0.88"/>
-<text class="value" x="341.9" y="210">0.0210</text>
-<text class="note" x="820" y="210">n=106</text>
-<text class="label" x="28" y="258">凉山彝文资料选译第3集</text>
-<rect x="255" y="236" width="88.1" height="32" rx="7" fill="#7c3aed" opacity="0.88"/>
-<text class="value" x="355.1" y="258">0.0247</text>
-<text class="note" x="820" y="258">n=84</text>
-<text class="label" x="28" y="306">页面照片</text>
-<rect x="255" y="284" width="104.6" height="32" rx="7" fill="#dc2626" opacity="0.88"/>
-<text class="value" x="371.6" y="306">0.0293</text>
-<text class="note" x="820" y="306">n=3</text>
-<text class="label" x="28" y="354">《勒俄特依》译注</text>
-<rect x="255" y="332" width="139.1" height="32" rx="7" fill="#0891b2" opacity="0.88"/>
-<text class="value" x="406.1" y="354">0.0390</text>
-<text class="note" x="820" y="354">n=45</text>
-<text class="label" x="28" y="402">真实照片</text>
-<rect x="255" y="380" width="148.6" height="32" rx="7" fill="#4b5563" opacity="0.88"/>
-<text class="value" x="415.6" y="402">0.0417</text>
-<text class="note" x="820" y="402">n=3</text>
-<text class="label" x="28" y="450">根与花</text>
-<rect x="255" y="428" width="157.0" height="32" rx="7" fill="#ca8a04" opacity="0.88"/>
-<text class="value" x="424.0" y="450">0.0440</text>
-<text class="note" x="820" y="450">n=121</text>
-<text class="label" x="28" y="498">彝文检字本</text>
-<rect x="255" y="476" width="184.2" height="32" rx="7" fill="#be123c" opacity="0.88"/>
-<text class="value" x="451.2" y="498">0.0516</text>
-<text class="note" x="820" y="498">n=32</text>
-<text class="label" x="28" y="546">真实手写</text>
-<rect x="255" y="524" width="437.7" height="32" rx="7" fill="#0f766e" opacity="0.88"/>
-<text class="value" x="704.7" y="546">0.1227</text>
-<text class="note" x="820" y="546">n=53</text>
+<text class="title" x="28" y="38">Baseline Avg NED by Source</text>
+<text class="sub" x="28" y="64">Source-level chart is a diagnostic view; LoRA result pending</text>
+<line class="axis" x1="290" y1="74" x2="790" y2="74"/>
+<text class="label" x="28" y="114">旧印刷主体来源</text>
+<rect x="290" y="92" width="395" height="30" rx="7" fill="#2563eb" opacity="0.88"/>
+<text class="value" x="697" y="113">high NED baseline</text>
+<text class="label" x="28" y="162">新印刷正文/工具书</text>
+<rect x="290" y="140" width="410" height="30" rx="7" fill="#16a34a" opacity="0.88"/>
+<text class="value" x="712" y="161">high NED baseline</text>
+<text class="label" x="28" y="210">手写拍照</text>
+<rect x="290" y="188" width="500" height="30" rx="7" fill="#7c3aed" opacity="0.88"/>
+<text class="value" x="802" y="209">hardest</text>
+<text class="label" x="28" y="258">屏幕拍照</text>
+<rect x="290" y="236" width="496" height="30" rx="7" fill="#f97316" opacity="0.88"/>
+<text class="value" x="798" y="257">hardest</text>
+<text class="label" x="28" y="306">场景照片 / 标牌</text>
+<rect x="290" y="284" width="322" height="30" rx="7" fill="#0891b2" opacity="0.88"/>
+<text class="value" x="624" y="305">small group</text>
+<text class="note" x="28" y="358">未微调基座在各来源上都不是可用模型；该图只说明最终评估集覆盖的来源差异。</text>
 </svg>

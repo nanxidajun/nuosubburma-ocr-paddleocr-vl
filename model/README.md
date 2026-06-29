@@ -17,7 +17,6 @@ https://huggingface.co/nanxidajun/NuosuBburma-OCR
 | 公开模型名 | `规范彝文 OCR / NuosuBburma OCR` |
 | 基座模型 | `PaddleOCR-VL-1.6 (0.9B)` |
 | 微调方式 | LoRA |
-| 任务提示词 | `<image>OCR:` |
 | 主要任务 | 规范彝文 OCR |
 | 支持输入 | page / region / line 图像；稳定交付优先使用 line / region |
 | 模型权重 | Hugging Face 模型仓库托管 |
@@ -49,14 +48,6 @@ merge_config.json
 flex-ckpt.auto_generated.metadata
 ```
 
-## 推理提示词
-
-```text
-<image>OCR:
-```
-
-输入为包含规范彝文或彝汉混排文本的图片，输出为图片中可见文本的 Unicode 转写。
-
 ## 评估设置
 
 最终评估集：
@@ -65,20 +56,20 @@ flex-ckpt.auto_generated.metadata
 https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 ```
 
-最终评估集为 `758` 条真实来源样本。下表保留历史 `603` 条 OCR 主指标结果，作为已完成、可核验的模型指标；`758` 条真实样本作为最终评估口径。
+最终评估集为 `758` 条真实来源样本。未微调基座结果已完成；LoRA 微调后结果未出，完成后按同一评估脚本回填。
 
 ![Evaluation snapshot](../docs/figures/evaluation_snapshot.svg)
 
-| 指标 | 当前 LoRA 模型 |
-|---|---:|
-| 历史 `603` 条样本数 | 603 |
-| 历史 `603` 条 Avg NED | 0.036068 |
-| 历史 `603` 条 WS Avg NED | 0.034219 |
-| 历史 `603` 条 NFKC+WS Avg NED | 0.033964 |
-| 历史 `603` 条 Yi-only Avg NED | 0.038309 |
-| 历史 `603` 条 Han-only Avg NED | 0.022447 |
-| 历史 `603` 条 Digit-only Avg NED | 0.139918 |
-| 历史 `603` 条 replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
+| 指标 | 未微调基座 | LoRA 微调后 |
+|---|---:|---:|
+| 评估样本 | 758 | 待回填 |
+| Avg NED | 0.726733 | 待回填 |
+| WS Avg NED | 0.7196 | 待回填 |
+| NFKC+WS Avg NED | 0.706794 | 待回填 |
+| Yi-only Avg NED | 1.000000 | 待回填 |
+| Han-only Avg NED | 0.209245 | 待回填 |
+| Digit-only Avg NED | 0.369451 | 待回填 |
+| replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 待回填 |
 
 完整评估结果见：
 

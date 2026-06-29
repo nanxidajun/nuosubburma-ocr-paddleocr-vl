@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="640" viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
   <title id="title">NuosuBburma OCR training branch strategy</title>
-  <desc id="desc">A vertical training branch diagram showing inherited mainline decisions and abandoned branches.</desc>
+  <desc id="desc">A vertical training branch diagram showing staged LoRA data decisions and the final evaluation status.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#52606d"/>
@@ -8,43 +8,43 @@
     <style>
       text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
       .bg{fill:#fbfaf7}.title{font-size:28px;font-weight:780;fill:#172026}.sub{font-size:15px;fill:#64707d}
-      .main{fill:#f7fffc;stroke:#12a37f;stroke-width:2;rx:15}.final{fill:#ecfdf5;stroke:#0f8d6d;stroke-width:2.4;rx:15}
-      .side{fill:#fff;stroke:#d9e1de;stroke-width:1.4;rx:14}.drop{fill:#fff7f5;stroke:#e0a09a;stroke-width:1.5;rx:14}.keep{fill:#f8fbff;stroke:#9ac0e1;stroke-width:1.5;rx:14}
+      .main{fill:#f7fffc;stroke:#12a37f;stroke-width:2;rx:12}.final{fill:#ecfdf5;stroke:#0f8d6d;stroke-width:2.4;rx:12}
+      .side{fill:#fff;stroke:#d9e1de;stroke-width:1.4;rx:12}.drop{fill:#fff7f5;stroke:#e0a09a;stroke-width:1.5;rx:12}.keep{fill:#f8fbff;stroke:#9ac0e1;stroke-width:1.5;rx:12}
       .stage{font-size:13px;font-weight:800;fill:#0b5c4a}.head{font-size:18px;font-weight:780;fill:#172026}.body{font-size:13px;fill:#536170}.warn{font-size:13px;font-weight:780;fill:#95413b}
       .line{stroke:#52606d;stroke-width:2.3;fill:none;marker-end:url(#arrow)}.branch{stroke:#a4b0ba;stroke-width:1.8;fill:none;stroke-dasharray:5 5;marker-end:url(#arrow)}
       .dot{fill:#12a37f;stroke:#fbfaf7;stroke-width:5}
     </style>
   </defs>
   <rect class="bg" width="1120" height="640"/>
-  <text class="title" x="40" y="48">三阶段训练路线：保留主干，剪掉漂移分支</text>
-  <text class="sub" x="40" y="74">调优重点放在数据分布判断：哪些分支能继承能力，哪些会打开错误输出通道。</text>
+  <text class="title" x="40" y="48">三阶段训练路线：先建任务，再控风险，最后同口径评估</text>
+  <text class="sub" x="40" y="74">训练分支只说明模型选择逻辑；公开结果统一回到最终 758 条评估集。</text>
 
   <circle class="dot" cx="92" cy="138" r="10"/>
   <rect class="main" x="130" y="104" width="430" height="96"/>
   <text class="stage" x="156" y="132">第一阶段</text>
   <text class="head" x="156" y="160">真实单书可行性验证</text>
-  <text class="body" x="156" y="184">从《勒俄特依》真实裁切行开始，跑通标注、LoRA、NED 闭环。</text>
+  <text class="body" x="156" y="184">从真实裁切行开始，跑通标注、LoRA、评估闭环。</text>
 
   <path class="line" d="M 92 152 V 252"/>
   <circle class="dot" cx="92" cy="268" r="10"/>
   <rect class="main" x="130" y="234" width="430" height="104"/>
   <text class="stage" x="156" y="262">第二阶段</text>
   <text class="head" x="156" y="290">真实锚点 + 受控合成覆盖</text>
-  <text class="body" x="156" y="314">补低频字、形近字、旧印刷退化和 region，同时用诊断样本看漂移。</text>
+  <text class="body" x="156" y="314">补低频字、形近字、旧印刷退化和 region，同时监控输出漂移。</text>
 
   <path class="line" d="M 92 282 V 382"/>
   <circle class="dot" cx="92" cy="398" r="10"/>
   <rect class="main" x="130" y="364" width="430" height="104"/>
   <text class="stage" x="156" y="392">第三阶段</text>
-  <text class="head" x="156" y="420">真实样本错误检查</text>
-  <text class="body" x="156" y="444">看普遍错误模式：漂移、漏行、LaTeX、ASCII 和长输出。</text>
+  <text class="head" x="156" y="420">固定诊断集做分支选择</text>
+  <text class="body" x="156" y="444">只读取输出，观察漏行、公式化片段、ASCII 漂移和异常长输出。</text>
 
   <path class="line" d="M 92 412 V 512"/>
   <circle class="dot" cx="92" cy="528" r="10"/>
   <rect class="final" x="130" y="494" width="430" height="104"/>
-  <text class="stage" x="156" y="522">最终提交</text>
-  <text class="head" x="156" y="550">Synth capped rerender</text>
-  <text class="body" x="156" y="574">603 历史结果：Avg NED 0.0361，严格风险 0 / 2 / 0 / 0。</text>
+  <text class="stage" x="156" y="522">最终评估</text>
+  <text class="head" x="156" y="550">758 条真实来源样本</text>
+  <text class="body" x="156" y="574">未微调基座已完成：Avg NED 0.7267；LoRA 微调后结果待回填。</text>
 
   <path class="branch" d="M 560 286 C 620 286 630 140 690 140"/>
   <rect class="drop" x="690" y="102" width="360" height="86"/>
@@ -54,19 +54,19 @@
 
   <path class="branch" d="M 560 416 C 620 416 630 278 690 278"/>
   <rect class="keep" x="690" y="238" width="360" height="96"/>
-  <text class="stage" x="714" y="266">保留基线</text>
-  <text class="head" x="714" y="293">v5.8 / v5.15 作为对照</text>
-  <text class="body" x="714" y="317">一个证明输出空间稳定，一个证明布局与 Latin re-balance 有收益。</text>
+  <text class="stage" x="714" y="266">保留对照</text>
+  <text class="head" x="714" y="293">稳定分支与布局分支</text>
+  <text class="body" x="714" y="317">用于解释训练数据策略，不作为最终公开评估分数。</text>
 
   <path class="branch" d="M 560 416 C 620 416 630 410 690 410"/>
   <rect class="drop" x="690" y="368" width="360" height="98"/>
   <text class="warn" x="714" y="397">剪掉分支</text>
   <text class="head" x="714" y="424">脚注 / Latin 通道过宽</text>
-  <text class="body" x="714" y="448">局部样本会变好，但 LaTeX-like、ASCII 或 long_pred 风险回升。</text>
+  <text class="body" x="714" y="448">局部样本会变好，但公式化片段、ASCII 或长输出风险回升。</text>
 
   <path class="branch" d="M 560 546 C 620 546 630 536 690 536"/>
-  <rect class="drop" x="690" y="500" width="360" height="92"/>
-  <text class="warn" x="714" y="528">未晋级</text>
-  <text class="head" x="714" y="555">v5.17 micro format tail</text>
-  <text class="body" x="714" y="579">总 NED 回升，LaTeX 回到 10，并出现 long_pred 1。</text>
+  <rect class="side" x="690" y="500" width="360" height="92"/>
+  <text class="stage" x="714" y="528">公开回填规则</text>
+  <text class="head" x="714" y="555">同一评估集，同一脚本</text>
+  <text class="body" x="714" y="579">LoRA 微调后结果完成后，只回填最终 758 条同口径结果。</text>
 </svg>

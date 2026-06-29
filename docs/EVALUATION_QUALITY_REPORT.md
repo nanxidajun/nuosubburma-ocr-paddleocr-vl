@@ -16,7 +16,7 @@
 | 含替换符的标注 | 0 |
 | 合成样本标记 | 0 |
 | 是否全部计入对应评估口径 | 是 |
-| 历史已跑模型指标 | 603 条 OCR 主指标 |
+| 未微调基座指标 | 最终 `758` 条已完成 |
 | 正式评估集版本 | NuosuBburma OCR Evaluation Set latest integrated 2026-06-29 |
 
 这些检查可由公开文件核验：
@@ -26,9 +26,7 @@ NuosuBburma_OCR_Evaluation_Set/README.md
 docs/EVALUATION_DATASET.md
 evaluation/summary.md
 evaluation/summary.json
-evaluation/tables/
 evaluation/charts/
-evaluation/raw/submission_model_result.jsonl
 ```
 
 完整图片数据托管在 Hugging Face 评估集仓库，GitHub 仓库只保留入口、脚本、统计和逐样本输出。
@@ -39,8 +37,8 @@ evaluation/raw/submission_model_result.jsonl
 |---|---|
 | 数据规模 | `758` 条 OCR 样本和 `758` 张图片，全部为真实来源并全部计入评估口径；`line 470`、`region 119`、`page 169` 支撑行图、区域和整页三类能力检查。 |
 | 标注准确性 | 最终 GT 以人工确认标注为准；空 GT、缺图、重复 ID、替换符和合成样本标记均为 `0`。 |
-| 数据多样性 | 覆盖新印刷、旧印刷、手写拍照、真实照片、屏幕拍照，以及彝文、彝汉混排、彝汉拉丁注音、汉字、数字、页码、脚注、整页和多行区域。 |
-| 难度合理性 | `easy 83` / `medium 467` / `hard 208`，难度按来源、视觉质量、输入粒度、版面结构和文字混合情况标注，不按模型输出反推。 |
+| 数据多样性 | 覆盖新印刷、旧印刷、手写拍照、场景照片、屏幕拍照，以及纯彝文、混排/注音/汉字、数字、页码、脚注、整页和多行区域。 |
+| 难度合理性 | `easy 83` / `medium 467` / `hard 208`，难度按来源、视觉质量、输入粒度、版面结构和文本构成标注，不按模型输出反推。 |
 
 ## 数据真实性
 
@@ -51,7 +49,7 @@ evaluation/raw/submission_model_result.jsonl
 | 新印刷 | 100 | 教材、现代出版物、工具书等清晰资料 |
 | 旧印刷 | 507 | 旧版资料选译、旧式排版、旧印刷噪声和旧书页面 |
 | 手写拍照 | 53 | 手写拍照资料，作为独立真实泛化分组 |
-| 真实照片 | 11 | 公共标牌、真实上传图、照片背景干扰和可见文本 |
+| 场景照片 | 11 | 公共标牌、真实上传图、照片背景干扰和可见文本 |
 | 屏幕拍照 | 87 | 屏幕页面、页面图像和真实上传噪声 |
 
 按来源书目和材料看，评估集包含：
@@ -68,7 +66,7 @@ evaluation/raw/submission_model_result.jsonl
 | 根与花 | 43 |
 | 彝文检字本 | 31 |
 | 凉山彝语语法 | 31 |
-| 真实照片 / 标牌 / 屏幕文本 | 22 |
+| 场景照片 / 标牌 / 屏幕文本 | 22 |
 
 书籍样本来自扫描件裁剪，原始出版物版权归原出版社和权利人所有；本项目仅使用裁剪图像进行规范彝文识别评估和模型验证。
 
@@ -96,20 +94,17 @@ evaluation/raw/submission_model_result.jsonl
 
 ## 多样性
 
-评估集从场景、文字混合和数字三个维度记录分布。
+评估集从场景、文本构成和数字三个维度记录分布。
 
-| 文字混合 | 样本数 |
+| 文本构成 | 样本数 |
 |---|---:|
-| 彝文 | 276 |
-| 彝汉混排 | 453 |
-| 带拉丁字母的彝汉混排 | 26 |
-| 汉字 | 2 |
-| 其他 | 1 |
+| 纯彝文 | 344 |
+| 混排/注音/汉字 | 414 |
 
 | 是否含数字 | 样本数 |
 |---|---:|
-| 含数字 | 177 |
-| 不含数字 | 581 |
+| 含数字 | 185 |
+| 不含数字 | 573 |
 
 数字、页码和编号在结果中单独报告，因为这类字符在文字识别输出里容易受格式、换行和标点影响。
 
@@ -148,9 +143,7 @@ NuosuBburma_OCR_Evaluation_Set/README.md
 docs/EVALUATION_DATASET.md
 evaluation/summary.md
 evaluation/summary.json
-evaluation/tables/
 evaluation/charts/
-evaluation/raw/submission_model_result.jsonl
 scripts/eval_nuosubburma.py
 scripts/analyze_submission_eval.py
 ```
@@ -173,17 +166,17 @@ dataset_summary.json
 
 ## 当前结果摘要
 
-历史提交模型已使用同一评估脚本统计 `603` 条 OCR 主指标。最终 `758` 条整合评估集作为原始模型与 LoRA 模型的统一评估口径。
+最终 `758` 条整合评估集作为未微调基座与 LoRA 微调模型的统一评估口径。未微调基座已使用同一评估脚本完成；LoRA 微调后结果未出。
 
-| 指标 | 当前 LoRA 模型 |
-|---|---:|
-| 历史 `603` 条样本数 | 603 |
-| 历史 `603` 条平均归一化编辑距离（Avg NED，越低越好） | 0.036068 |
-| 历史 `603` 条忽略空白后的平均编辑距离 | 0.034219 |
-| 历史 `603` 条 NFKC+WS Avg NED | 0.033964 |
-| 历史 `603` 条 Yi-only Avg NED | 0.038309 |
-| 历史 `603` 条 Han-only Avg NED | 0.022447 |
-| 历史 `603` 条 Digit-only Avg NED | 0.139918 |
-| 历史 `603` 条 replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
+| 指标 | 未微调基座 | LoRA 微调后 |
+|---|---:|---:|
+| 评估样本 | 758 | 待回填 |
+| 平均归一化编辑距离（Avg NED，越低越好） | 0.726733 | 待回填 |
+| 忽略空白后的平均编辑距离 | 0.7196 | 待回填 |
+| NFKC+WS Avg NED | 0.706794 | 待回填 |
+| Yi-only Avg NED | 1.000000 | 待回填 |
+| Han-only Avg NED | 0.209245 | 待回填 |
+| Digit-only Avg NED | 0.369451 | 待回填 |
+| replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 待回填 |
 
-结果可由 `scripts/run_eval.sh` 和 `scripts/analyze_submission_eval.py` 复跑。逐条输出保存在 `evaluation/raw/submission_model_result.jsonl`，用于解释分支选择和错误风险。
+结果可由 `scripts/run_eval.sh` 和 `scripts/analyze_submission_eval.py` 按最终评估集复跑。
