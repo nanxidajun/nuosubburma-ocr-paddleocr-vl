@@ -3,6 +3,7 @@
 <p align="center">
   <a href="https://huggingface.co/nanxidajun/NuosuBburma-OCR"><img alt="Hugging Face 模型" src="https://img.shields.io/badge/HuggingFace-%E6%A8%A1%E5%9E%8B-f7c948"></a>
   <a href="https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set"><img alt="Hugging Face 评估集" src="https://img.shields.io/badge/HuggingFace-%E8%AF%84%E4%BC%B0%E9%9B%86-4c9f70"></a>
+  <a href="https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set"><img alt="评估集可视化" src="https://img.shields.io/badge/Space-%E8%AF%84%E4%BC%B0%E9%9B%86%E5%8F%AF%E8%A7%86%E5%8C%96-0f766e"></a>
   <img alt="基座模型" src="https://img.shields.io/badge/Base-PaddleOCR--VL--1.6_0.9B-3465d9">
   <img alt="微调方式" src="https://img.shields.io/badge/Fine_tuning-LoRA-8a5cf6">
 </p>
@@ -11,7 +12,7 @@
 
 项目目标不是只识别裁好的单行图，而是把旧书扫描、教材工具书页面、手机照片、屏幕拍照、手写拍照样本和彝汉混排资料，转换为可搜索、可校对、可进入语料库的 Unicode 文本。OCR 是第一步：这些结构化文本会成为后续规范彝文 NLP 的基础材料，支撑分词、检索、语料建设、注音校对、语言资源整理和低资源模型训练。
 
-[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [线上演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [提交说明](docs/COMPETITION_SUBMISSION.md) · [评估集说明](docs/EVALUATION_DATASET.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
+[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [评估集可视化](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [线上演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [提交说明](docs/COMPETITION_SUBMISSION.md) · [评估集说明](docs/EVALUATION_DATASET.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
 ## 当前口径
 
@@ -34,7 +35,7 @@ LoRA 微调后结果未出，完成后会用同一评估集、同一图片、同
 
 | 评分点 | 本项目证据 | 入口 |
 |---|---|---|
-| 评估集质量 | `758` 条真实来源样本；`line 470` / `region 119` / `page 169`；空 GT、缺图、重复 ID、合成样本标记均为 `0` | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md) |
+| 评估集质量 | `758` 条真实来源样本；`line 470` / `region 119` / `page 169`；空 GT、缺图、重复 ID、合成样本标记均为 `0` | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md)，[标注可视化](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set) |
 | 场景稀缺性 | 覆盖旧书、新印刷资料、教材、工具书、彝汉混排、拉丁注音、手写、场景照片和屏幕拍照资料 | [项目背景](docs/PROJECT_BACKGROUND.md) |
 | 任务复杂度 | 支持整页、PDF 和照片输入；先做页面切割，再识别文本区域、恢复阅读顺序、合并页面文本并生成结构化结果 | [页面切割](page_processing/README.md)，[页面级说明](docs/PAGE_PROCESSING.md)，[演示](demo/README.md) |
 | 训练数据科学性 | 训练包 `21504` 行；真实材料、训练侧合成样本和视觉变化样本分开记录；缺图、空标签、替换符和公式化片段标签均为 `0` | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[训练包清单](configs/train_data_manifest_v5_16.json) |
@@ -43,7 +44,7 @@ LoRA 微调后结果未出，完成后会用同一评估集、同一图片、同
 
 ## 真实评估集
 
-评估集只使用真实来源样本，不使用合成样本证明模型效果。完整图片、标注和统计托管在 [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set)。
+评估集只使用真实来源样本，不使用合成样本证明模型效果。完整图片、标注和统计托管在 [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set)。同时提供 [评估集标注可视化 Space](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set)，可直接查看代表样本图片、canonical GT、来源、场景、粒度和难度分层。
 
 下图汇总最终 `758` 条真实来源样本的视觉场景、输入粒度、文本构成和难度分层。逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
 
