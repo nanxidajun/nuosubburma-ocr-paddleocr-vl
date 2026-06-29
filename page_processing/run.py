@@ -18,7 +18,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageOps
+
+try:
+    import cv2
+except ImportError:  # pragma: no cover - numpy fallback keeps the cutter usable.
+    cv2 = None
 
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".webp"}
@@ -43,6 +49,10 @@ ROUTE_LABEL_ZH = {
     "skip": "跳过",
 }
 
+TEXT_ROUTES = {"body", "footnote", "footer", "header"}
+SPLIT_MIN_H = 180
+SPLIT_MIN_AREA = 220_000
+
 LABEL_TO_ROUTE = {
     "doc_title": "title",
     "paragraph_title": "title",
@@ -51,8 +61,6 @@ LABEL_TO_ROUTE = {
     "text": "body",
     "content": "body",
     "aside_text": "body",
-    "figure": "body",
-    "chart": "body",
     "table": "body",
     "paragraph": "body",
     "formula": "body",
@@ -66,7 +74,7 @@ LABEL_TO_ROUTE = {
     "page_footer": "footer",
 }
 
-SKIP_LABEL_PARTS = ("image", "seal", "stamp", "barcode", "qr")
+SKIP_LABEL_PARTS = ("figure", "image", "chart", "seal", "stamp", "barcode", "qr")
 
 
 @dataclass(frozen=True)
@@ -94,6 +102,32 @@ class LayoutBlock:
         score_text = "" if self.score is None else f" {self.score:.3f}"
         route_text = ROUTE_LABEL_ZH.get(self.route or "skip", self.route or "跳过")
         return f"{self.index:02d} {route_text} {self.label}{score_text}"
+
+
+@dataclass(frozen=True)
+class LocalBox:
+    x1: int
+    y1: int
+    x2: int
+    y2: int
+
+    @property
+    def w(self) -> int:
+        return max(0, self.x2 - self.x1)
+
+    @property
+    def h(self) -> int:
+        return max(0, self.y2 - self.y1)
+
+    @property
+    def area(self) -> int:
+        return self.w * self.h
+
+    def as_tuple(self) -> tuple[int, int, int, int]:
+        return self.x1, self.y1, self.x2, self.y2
+
+    def as_list(self) -> list[int]:
+        return [self.x1, self.y1, self.x2, self.y2]
 
 
 def parse_args() -> argparse.Namespace:
@@ -289,14 +323,298 @@ def clip_bbox(bbox: tuple[int, int, int, int], width: int, height: int, pad: int
     return x1, y1, x2, y2
 
 
+def bbox_area(bbox: tuple[int, int, int, int]) -> int:
+    return max(0, bbox[2] - bbox[0]) * max(0, bbox[3] - bbox[1])
+
+
+def intersection(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> int:
+    x1 = max(a[0], b[0])
+    y1 = max(a[1], b[1])
+    x2 = min(a[2], b[2])
+    y2 = min(a[3], b[3])
+    return max(0, x2 - x1) * max(0, y2 - y1)
+
+
+def iou(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> float:
+    inter = intersection(a, b)
+    union = bbox_area(a) + bbox_area(b) - inter
+    return inter / max(1, union)
+
+
+def dedupe_blocks(blocks: list[LayoutBlock]) -> tuple[list[LayoutBlock], list[dict[str, Any]]]:
+    kept: list[LayoutBlock] = []
+    dropped: list[dict[str, Any]] = []
+    for block in sorted(blocks, key=lambda item: (item.page_id, -float(item.score or 0), bbox_area(item.bbox))):
+        duplicate = None
+        for existing in kept:
+            if block.page_id != existing.page_id or block.route != existing.route:
+                continue
+            if iou(block.bbox, existing.bbox) >= 0.96:
+                duplicate = existing
+                break
+        if duplicate:
+            dropped.append(
+                {
+                    "page_id": block.page_id,
+                    "index": block.index,
+                    "route": block.route or "skip",
+                    "bbox": list(block.bbox),
+                    "reason": "same_route_duplicate",
+                }
+            )
+        else:
+            kept.append(block)
+    return sorted(kept, key=lambda item: (item.bbox[1], item.bbox[0], item.index)), dropped
+
+
+def dedupe_parent_blocks(blocks: list[LayoutBlock]) -> tuple[list[LayoutBlock], list[dict[str, Any]]]:
+    droppable_routes = TEXT_ROUTES | {"title"}
+    drop: set[int] = set()
+    for parent in blocks:
+        if parent.route not in droppable_routes:
+            continue
+        parent_area = bbox_area(parent.bbox)
+        if not parent_area:
+            continue
+        children: list[tuple[int, int, int, int]] = []
+        for child in blocks:
+            if parent.index == child.index or parent.page_id != child.page_id:
+                continue
+            if parent.route != child.route:
+                continue
+            child_area = bbox_area(child.bbox)
+            if not child_area or parent_area <= child_area * 1.25:
+                continue
+            inter = intersection(parent.bbox, child.bbox)
+            if inter and inter / child_area > 0.84:
+                children.append(child.bbox)
+        if len(children) < 2:
+            continue
+        px1, py1, px2, py2 = parent.bbox
+        mask = np.zeros((max(1, py2 - py1), max(1, px2 - px1)), dtype=np.uint8)
+        for child_box in children:
+            cx1, cy1, cx2, cy2 = child_box
+            x1 = max(0, cx1 - px1)
+            y1 = max(0, cy1 - py1)
+            x2 = min(mask.shape[1], cx2 - px1)
+            y2 = min(mask.shape[0], cy2 - py1)
+            if x2 > x1 and y2 > y1:
+                mask[y1:y2, x1:x2] = 1
+        coverage = float(mask.sum()) / float(parent_area)
+        if coverage > 0.52:
+            drop.add(parent.index)
+
+    kept = [block for block in blocks if block.index not in drop]
+    dropped = [
+        {
+            "page_id": block.page_id,
+            "index": block.index,
+            "route": block.route or "skip",
+            "bbox": list(block.bbox),
+            "reason": "large_parent_overlap",
+        }
+        for block in blocks
+        if block.index in drop
+    ]
+    return sorted(kept, key=lambda item: (item.bbox[1], item.bbox[0], item.index)), dropped
+
+
+def binarize(crop: Image.Image) -> np.ndarray:
+    gray = np.array(crop.convert("L"))
+    if cv2 is not None:
+        gray = cv2.GaussianBlur(gray, (3, 3), 0)
+        _, otsu = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        adaptive = cv2.adaptiveThreshold(
+            gray,
+            255,
+            cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv2.THRESH_BINARY_INV,
+            35,
+            15,
+        )
+        return cv2.bitwise_or(otsu, adaptive)
+
+    threshold = int(np.percentile(gray, 48))
+    return (gray < threshold).astype(np.uint8) * 255
+
+
+def intervals(active: np.ndarray) -> list[tuple[int, int]]:
+    out: list[tuple[int, int]] = []
+    start: int | None = None
+    for idx, flag in enumerate(active.tolist()):
+        if flag and start is None:
+            start = idx
+        elif not flag and start is not None:
+            out.append((start, idx))
+            start = None
+    if start is not None:
+        out.append((start, len(active)))
+    return out
+
+
+def merge_intervals(items: list[tuple[int, int]], max_gap: int) -> list[tuple[int, int]]:
+    if not items:
+        return []
+    merged = [items[0]]
+    for start, end in items[1:]:
+        prev_start, prev_end = merged[-1]
+        if start - prev_end <= max_gap:
+            merged[-1] = (prev_start, end)
+        else:
+            merged.append((start, end))
+    return merged
+
+
+def find_column_boxes(binary: np.ndarray) -> list[LocalBox]:
+    h, w = binary.shape[:2]
+    if w < 620 or h < 220:
+        return [LocalBox(0, 0, w, h)]
+    projection = binary.sum(axis=0) / 255
+    smooth_width = max(15, int(w * 0.018))
+    kernel = np.ones(smooth_width, dtype=np.float32) / smooth_width
+    smooth = np.convolve(projection, kernel, mode="same")
+    threshold = max(1.0, h * 0.010)
+    blank = smooth < threshold
+    gap_candidates: list[tuple[int, int, int]] = []
+    for start, end in intervals(blank):
+        gap_w = end - start
+        if gap_w < max(42, int(w * 0.055)):
+            continue
+        if start < w * 0.18 or end > w * 0.82:
+            continue
+        left_w = start
+        right_w = w - end
+        if left_w < w * 0.18 or right_w < w * 0.18:
+            continue
+        gap_candidates.append((gap_w, start, end))
+    if not gap_candidates:
+        return [LocalBox(0, 0, w, h)]
+    _, start, end = max(gap_candidates)
+    pad = max(3, int(w * 0.006))
+    return [
+        LocalBox(0, 0, max(1, start + pad), h),
+        LocalBox(min(w - 1, end - pad), 0, w, h),
+    ]
+
+
+def local_line_boxes(crop: Image.Image) -> list[LocalBox]:
+    w, h = crop.size
+    if h < 52 or w < 40:
+        return [LocalBox(0, 0, w, h)]
+    binary = binarize(crop)
+    col_boxes = find_column_boxes(binary)
+    all_lines: list[LocalBox] = []
+    for col in col_boxes:
+        col_binary = binary[col.y1 : col.y2, col.x1 : col.x2]
+        ch, cw = col_binary.shape[:2]
+        projection = col_binary.sum(axis=1) / 255
+        positive = projection[projection > 0]
+        if len(positive) == 0:
+            all_lines.append(col)
+            continue
+        threshold = max(float(np.percentile(positive, 16)) * 0.45, cw * 0.0020, 1.0)
+        row_active = projection > threshold
+        row_intervals = merge_intervals(intervals(row_active), max_gap=max(2, int(ch * 0.006)))
+        min_h = max(9, int(ch * 0.010))
+        y_pad = max(3, int(ch * 0.004))
+        x_pad = max(4, int(cw * 0.008))
+        lines: list[LocalBox] = []
+        for y1, y2 in row_intervals:
+            if y2 - y1 < min_h:
+                continue
+            yy1 = max(0, y1 - y_pad)
+            yy2 = min(ch, y2 + y_pad)
+            line_binary = col_binary[yy1:yy2, :]
+            col_projection = line_binary.sum(axis=0) / 255
+            col_active = col_projection > max(1.0, (yy2 - yy1) * 0.020)
+            col_intervals = intervals(col_active)
+            if not col_intervals:
+                continue
+            xx1 = max(0, min(a for a, _ in col_intervals) - x_pad)
+            xx2 = min(cw, max(b for _, b in col_intervals) + x_pad)
+            if xx2 - xx1 < max(22, int(cw * 0.05)):
+                continue
+            lines.append(LocalBox(col.x1 + xx1, col.y1 + yy1, col.x1 + xx2, col.y1 + yy2))
+        if len(lines) <= 1:
+            all_lines.append(col)
+            continue
+        heights = np.array([line.h for line in lines], dtype=np.float32)
+        median_h = float(np.median(heights))
+        min_reasonable_h = max(10, int(median_h * 0.34))
+        all_lines.extend([line for line in lines if line.h >= min_reasonable_h] or lines)
+    return all_lines or [LocalBox(0, 0, w, h)]
+
+
+def should_split_block(block: LayoutBlock, crop_size: tuple[int, int]) -> bool:
+    if block.route not in TEXT_ROUTES:
+        return False
+    w, h = crop_size
+    return h >= SPLIT_MIN_H or (w * h) >= SPLIT_MIN_AREA
+
+
+def is_blank_unit(parent_crop: Image.Image, box: LocalBox, route: str | None) -> bool:
+    if route not in TEXT_ROUTES and route != "title":
+        return False
+    if box.area < 900:
+        return False
+    crop = parent_crop.crop(box.as_tuple())
+    try:
+        binary = binarize(crop)
+        ink_pixels = int(binary.sum() / 255)
+        density = ink_pixels / max(1, box.area)
+        return ink_pixels < 24 or (box.area > 5000 and density < 0.0018)
+    finally:
+        crop.close()
+
+
+def split_block_to_units(block: LayoutBlock, crop: Image.Image) -> list[tuple[LocalBox, str]]:
+    full = LocalBox(0, 0, crop.width, crop.height)
+    if not should_split_block(block, crop.size):
+        return [(full, "keep_block")]
+    boxes = local_line_boxes(crop)
+    if len(boxes) <= 1:
+        return [(full, "keep_region")]
+    units = [(box, "split_line_or_small_region") for box in boxes if not is_blank_unit(crop, box, block.route)]
+    return units or [(full, "keep_region")]
+
+
+def global_box(crop_box: tuple[int, int, int, int], local_box: LocalBox) -> tuple[int, int, int, int]:
+    return (
+        crop_box[0] + local_box.x1,
+        crop_box[1] + local_box.y1,
+        crop_box[0] + local_box.x2,
+        crop_box[1] + local_box.y2,
+    )
+
+
+def unit_reading_order(block: LayoutBlock, unit_bbox: tuple[int, int, int, int], part_index: int) -> str:
+    x1, y1, _, _ = unit_bbox
+    return f"{ROUTE_ORDER.get(block.route or 'body', 9):02d}_{y1:06d}_{x1:06d}_{block.index:04d}_{part_index:03d}"
+
+
 def detect_page_blocks(model: Any, page_path: Path, layout_root: Path) -> tuple[list[LayoutBlock], list[dict[str, Any]]]:
     page_id = page_path.stem
     outputs = model.predict(str(page_path))
     raw_pages: list[dict[str, Any]] = []
     blocks: list[LayoutBlock] = []
+    raw_dir = layout_root / "raw_json"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    paddle_json_dir = raw_dir / "paddle_saved"
+    paddle_json_dir.mkdir(parents=True, exist_ok=True)
+    paddle_vis_dir = layout_root / "visualizations"
+    paddle_vis_dir.mkdir(parents=True, exist_ok=True)
 
     for res in outputs:
-        data = result_to_dict(res)
+        if hasattr(res, "save_to_json"):
+            res.save_to_json(str(paddle_json_dir))
+        if hasattr(res, "save_to_img"):
+            res.save_to_img(str(paddle_vis_dir))
+
+        saved_json = paddle_json_dir / f"{page_id}_res.json"
+        if saved_json.exists():
+            data = json.loads(saved_json.read_text(encoding="utf-8"))
+        else:
+            data = result_to_dict(res)
         raw_pages.append(data)
         for raw in iter_raw_blocks(data):
             label = str(
@@ -327,8 +645,6 @@ def detect_page_blocks(model: Any, page_path: Path, layout_root: Path) -> tuple[
                 )
             )
 
-    raw_dir = layout_root / "raw_json"
-    raw_dir.mkdir(parents=True, exist_ok=True)
     (raw_dir / f"{page_id}.json").write_text(json.dumps(raw_pages, ensure_ascii=False, indent=2), encoding="utf-8")
 
     with Image.open(page_path) as image:
@@ -346,6 +662,12 @@ def detect_page_blocks(model: Any, page_path: Path, layout_root: Path) -> tuple[
             )
         )
 
+    blocks, dropped = dedupe_blocks(blocks)
+    if dropped:
+        (raw_dir / f"{page_id}.dropped_blocks.json").write_text(
+            json.dumps(dropped, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
     return sorted(blocks, key=lambda item: (item.bbox[1], item.bbox[0], item.index)), raw_pages
 
 
@@ -375,7 +697,7 @@ def draw_review_page(page_path: Path, blocks: list[LayoutBlock], review_dir: Pat
         return
     thumbs: list[Image.Image] = []
     try:
-        for crop_path in crop_paths[:40]:
+        for crop_path in crop_paths[:80]:
             thumb = Image.open(crop_path).convert("RGB")
             thumb.thumbnail((260, 120))
             canvas = Image.new("RGB", (280, 140), "white")
@@ -427,6 +749,7 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
     for page_path in pages:
         print(f"[layout] {page_path.name}", flush=True)
         blocks, _ = detect_page_blocks(model, page_path, layout_root)
+        blocks, parent_dropped = dedupe_parent_blocks(blocks)
         page_rows.append({"page_id": page_path.stem, "page_file": page_path.name, "layout_blocks": len(blocks)})
 
         crop_paths: list[Path] = []
@@ -450,42 +773,60 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
                 crop_box = clip_bbox(block.bbox, page_image.width, page_image.height)
                 if crop_box is None:
                     continue
-                crop = page_image.crop(crop_box)
-                route = block.route or "body"
-                rel_path = Path("images") / route / block.page_id / f"{block.crop_id}.png"
-                crop_path = units_root / rel_path
-                crop_path.parent.mkdir(parents=True, exist_ok=True)
-                crop.save(crop_path)
-                crop.close()
-                crop_paths.append(crop_path)
+                parent_crop = page_image.crop(crop_box)
+                try:
+                    route = block.route or "body"
+                    local_units = split_block_to_units(block, parent_crop)
+                    for part_index, (unit_box, action) in enumerate(local_units, start=1):
+                        unit_crop_box = global_box(crop_box, unit_box)
+                        if unit_crop_box[2] <= unit_crop_box[0] or unit_crop_box[3] <= unit_crop_box[1]:
+                            continue
+                        unit_crop = parent_crop.crop(unit_box.as_tuple())
+                        crop_id = f"{block.crop_id}__part_{part_index:03d}"
+                        rel_path = Path("images") / route / block.page_id / f"{crop_id}.png"
+                        crop_path = units_root / rel_path
+                        crop_path.parent.mkdir(parents=True, exist_ok=True)
+                        unit_crop.save(crop_path)
+                        unit_crop.close()
+                        crop_paths.append(crop_path)
 
-                index_rows.append(
-                    {
-                        "crop_id": block.crop_id,
-                        "page_id": block.page_id,
-                        "page_file": block.page_file,
-                        "bucket": "ocr_units",
-                        "sub_bucket": route,
-                        "role": route,
-                        "source_stage": "doclayout",
-                        "source_box": block.index,
-                        "part_index": 0,
-                        "label_or_decision": block.label,
-                        "ocr_ready": "1",
-                        "is_line_ocr_ready": "1",
-                        "summary_path": str(rel_path),
-                        "original_path": str(page_path),
-                        "reading_order": block.reading_order,
-                        "bbox": json.dumps(list(block.bbox), ensure_ascii=False),
-                        "crop_bbox": json.dumps(list(crop_box), ensure_ascii=False),
-                        "score": "" if block.score is None else block.score,
-                        "note": "Paddle DocLayout text block; ready for OCR",
-                    }
-                )
+                        index_rows.append(
+                            {
+                                "crop_id": crop_id,
+                                "page_id": block.page_id,
+                                "page_file": block.page_file,
+                                "bucket": "ocr_units",
+                                "sub_bucket": route,
+                                "role": route,
+                                "source_stage": "doclayout_block_split",
+                                "source_box": block.index,
+                                "part_index": part_index,
+                                "label_or_decision": block.label,
+                                "ocr_ready": "1",
+                                "is_line_ocr_ready": "1",
+                                "summary_path": str(rel_path),
+                                "original_path": str(page_path),
+                                "reading_order": unit_reading_order(block, unit_crop_box, part_index),
+                                "bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
+                                "crop_bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
+                                "layout_bbox": json.dumps(list(block.bbox), ensure_ascii=False),
+                                "source_bbox": json.dumps(list(crop_box), ensure_ascii=False),
+                                "unit_bbox_local": json.dumps(unit_box.as_list(), ensure_ascii=False),
+                                "unit_action": action,
+                                "score": "" if block.score is None else block.score,
+                                "note": "Paddle DocLayout block split into OCR-ready unit",
+                            }
+                        )
+                finally:
+                    parent_crop.close()
         finally:
             page_image.close()
 
         draw_review_page(page_path, blocks, review_root / page_path.stem, crop_paths)
+
+        if parent_dropped:
+            dropped_path = layout_root / "raw_json" / f"{page_path.stem}.dropped_parent_blocks.json"
+            dropped_path.write_text(json.dumps(parent_dropped, ensure_ascii=False, indent=2), encoding="utf-8")
 
     write_csv(layout_root / "layout_block_summary.csv", layout_rows)
     write_csv(units_root / "index.csv", sorted(index_rows, key=lambda row: row["reading_order"]))
@@ -506,6 +847,11 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
         "pages": len(page_rows),
         "layout_blocks": len(layout_rows),
         "ocr_units": len(index_rows),
+        "unit_actions": {
+            action: sum(1 for row in index_rows if row.get("unit_action") == action)
+            for action in sorted({str(row.get("unit_action") or "") for row in index_rows})
+            if action
+        },
         "errors": errors,
     }
     (output_root / "page_processing_validation.json").write_text(json.dumps(validation, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -515,9 +861,13 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
 def write_run_docs(args: argparse.Namespace, pages: list[Path], page_rows: list[dict[str, Any]], index_rows: list[dict[str, Any]], validation: dict[str, Any]) -> None:
     output_root = args.output_root
     route_counts: dict[str, int] = {}
+    action_counts: dict[str, int] = {}
     for row in index_rows:
         route = str(row.get("role") or "body")
         route_counts[route] = route_counts.get(route, 0) + 1
+        action = str(row.get("unit_action") or "")
+        if action:
+            action_counts[action] = action_counts.get(action, 0) + 1
 
     with (output_root / "run_summary.md").open("w", encoding="utf-8") as f:
         f.write("# Page Cutting Run Summary\n\n")
@@ -531,6 +881,11 @@ def write_run_docs(args: argparse.Namespace, pages: list[Path], page_rows: list[
         f.write("|---|---:|\n")
         for route, count in sorted(route_counts.items()):
             f.write(f"| `{route}` | {count} |\n")
+        f.write("\n## OCR Unit Actions\n\n")
+        f.write("| action | units |\n")
+        f.write("|---|---:|\n")
+        for action, count in sorted(action_counts.items()):
+            f.write(f"| `{action}` | {count} |\n")
         f.write("\n## Review Entry Points\n\n")
         f.write("- Visual review: `03_cut_review/`\n")
         f.write("- OCR unit index: `02_ocr_units/index.csv`\n")

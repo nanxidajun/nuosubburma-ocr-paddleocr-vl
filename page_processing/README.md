@@ -1,6 +1,6 @@
 # 页面切割流程
 
-本目录有三个页面处理入口：`run.py` 负责页面切割，`assemble_pages.py` 负责把 OCR 单元拼合成页级文本，`structure_pages.py` 负责把 OCR 单元或页级文本导出为结构化页面结果。`run.py` 使用 Paddle DocLayout 对整页图片或 PDF 做页面切割，生成可送入 OCR 的文本块。
+本目录有三个页面处理入口：`run.py` 负责页面切割，`assemble_pages.py` 负责把 OCR 单元拼合成页级文本，`structure_pages.py` 负责把 OCR 单元或页级文本导出为结构化页面结果。`run.py` 先使用 Paddle DocLayout 找到页面版面块；对较大的正文、页眉、页脚或脚注块，会继续按视觉行/小区域细分，生成可送入 OCR 的识别单元。
 
 输出会保留 `page_id`、`crop_id`、`reading_order`、`bbox` 等字段，供后续 OCR、visual-line 页面文本合并、结构化输出、异常审计和可选注音使用。
 
@@ -26,7 +26,7 @@ python page_processing/run.py \
 outputs/page_cutting_demo/
   00_input_pages/                 输入页面副本，超大图会按参数压缩
   01_doclayout/                   Paddle DocLayout 原始结果和版面块统计
-  02_ocr_units/                   可送入 OCR 的文本块图片和 index.csv
+  02_ocr_units/                   可送入 OCR 的行或小区域图片和 index.csv
   03_cut_review/                  每页原图、检测框和文本块预览
   page_processing_validation.json 基础校验报告
   run_summary.md                  本次运行摘要
@@ -37,7 +37,7 @@ outputs/page_cutting_demo/
 | 入口 | 用途 |
 |---|---|
 | `03_cut_review/` | 人工检查页面切割是否合理 |
-| `02_ocr_units/index.csv` | 下游 OCR 读取的索引，包含图片路径、阅读顺序和页面来源 |
+| `02_ocr_units/index.csv` | 下游 OCR 读取的索引，包含图片路径、阅读顺序、页面来源、父级版面框和识别单元位置 |
 
 ## 接本地 OCR demo
 
