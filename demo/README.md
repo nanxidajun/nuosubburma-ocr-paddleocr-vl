@@ -7,7 +7,7 @@
 | 场景 | 使用脚本 | 输出 |
 |---|---|---|
 | 行图、区域图、标牌、简单页面 | `infer_single_image.py` | OCR 文本，可选 HTML 复核页 |
-| 整页、PDF、页面照片、屏幕拍照 | `run_page_workflow.py` | 页面切割、OCR 单元、页面文本、异常审计、HTML 复核页 |
+| 整页、PDF、页面照片、屏幕拍照 | `run_page_workflow.py` | 页面切割、OCR 单元、页面文本、结构化结果、异常审计、HTML 复核页 |
 
 ## 先安装依赖
 
@@ -120,11 +120,12 @@ python demo/run_page_workflow.py \
 -> 页面切割，生成 OCR 单元和阅读顺序
 -> OCR 单元识别
 -> 页面文本合并
+-> 结构化页面输出
 -> 异常审计
 -> 可选注音
 ```
 
-整页 demo 的 `--max-image-side` 会传给页面切割步骤。超规格页面会先等比例压缩，再用 `PP-DocLayout` 做页面切割。
+整页 demo 的 `--max-image-side` 会传给页面切割步骤。超规格页面会先等比例压缩，再用 Paddle DocLayout 做页面切割。
 
 主要输出：
 
@@ -137,6 +138,8 @@ python demo/run_page_workflow.py \
 | `outputs/demo_page_workflow/03_page_text/submission_pages.html` | 本地 HTML 复核页，展示异常摘要、页面文本和 OCR 单元小图 |
 | `outputs/demo_page_workflow/03_page_text/audit_summary.json` | 空结果、异常状态、重复页等自动审计摘要 |
 | `outputs/demo_page_workflow/03_page_text/page_audit.csv` | 逐页审计表 |
+| `outputs/demo_page_workflow/04_page_structure/structured_pages.jsonl` | 标题、正文、页码、块角色、位置框和彝汉对照行等结构化结果 |
+| `outputs/demo_page_workflow/04_page_structure/structure_summary.json` | 结构化页数、块数、角色统计和告警汇总 |
 | `outputs/demo_page_workflow/03_page_text/submission_pages_pronounced.jsonl` | 使用 `--with-pronunciation` 时生成的注音结果 |
 
 如果已经有页面切割输出或 OCR 结果，可以复用中间结果：

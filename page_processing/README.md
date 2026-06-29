@@ -1,8 +1,8 @@
 # 页面切割流程
 
-本目录有两个页面处理入口：`run.py` 负责页面切割，`assemble_pages.py` 负责把 OCR 单元拼合成页级文本。`run.py` 使用 Paddle 的 `PP-DocLayout` 版面检测模型对整页图片或 PDF 做页面切割，生成可送入 OCR 的文本块。
+本目录有三个页面处理入口：`run.py` 负责页面切割，`assemble_pages.py` 负责把 OCR 单元拼合成页级文本，`structure_pages.py` 负责把 OCR 单元或页级文本导出为结构化页面结果。`run.py` 使用 Paddle DocLayout 对整页图片或 PDF 做页面切割，生成可送入 OCR 的文本块。
 
-输出会保留 `page_id`、`crop_id`、`reading_order`、`bbox` 等字段，供后续 OCR、visual-line 页面文本合并、异常审计和可选注音使用。
+输出会保留 `page_id`、`crop_id`、`reading_order`、`bbox` 等字段，供后续 OCR、visual-line 页面文本合并、结构化输出、异常审计和可选注音使用。
 
 ## 一键运行
 
@@ -25,7 +25,7 @@ python page_processing/run.py \
 ```text
 outputs/page_cutting_demo/
   00_input_pages/                 输入页面副本，超大图会按参数压缩
-  01_doclayout/                   PP-DocLayout 原始结果和版面块统计
+  01_doclayout/                   Paddle DocLayout 原始结果和版面块统计
   02_ocr_units/                   可送入 OCR 的文本块图片和 index.csv
   03_cut_review/                  每页原图、检测框和文本块预览
   page_processing_validation.json 基础校验报告
@@ -57,6 +57,7 @@ python demo/run_page_workflow.py \
 页面切割
 -> OCR 单元识别
 -> 页面文本合并
+-> 结构化页面输出
 -> 异常审计
 -> 可选注音
 ```
@@ -80,6 +81,26 @@ python demo/run_page_workflow.py \
   --model models/NuosuBburma-OCR \
   --output-root outputs/demo_page_workflow
 ```
+
+## 单独导出结构化页面
+
+`structure_pages.py` 用于把页面结果拆成更容易审计的结构字段。它保留标题、正文、页码、块角色、位置框、OCR 状态；对彝汉并排页面，还会抽取彝文原文行和彝汉对照行。
+
+```bash
+python page_processing/structure_pages.py \
+  --input outputs/demo_page_workflow/02_ocr_units/ocr_units_results.jsonl \
+  --out-dir outputs/demo_page_workflow/04_page_structure \
+  --input-kind ocr_units
+```
+
+主要输出：
+
+| 输出 | 用途 |
+|---|---|
+| `structured_pages.jsonl` | 每页结构化 JSONL |
+| `structured_pages.md` | 便于人工复查的 Markdown |
+| `page_structure_audit.csv` | 每页块数、行数、页码和告警 |
+| `structure_summary.json` | 页数、块数、角色统计和告警汇总 |
 
 ## PDF 输入
 
@@ -108,7 +129,7 @@ brew install poppler
 
 ## 依赖
 
-页面切割使用 `requirements.txt` 中的 `paddleocr==3.4.0`，默认模型名为 `PP-DocLayout`。
+页面切割使用 `requirements.txt` 中的 `paddleocr==3.4.0`，默认模型名为 `PP-DocLayout_plus-L`。
 
 ```bash
 python -m pip install -r requirements.txt

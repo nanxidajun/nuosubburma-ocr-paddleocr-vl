@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""本地整页 demo：页面切割、OCR 单元识别、页面文本合并、异常审计和可选注音。"""
+"""本地整页 demo：页面切割、OCR 单元识别、页面文本合并、结构化输出、异常审计和可选注音。"""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from page_processing.assemble_pages import assemble_ocr_results
+from page_processing.structure_pages import structure_pages
 
 DEFAULT_MODEL = REPO_ROOT / "models" / "NuosuBburma-OCR"
 DEFAULT_INPUT = REPO_ROOT / "demo" / "sample_images" / "screen_page.jpg"
@@ -24,7 +25,7 @@ DEFAULT_OUTPUT_ROOT = REPO_ROOT / "outputs" / "demo_page_workflow"
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="本地整页 demo：页面切割 -> OCR 单元识别 -> 页面文本合并")
+    parser = argparse.ArgumentParser(description="本地整页 demo：页面切割 -> OCR 单元识别 -> 页面文本合并 -> 结构化输出")
     parser.add_argument("--input", default=None, help="整页图片、PDF 或图片目录，默认 demo/sample_images/screen_page.jpg")
     parser.add_argument("--model", default=None, help="模型目录，默认 models/NuosuBburma-OCR")
     parser.add_argument("--output-root", default=None, help="输出目录，默认 outputs/demo_page_workflow")
@@ -303,6 +304,16 @@ def maybe_add_pronunciation(args: argparse.Namespace, submission_jsonl: Path, pa
     return output_path
 
 
+def export_page_structure(ocr_results: Path, structure_dir: Path) -> dict[str, str]:
+    outputs = structure_pages(
+        ocr_results.resolve(),
+        structure_dir.resolve(),
+        input_kind="ocr_units",
+        out_prefix="structured_pages",
+    )
+    return {key: str(value) for key, value in outputs.__dict__.items()}
+
+
 def main() -> None:
     args = parse_args()
     input_path = resolve_path(args.input, DEFAULT_INPUT)
@@ -312,6 +323,7 @@ def main() -> None:
     page_root = args.page_root.resolve() if args.page_root else output_root / "01_page_cutting"
     ocr_dir = output_root / "02_ocr_units"
     page_text_dir = output_root / "03_page_text"
+    page_structure_dir = output_root / "04_page_structure"
     ocr_results = args.ocr_results.resolve() if args.ocr_results else ocr_dir / "ocr_units_results.jsonl"
     summary_root = page_root / "02_ocr_units"
     index_path = summary_root / "index.csv"
@@ -346,6 +358,7 @@ def main() -> None:
         keep_empty_units=args.keep_empty_units,
         max_image_side=args.max_image_side,
     ).as_dict()
+    structure_outputs = export_page_structure(ocr_results, page_structure_dir)
     pronounced = maybe_add_pronunciation(args, outputs["submission_jsonl"], page_text_dir)
 
     manifest = {
@@ -356,6 +369,7 @@ def main() -> None:
         "max_image_side": args.max_image_side,
         "ocr_results": str(ocr_results),
         "page_text_outputs": {key: str(value) for key, value in outputs.items()},
+        "page_structure_outputs": structure_outputs,
         "pronunciation_output": str(pronounced) if pronounced else "",
     }
     manifest_path = output_root / "workflow_manifest.json"

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="《雪族子史篇》整页 OCR 对比：页面切割后 Avg NED 0.0654，直接整页 OCR Avg NED 0.5540">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="《雪族子史篇》整页 OCR 对比：页面切割后 Avg NED 0.0504，直接整页 OCR Avg NED 0.5448">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#fbf7ec"/>
@@ -33,15 +33,15 @@
 
   <g transform="translate(56 142)">
     <text x="0" y="0" class="label">页面切割后识别</text>
-    <text x="804" y="0" class="num" text-anchor="end">0.0654</text>
+    <text x="804" y="0" class="num" text-anchor="end">0.0504</text>
     <rect x="0" y="18" width="805" height="34" rx="17" fill="#eadfca"/>
     <rect x="0" y="18" width="95" height="34" rx="17" fill="url(#cut)"/>
-    <text x="112" y="41" class="small">Paddle PP-DocLayout → OCR 单元 → 页面文本合并</text>
+    <text x="112" y="41" class="small">Paddle DocLayout → OCR 单元 → 页面文本合并</text>
   </g>
 
   <g transform="translate(56 220)">
     <text x="0" y="0" class="label">直接整页 OCR</text>
-    <text x="804" y="0" class="num" text-anchor="end">0.5540</text>
+    <text x="804" y="0" class="num" text-anchor="end">0.5448</text>
     <rect x="0" y="18" width="805" height="34" rx="17" fill="#eadfca"/>
     <rect x="0" y="18" width="805" height="34" rx="17" fill="url(#direct)"/>
     <text x="22" y="41" class="white" style="font: 700 13px 'PingFang SC', sans-serif;">整页图像直接进入 OCR 模型</text>
