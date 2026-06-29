@@ -1,12 +1,13 @@
 # 页面切割流程说明
 
-本项目只有一条页面切割、拼合与结构化流程：使用 Paddle DocLayout 对整页图片或 PDF 做页面切割，得到识别单元、阅读顺序和位置框；识别后统一由 `page_processing/assemble_pages.py` 做页面文本拼合，再由 `page_processing/structure_pages.py` 导出可复核的页面结构。线上演示是交互入口，本地 `demo/run_page_workflow.py` 是命令行入口。
+本项目只有一条页面切割、拼合与结构化流程：使用 Paddle DocLayout 对整页图片或 PDF 做版面块检测，并对较大的正文、页眉、页脚或脚注块继续按视觉行/小区域细分，得到识别单元、阅读顺序和位置框；识别后统一由 `page_processing/assemble_pages.py` 做页面文本拼合，再由 `page_processing/structure_pages.py` 导出可复核的页面结构。线上演示是交互入口，本地 `demo/run_page_workflow.py` 是命令行入口。
 
 ## 流程
 
 ```text
 整页图片 / PDF / 页面照片 / 屏幕拍照
--> Paddle DocLayout 页面切割
+-> Paddle DocLayout 版面块检测
+-> 大文本块按视觉行/小区域细分
 -> 生成识别单元和阅读顺序
 -> 文本区域识别
 -> 页面文本合并
@@ -50,14 +51,14 @@ outputs/page_cutting_demo/
 |---|---|
 | `00_input_pages/` | 本次使用的页面图片；单图和 PDF 会先复制或渲染到这里 |
 | `01_doclayout/` | Paddle DocLayout 原始结果和版面块统计 |
-| `02_ocr_units/index.csv` | 识别单元索引，记录裁切编号、页面编号、图片路径和阅读顺序 |
+| `02_ocr_units/index.csv` | 识别单元索引，记录裁切编号、页面编号、图片路径、阅读顺序、父级版面框和识别单元位置 |
 | `03_cut_review/` | 人工检查用的页面检测框和文本块预览 |
 | `page_processing_validation.json` | 检查识别单元是否缺图、裁切编号是否重复等基础问题 |
 | `run_summary.md` | 本次处理的页数、识别单元数量和分组数量 |
 
 ## 识别单元索引
 
-`02_ocr_units/index.csv` 记录后续识别需要的索引字段：
+`02_ocr_units/index.csv` 记录 OCR 识别需要的索引字段：
 
 | 字段 | 说明 |
 |---|---|
@@ -67,8 +68,8 @@ outputs/page_cutting_demo/
 | `summary_path` | 文本块图片相对路径 |
 | `role` | 版面检测后映射的块类型，如 `body`、`title`、`footnote` |
 | `reading_order` | 页面文本合并时使用的阅读顺序 |
-| `bbox` | 版面检测框 |
-| `crop_bbox` | 加边距后的实际裁剪框 |
+| `bbox` | 识别单元在页面中的位置框 |
+| `crop_bbox` | 实际送入 OCR 的裁剪框 |
 
 ## 页面文本拼合
 
@@ -100,7 +101,7 @@ python page_processing/structure_pages.py \
 
 ## 《雪族子史篇》整页对比案例
 
-以最新 `758` 条总评估集中的《雪族子史篇》65 页为对象，我们对比了两种识别路径：整页图像直接进入模型识别，以及先用 Paddle DocLayout 生成识别单元、再识别并合并页面文本。这是页面切割方法对照；最新正式 rerun 仍以完整 `758` 条系统总分为主，page 子集结果用于解释整页能力。
+以最新 `758` 条总评估集中的《雪族子史篇》65 页为对象，我们对比了两种识别路径：整页图像直接进入模型识别，以及先用 Paddle DocLayout 生成识别单元、再识别并合并页面文本。这是页面切割方法对照；完整 `758` 条系统总分和 page 子集结果分开报告。
 
 | 识别路径 | 平均归一化编辑距离（Avg NED） | 说明 |
 |---|---:|---|

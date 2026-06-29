@@ -65,22 +65,20 @@ flex-ckpt.auto_generated.metadata
 https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 ```
 
-最新评估集为 `758` 条真实来源样本，原始 `PaddleOCR-VL-1.6` baseline 已完成 `758` 条 aligned raw prediction，错误行 `0`。当前 LoRA 模型的最新 `758` 条同口径指标等待正式 rerun；下表保留历史 `603` 条 OCR 主指标结果，作为已经完成的可复查模型指标。
+最终评估集为 `758` 条真实来源样本。下表保留历史 `603` 条 OCR 主指标结果，作为已完成、可核验的模型指标；`758` 条真实样本作为最终评估口径。
 
 ![Evaluation snapshot](../docs/figures/evaluation_snapshot.svg)
 
-| 指标 | PaddleOCR-VL-1.6 原始模型 | 当前 LoRA 模型 |
-|---|---:|---:|
-| 最新 `758` 条 raw prediction | 已完成，错误行 `0` | 等待正式 rerun |
-| 最新 `758` 条 Avg NED | 待最终计算 | 待正式 rerun |
-| 历史 `603` 条样本数 | 未公开同口径指标 | 603 |
-| 历史 `603` 条 Avg NED | 未公开同口径指标 | 0.036068 |
-| 历史 `603` 条 WS Avg NED | 未公开同口径指标 | 0.034219 |
-| 历史 `603` 条 NFKC+WS Avg NED | 未公开同口径指标 | 0.033964 |
-| 历史 `603` 条 Yi-only Avg NED | 未公开同口径指标 | 0.038309 |
-| 历史 `603` 条 Han-only Avg NED | 未公开同口径指标 | 0.022447 |
-| 历史 `603` 条 Digit-only Avg NED | 未公开同口径指标 | 0.139918 |
-| 历史 `603` 条 replacement / LaTeX / extra Latin / long_pred | 未公开同口径指标 | 0 / 2 / 0 / 0 |
+| 指标 | 当前 LoRA 模型 |
+|---|---:|
+| 历史 `603` 条样本数 | 603 |
+| 历史 `603` 条 Avg NED | 0.036068 |
+| 历史 `603` 条 WS Avg NED | 0.034219 |
+| 历史 `603` 条 NFKC+WS Avg NED | 0.033964 |
+| 历史 `603` 条 Yi-only Avg NED | 0.038309 |
+| 历史 `603` 条 Han-only Avg NED | 0.022447 |
+| 历史 `603` 条 Digit-only Avg NED | 0.139918 |
+| 历史 `603` 条 replacement / LaTeX / extra Latin / long_pred | 0 / 2 / 0 / 0 |
 
 完整评估结果见：
 
@@ -93,7 +91,7 @@ evaluation/
 - 本模型可以输入整页、区域和行图。
 - 当前最稳定的使用方式通常是 line / region OCR。
 - 直接 page OCR 更适合作为诊断入口；复杂整页可能出现与人工标注不一致的换行、阅读顺序偏差或段落边界误判。
-- 复杂整页文档在版面较密、手写拍照、多栏、脚注、注音块或图文混排较强时，建议先走 [页面切割流程说明](../docs/PAGE_PROCESSING.md)，再做 line/region OCR 和人工复核。
+- 复杂整页文档在版面较密、手写拍照、多栏、脚注、注音块或图文混排较强时，建议先走 [页面处理说明](../docs/PAGE_PROCESSING.md)，再做 line/region OCR 和人工核验。
 - 手写拍照样本已纳入独立观察，结果与印刷体分开解读。
 - 本版本尚未进行专门的端侧/移动端优化。
 

@@ -1,0 +1,337 @@
+{
+  "name": "NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629",
+  "version": "20260629_final_locked_gt_complete",
+  "build_date": "2026-06-29",
+  "locked_at": "2026-06-29T21:22:14",
+  "rows": 758,
+  "images": 758,
+  "annotation_file": "annotations.jsonl",
+  "samples_file": "samples.csv",
+  "integration_audit_file": "integration_audit.csv",
+  "blank_gt_file": "blank_gt_samples.jsonl",
+  "formerly_pending_file": "formerly_pending_input.jsonl",
+  "excluded_duplicate_cover_lines_file": "excluded_duplicate_cover_lines.jsonl",
+  "excluded_screen_pages_file": "excluded_screen_pages.jsonl",
+  "excluded_user_removed_images_file": "excluded_user_removed_images.jsonl",
+  "all_samples_score_included": true,
+  "blank_gt_rows": 0,
+  "placeholder_gt_rows": 0,
+  "replacement_char_gt_rows": 0,
+  "base_reviewed_rows_after_excluding_duplicates": 477,
+  "formerly_pending_rows": 285,
+  "review_filled_rows": 285,
+  "review_matched_pending_rows": 285,
+  "review_unfilled_pending_rows": 0,
+  "excluded_duplicate_cover_line_rows": 7,
+  "excluded_duplicate_cover_line_ids": [
+    "xuan_yi_2_line_000283",
+    "xuan_yi_2_line_000284",
+    "xuan_yi_2_line_000285",
+    "xuan_yi_2_line_000286",
+    "xuan_yi_3_line_000389",
+    "yi_dictionary_line_000473",
+    "yi_dictionary_line_000474"
+  ],
+  "excluded_screen_page_rows": 3,
+  "excluded_screen_page_ids": [
+    "screen_page_000597",
+    "screen_page_000598",
+    "screen_page_000599"
+  ],
+  "excluded_user_removed_image_rows": 5,
+  "excluded_user_removed_image_ids": [
+    "real_screen_photo_page_004_part2",
+    "xuan_yi_3_extra_xuan_yi_3_extra_p136_body_candidate_v3_box_010_body_line",
+    "xuan_yi_3_extra_xuan_yi_3_extra_p136_body_candidate_v3_box_012_body_line",
+    "xuan_yi_3_extra_xuan_yi_3_extra_p190_body_candidate_v3_box_005_body_line",
+    "xuan_yi_3_extra_xuan_yi_3_extra_p190_body_candidate_v3_box_017_body_line"
+  ],
+  "validation": {
+    "rows": 758,
+    "duplicate_ids": 0,
+    "duplicate_image_refs": 0,
+    "missing_images": 0,
+    "missing_image_examples": [],
+    "absolute_image_refs": 0,
+    "zero_byte_images": 0,
+    "zero_byte_image_examples": [],
+    "blank_gt": 0,
+    "placeholder_gt": 0,
+    "replacement_char_gt": 0,
+    "missing_assistant_message": 0,
+    "score_included_false": 0
+  },
+  "formerly_pending_validation": {
+    "rows": 285,
+    "duplicate_ids": 0,
+    "duplicate_image_refs": 0,
+    "missing_images": 0,
+    "missing_image_examples": [],
+    "absolute_image_refs": 0,
+    "zero_byte_images": 0,
+    "zero_byte_image_examples": [],
+    "blank_gt": 0,
+    "placeholder_gt": 0,
+    "replacement_char_gt": 0,
+    "missing_assistant_message": 0,
+    "score_included_false": 0
+  },
+  "by_source_name": {
+    "凉山彝文资料选译第3集": 234,
+    "越西彝族民间歌谣 彝文版": 82,
+    "凉山彝文资料选译第2集": 76,
+    "勒俄玛牧导读教程": 66,
+    "雪族 子史篇": 65,
+    "规范手写": 53,
+    "《勒俄特依》译注": 46,
+    "根与花": 43,
+    "凉山彝语语法": 31,
+    "彝文检字本": 31,
+    "屏幕拍照文本": 11,
+    "实拍标牌照片": 7,
+    "真实照片": 3,
+    "实拍电梯标识": 1,
+    "凉山彝文资料选译第1集": 1,
+    "四川彝族家支问题：论文集": 1,
+    "大学彝语文：彝文": 1,
+    "彝族语言文字论文选": 1,
+    "汉彝成语词典": 1,
+    "猎村的歌声彝文版": 1,
+    "现代彝语教程": 1,
+    "现代凉山彝语语法": 1,
+    "彝语语法（诺苏话）": 1
+  },
+  "by_source_code": {
+    "xuan_yi_3_extra": 123,
+    "xuan_yi_3": 111,
+    "yuexi_folk_songs": 82,
+    "xuan_yi_2": 76,
+    "le_e_ma_mu_guide": 66,
+    "xuezu_zishi": 65,
+    "handwriting": 53,
+    "luoe_teyi": 46,
+    "gen_yu_hua": 43,
+    "liangshan_yi_grammar": 31,
+    "yi_dictionary": 31,
+    "real_screen_photo_nonbook": 11,
+    "real_sign_direct_20260624": 7,
+    "real_photo": 3,
+    "real_photo_elevator_sign_9030": 1,
+    "xuan_yi_1": 1,
+    "sichuan_yi_clan_papers": 1,
+    "college_yi_language": 1,
+    "yi_language_papers": 1,
+    "han_yi_idiom_dictionary": 1,
+    "liecun_song_yi": 1,
+    "modern_yi_course": 1,
+    "modern_liangshan_yi_grammar": 1,
+    "nuosu_yi_grammar": 1
+  },
+  "by_sample_type": {
+    "line": 470,
+    "page": 169,
+    "region": 119
+  },
+  "by_scene": {
+    "old_print_pdf": 507,
+    "new_print_pdf": 100,
+    "real_screen_photo": 87,
+    "neat_handwriting": 53,
+    "real_photo": 11
+  },
+  "by_difficulty": {
+    "medium": 467,
+    "hard": 208,
+    "easy": 83
+  },
+  "by_script_mix": {
+    "yi_han": 453,
+    "yi": 276,
+    "yi_han_latin": 26,
+    "han": 2,
+    "other": 1
+  },
+  "by_official_eval_layer": {
+    "base_603_reviewed": 350,
+    "new_xuan_yi_3_extra_line_candidates_pending_gt": 123,
+    "new_yuexi_line_candidates_pending_gt": 82,
+    "xuezu_full_page_20260624": 65,
+    "new_le_e_ma_mu_screen_photo_pages_pending_gt": 53,
+    "new_xuan_yi_3_region_candidates_pending_gt": 27,
+    "real_screen_photo_replacement_20260628": 23,
+    "book_cover_supplement_20260627": 16,
+    "real_screen_photo_nonbook_20260628": 11,
+    "real_photo_sign_20260624": 7,
+    "real_photo_sign_20260627": 1
+  },
+  "by_gold_label_status": {
+    "official_gold": 431,
+    "reviewed_gt_from_external_jsonl": 239,
+    "human_reviewed_gt": 63,
+    "initial_checked_gt": 14,
+    "candidate_gold": 11
+  },
+  "by_gt_source": {
+    "human_checked_existing_eval": 349,
+    "external_reviewed_jsonl_20260628": 239,
+    "manual_xuezu_latest_gt_review_20260629": 65,
+    "screen_photo_repair_single_photo_page_gt_review_done_20260629": 43,
+    "manual_initial_gt_from_user_chat_20260628": 14,
+    "manual_gt_from_user_desktop1_20260628": 11,
+    "manual_browser_editor_review_20260629": 10,
+    "manual_uncertain_gt_review_20260629": 8,
+    "screen_photo_repair_two_photo_manual_allocation_20260629": 8,
+    "manual_cover_followup_user_review_20260629": 6,
+    "manual_gt_review_keep": 5
+  },
+  "by_digit_presence": {
+    "no_digit": 581,
+    "has_digit": 177
+  },
+  "xuezu_final_gt": {
+    "source_jsonl": "/Users/nanx/Desktop/OCR/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
+    "source_sha256": "f6328e47a571ccfd0409f2915e471699c385e9a5b6f5e55f76ed6d919cfc2869",
+    "seed_rows": 65,
+    "matched_annotation_rows": 65,
+    "text_diffs_vs_seed": 0,
+    "gt_source": "manual_xuezu_latest_gt_review_20260629",
+    "updated_backup": ""
+  },
+  "non_xuezu_revision_audit": {
+    "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
+    "actionable_unique_ids": 0,
+    "placeholder_current_non_xuezu_count_ignored": 0,
+    "historical_placeholder_count_before_browser_editor_review": 24,
+    "current_placeholder_gt_rows": 0
+  },
+  "final_lock": {
+    "version": "20260629_final_locked_gt_complete",
+    "locked_at": "2026-06-29T21:22:14",
+    "annotations_sha256": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95",
+    "checksum_file": "FINAL_LOCK_CHECKSUMS_20260629.sha256",
+    "manifest_file": "FINAL_LOCK_MANIFEST_20260629.json",
+    "backups": {
+      "dataset_summary.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_gt_complete_lock_20260629_212214",
+      "integration_audit.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_gt_complete_lock_20260629_212214",
+      "README.md": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/README.md.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_20260629.md": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_20260629.md.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_MANIFEST_20260629.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_MANIFEST_20260629.json.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_CHECKSUMS_20260629.sha256": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_CHECKSUMS_20260629.sha256.before_gt_complete_lock_20260629_212214"
+    },
+    "notes": [
+      "annotations.jsonl is the canonical evaluation set.",
+      "samples.csv and integration_audit.csv match annotations.jsonl at final GT-complete lock time.",
+      "browser_editor_review_20260629 cleared the remaining uncertain GT placeholders before this lock.",
+      "legacy HTML review pages are browsing aids only; this lock manifest and annotations.jsonl are canonical."
+    ],
+    "canonical_image_dir_audit": {
+      "annotation_image_refs": 758,
+      "files_in_images_dir": 758,
+      "extra_files_in_images_dir": 0,
+      "missing_files_in_images_dir": 0,
+      "archived_excluded_image": "excluded_images/real_screen_photo_page_004_part2.jpg",
+      "archived_from": "images/real_screen_photo_page_004_part2.jpg",
+      "archived_at": "2026-06-29T18:47:41"
+    }
+  },
+  "source_inventory": [
+    {
+      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl",
+      "exists": true,
+      "size": 1814112,
+      "sha256": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95"
+    },
+    {
+      "path": "/Users/nanx/Desktop/OCR/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
+      "exists": true,
+      "size": 216987,
+      "sha256": "f6328e47a571ccfd0409f2915e471699c385e9a5b6f5e55f76ed6d919cfc2869"
+    },
+    {
+      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
+      "exists": true,
+      "size": 1189605,
+      "sha256": "2172230d4cf9529c92994381986fbe7f46aceeed6835a913be30282fd2584b6b"
+    },
+    {
+      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/excluded_user_removed_images.jsonl",
+      "exists": true,
+      "size": 13593,
+      "sha256": "1b87826ea9f7ad577bf349f3a10197a5cfc73b55dc504312cdf9ca44a74acd67"
+    },
+    {
+      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/formerly_pending_input.jsonl",
+      "exists": true,
+      "size": 788658,
+      "sha256": "067a438a7176ef0a5dd9e61e76436e29aa9ae5135653260f75e0ac493d70df9c"
+    }
+  ],
+  "canonical_image_dir_audit": {
+    "annotation_image_refs": 758,
+    "files_in_images_dir": 758,
+    "extra_files_in_images_dir": 0,
+    "missing_files_in_images_dir": 0,
+    "archived_excluded_image": "excluded_images/real_screen_photo_page_004_part2.jpg",
+    "archived_from": "images/real_screen_photo_page_004_part2.jpg",
+    "archived_at": "2026-06-29T18:47:41"
+  },
+  "uncertain_gt_review_20260629": {
+    "edits_file": "/Users/nanx/Desktop/uncertain_gt_review_edits.jsonl",
+    "applied_rows": 24,
+    "changed_rows": 23,
+    "still_has_uncertain_marker_rows": 1,
+    "backup": "submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.before_uncertain_gt_edits_20260629_200551.jsonl",
+    "updated_at": "20260629_200551"
+  },
+  "cover_followup_user_review_20260629": {
+    "updated_at": "20260629_202120",
+    "updated_rows": 8,
+    "ids": [
+      "xuan_yi_1_cover_page_000001",
+      "sichuan_yi_clan_papers_cover_page_000001",
+      "yi_language_papers_cover_page_000001",
+      "han_yi_idiom_dictionary_cover_page_000001",
+      "modern_yi_course_cover_page_000001",
+      "modern_liangshan_yi_grammar_cover_page_000001",
+      "yi_dictionary_cover_page_000001",
+      "xuan_yi_3_cover_page_000001"
+    ],
+    "annotations_sha256_after_update": "64e4f01346257a74eb0e767444d810063f6142908f57652567a78e3d4aa137be",
+    "backups": [
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_cover_followup_20260629_202120",
+      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_cover_followup_20260629_202120"
+    ]
+  },
+  "browser_editor_review_20260629": {
+    "updated_at": "20260629_211411",
+    "export_file": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/browser_editor_exports/uncertain_gt_review_editor_changed_20260629_210946.jsonl",
+    "updated_rows": 10,
+    "ids": [
+      "modern_yi_course_cover_page_000001",
+      "nuosu_yi_grammar_cover_page_000001",
+      "gen_yu_hua_cover_page_000001",
+      "le_e_ma_mu_guide_cover_page_000001",
+      "liangshan_yi_grammar_cover_page_000001",
+      "luoe_teyi_cover_page_000001",
+      "xuan_yi_2_cover_page_000001",
+      "xuan_yi_3_cover_page_000001",
+      "le_e_ma_mu_screen_photo_p042",
+      "le_e_ma_mu_screen_photo_p044"
+    ],
+    "still_has_uncertain_marker_rows_after_update": 0,
+    "annotations_sha256_after_update": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95",
+    "backups": {
+      "annotations.jsonl": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_browser_editor_sync_20260629_211411",
+      "samples.csv": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_browser_editor_sync_20260629_211411",
+      "integration_audit.csv": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_browser_editor_sync_20260629_211411",
+      "uncertain_gt_review_after_edits_20260629_200551.jsonl": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_browser_editor_sync_20260629_211411",
+      "uncertain_gt_review_after_edits_20260629_200551.html": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_browser_editor_sync_20260629_211411",
+      "dataset_summary.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_browser_editor_sync_20260629_211411"
+    }
+  }
+}
