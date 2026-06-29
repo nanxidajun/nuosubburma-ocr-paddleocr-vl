@@ -53,8 +53,6 @@ LABEL_TO_ROUTE = {
     "text": "body",
     "content": "body",
     "aside_text": "body",
-    "figure": "body",
-    "chart": "body",
     "table": "body",
     "paragraph": "body",
     "formula": "body",
@@ -68,7 +66,7 @@ LABEL_TO_ROUTE = {
     "page_footer": "footer",
 }
 
-SKIP_LABEL_PARTS = ("image", "seal", "stamp", "barcode", "qr")
+SKIP_LABEL_PARTS = ("figure", "image", "chart", "seal", "stamp", "barcode", "qr")
 
 
 @dataclass

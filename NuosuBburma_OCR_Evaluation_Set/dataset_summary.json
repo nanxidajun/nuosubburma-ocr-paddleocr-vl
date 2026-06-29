@@ -189,7 +189,7 @@
     "has_digit": 177
   },
   "xuezu_final_gt": {
-    "source_jsonl": "/Users/nanx/Desktop/OCR/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
+    "source_jsonl": "local_artifacts/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
     "source_sha256": "f6328e47a571ccfd0409f2915e471699c385e9a5b6f5e55f76ed6d919cfc2869",
     "seed_rows": 65,
     "matched_annotation_rows": 65,
@@ -198,7 +198,7 @@
     "updated_backup": ""
   },
   "non_xuezu_revision_audit": {
-    "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
+    "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
     "actionable_unique_ids": 0,
     "placeholder_current_non_xuezu_count_ignored": 0,
     "historical_placeholder_count_before_browser_editor_review": 24,
@@ -211,12 +211,12 @@
     "checksum_file": "FINAL_LOCK_CHECKSUMS_20260629.sha256",
     "manifest_file": "FINAL_LOCK_MANIFEST_20260629.json",
     "backups": {
-      "dataset_summary.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_gt_complete_lock_20260629_212214",
-      "integration_audit.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_gt_complete_lock_20260629_212214",
-      "README.md": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/README.md.before_gt_complete_lock_20260629_212214",
-      "FINAL_LOCK_20260629.md": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_20260629.md.before_gt_complete_lock_20260629_212214",
-      "FINAL_LOCK_MANIFEST_20260629.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_MANIFEST_20260629.json.before_gt_complete_lock_20260629_212214",
-      "FINAL_LOCK_CHECKSUMS_20260629.sha256": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_CHECKSUMS_20260629.sha256.before_gt_complete_lock_20260629_212214"
+      "dataset_summary.json": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_gt_complete_lock_20260629_212214",
+      "integration_audit.json": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_gt_complete_lock_20260629_212214",
+      "README.md": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/README.md.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_20260629.md": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_20260629.md.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_MANIFEST_20260629.json": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_MANIFEST_20260629.json.before_gt_complete_lock_20260629_212214",
+      "FINAL_LOCK_CHECKSUMS_20260629.sha256": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/FINAL_LOCK_CHECKSUMS_20260629.sha256.before_gt_complete_lock_20260629_212214"
     },
     "notes": [
       "annotations.jsonl is the canonical evaluation set.",
@@ -236,31 +236,31 @@
   },
   "source_inventory": [
     {
-      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl",
+      "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl",
       "exists": true,
       "size": 1814112,
       "sha256": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95"
     },
     {
-      "path": "/Users/nanx/Desktop/OCR/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
+      "path": "local_artifacts/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
       "exists": true,
       "size": 216987,
       "sha256": "f6328e47a571ccfd0409f2915e471699c385e9a5b6f5e55f76ed6d919cfc2869"
     },
     {
-      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
+      "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/non_xuezu_gt_revision_audit_refined_20260629.json",
       "exists": true,
       "size": 1189605,
       "sha256": "2172230d4cf9529c92994381986fbe7f46aceeed6835a913be30282fd2584b6b"
     },
     {
-      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/excluded_user_removed_images.jsonl",
+      "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/excluded_user_removed_images.jsonl",
       "exists": true,
       "size": 13593,
       "sha256": "1b87826ea9f7ad577bf349f3a10197a5cfc73b55dc504312cdf9ca44a74acd67"
     },
     {
-      "path": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/formerly_pending_input.jsonl",
+      "path": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/formerly_pending_input.jsonl",
       "exists": true,
       "size": 788658,
       "sha256": "067a438a7176ef0a5dd9e61e76436e29aa9ae5135653260f75e0ac493d70df9c"
@@ -276,7 +276,7 @@
     "archived_at": "2026-06-29T18:47:41"
   },
   "uncertain_gt_review_20260629": {
-    "edits_file": "/Users/nanx/Desktop/uncertain_gt_review_edits.jsonl",
+    "edits_file": "local_artifacts/uncertain_gt_review_edits.jsonl",
     "applied_rows": 24,
     "changed_rows": 23,
     "still_has_uncertain_marker_rows": 1,
@@ -298,18 +298,18 @@
     ],
     "annotations_sha256_after_update": "64e4f01346257a74eb0e767444d810063f6142908f57652567a78e3d4aa137be",
     "backups": [
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_cover_followup_20260629_202120",
-      "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_cover_followup_20260629_202120"
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.json.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_cover_followup_20260629_202120",
+      "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_cover_followup_20260629_202120"
     ]
   },
   "browser_editor_review_20260629": {
     "updated_at": "20260629_211411",
-    "export_file": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/browser_editor_exports/uncertain_gt_review_editor_changed_20260629_210946.jsonl",
+    "export_file": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/browser_editor_exports/uncertain_gt_review_editor_changed_20260629_210946.jsonl",
     "updated_rows": 10,
     "ids": [
       "modern_yi_course_cover_page_000001",
@@ -326,12 +326,12 @@
     "still_has_uncertain_marker_rows_after_update": 0,
     "annotations_sha256_after_update": "5632ae0c0551ef53678730d445ce41935981ff17dbc37ddb4aa4a84e174ddb95",
     "backups": {
-      "annotations.jsonl": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_browser_editor_sync_20260629_211411",
-      "samples.csv": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_browser_editor_sync_20260629_211411",
-      "integration_audit.csv": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_browser_editor_sync_20260629_211411",
-      "uncertain_gt_review_after_edits_20260629_200551.jsonl": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_browser_editor_sync_20260629_211411",
-      "uncertain_gt_review_after_edits_20260629_200551.html": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_browser_editor_sync_20260629_211411",
-      "dataset_summary.json": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_browser_editor_sync_20260629_211411"
+      "annotations.jsonl": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl.before_browser_editor_sync_20260629_211411",
+      "samples.csv": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/samples.csv.before_browser_editor_sync_20260629_211411",
+      "integration_audit.csv": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/integration_audit.csv.before_browser_editor_sync_20260629_211411",
+      "uncertain_gt_review_after_edits_20260629_200551.jsonl": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.jsonl.before_browser_editor_sync_20260629_211411",
+      "uncertain_gt_review_after_edits_20260629_200551.html": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_browser_editor_sync_20260629_211411",
+      "dataset_summary.json": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_browser_editor_sync_20260629_211411"
     }
   }
 }
