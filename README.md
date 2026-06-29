@@ -27,15 +27,20 @@
 
 ## 微调前后效果对比
 
-最终评估统一使用 `758` 条真实来源样本，对比 `PaddleOCR-VL-1.6` 未微调基座和 LoRA 微调后的提交模型。最新公开结果已经合并人工 GT 修正，其中 `real_screen_photo_nonbook_004` 和 `real_screen_photo_nonbook_005` 的 GT 已按最终人工标注更新。
+最终评估统一使用 `758` 条真实来源样本，对比 `PaddleOCR-VL-1.6` 未微调基座和 LoRA 微调后的提交模型。
 
-NED 越低越好。首页只保留高层统计，WS/NFKC、Yi-only、Han-only、Digit-only 等细分指标见 [评估摘要](evaluation/README.md)。
+NED 越低越好。完整逐样本结果和更多拆分表见 [评估摘要](evaluation/README.md)。
 
 | 统计项 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | 758 | 758 |
 | Avg NED | 0.726733 | 0.070342 |
+| WS Avg NED | 0.719600 | 0.069978 |
+| NFKC+WS Avg NED | 0.706794 | 0.069796 |
 | Exact | 0 / 758 | 447 / 758 (59.0%) |
+| Yi-only Avg NED | 1.000000 | 0.069870 |
+| Han-only Avg NED | 0.209245 | 0.055882 |
+| Digit-only Avg NED | 0.369451 | 0.260416 |
 | 输出风险：replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 6 / 1 / 1 |
 
 ### 按难度
