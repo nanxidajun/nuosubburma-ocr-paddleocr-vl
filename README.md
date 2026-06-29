@@ -29,19 +29,17 @@
 
 最终评估统一使用 `758` 条真实来源样本，对比 `PaddleOCR-VL-1.6` 未微调基座和 LoRA 微调后的提交模型。
 
-NED 越低越好。完整逐样本结果和更多拆分表见 [评估摘要](evaluation/README.md)。
+归一化编辑距离（NED）越低越好；Exact 对整页、换行和标点很敏感，因此只作为辅助观察。首页只保留最核心统计，完整逐样本结果和拆分表见 [评估摘要](evaluation/README.md)。
 
-![Core NED comparison](evaluation/charts/ned_overview.svg)
+| 指标 | 未微调基座 | LoRA 微调后 | 结论 |
+|---|---:|---:|---|
+| Avg NED | `0.726733` | `0.070342` | 整体错误量下降约 `90%`，微调是决定性收益。 |
+| Exact | `0 / 758` | `447 / 758 (59.0%)` | 在短文本和清晰行图上已经有较高完全匹配率。 |
+| Yi-only Avg NED | `1.000000` | `0.069870` | 基座几乎不能稳定输出规范彝文，LoRA 后彝文主干可用。 |
+| Han-only Avg NED | `0.209245` | `0.055882` | 混排中的汉字也明显改善。 |
+| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 6 / 1 / 1` | 异常输出基本被压住。 |
 
-![Avg NED by Difficulty](evaluation/charts/ned_by_difficulty.svg)
-
-![Avg NED by Input Granularity](evaluation/charts/ned_by_sample_type.svg)
-
-![Avg NED by Scene](evaluation/charts/ned_by_scene.svg)
-
-![Output Risk Counts](evaluation/charts/safety_failures.svg)
-
-总体看，模型在单行、旧印刷、新印刷、真实场景照片和多数复杂样本上已经可以作为资料整理和人工校对的基础；屏幕拍照/页面上传图是目前最弱的场景。
+按拆分结果看，最稳定的是单行图（`470` 条，Avg NED `0.025444`）和旧印刷/扫描资料（`507` 条，Avg NED `0.036873`）。主要短板是整页图（`169` 条，Avg NED `0.186774`）、屏幕拍照/页面上传图（`87` 条，Avg NED `0.258809`）和手写拍照（`53` 条，Avg NED `0.124483`）。因此当前模型已经适合做真实资料整理和人工校对的第一稿；复杂页面和拍照类输入仍建议配合页面切割、结构化输出和人工复核。
 
 ## 评审入口
 
@@ -58,9 +56,15 @@ NED 越低越好。完整逐样本结果和更多拆分表见 [评估摘要](eva
 
 评估集只使用真实来源样本，不使用合成样本证明模型效果。完整图片、标注和统计托管在 [Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set)。同时提供 [评估集标注可视化 Space](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set)，可直接查看代表样本图片、canonical GT、来源、场景、粒度和难度分层。
 
-下图汇总最终 `758` 条真实来源样本的视觉场景、输入粒度、文本构成和难度分层。逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
+最终评估集为 `758` 条真实来源样本和 `758` 张图片，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。核心分布如下；逐样本明细见 [samples.csv](NuosuBburma_OCR_Evaluation_Set/samples.csv)，质控和汇总统计见 [dataset_summary.json](NuosuBburma_OCR_Evaluation_Set/dataset_summary.json)。
 
-![Evaluation dataset composition](docs/figures/dataset_composition.svg)
+| 维度 | 统计 | 简短结论 |
+|---|---|---|
+| 输入粒度 | 单行 `470` / 区域 `119` / 整页 `169` | 不只评干净行图，也保留区域和整页压力。 |
+| 真实场景 | 旧印刷 `507` / 新印刷 `100` / 屏幕拍照 `87` / 手写拍照 `53` / 真实照片 `11` | 主体是旧印刷资料，同时覆盖拍照和屏幕上传噪声。 |
+| 难度 | easy `83` / medium `467` / hard `208` | 中高难样本占多数，避免只报告简单样本。 |
+| 文本构成 | 纯彝文 `344` / 混排 `414` | 只做粗分，避免把彝汉、注音、数字和少量特殊样本拆成过细且边界不稳定的类别。 |
+| 数字 | 含数字 `177` / 不含数字 `581` | 页码、编号和工具书条目单独进入评估压力。 |
 
 ## 页面级识别能力
 
