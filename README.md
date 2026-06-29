@@ -23,18 +23,18 @@
 
 | 评分维度 | 本项目证据 | 快速入口 |
 |---|---|---|
-| 评估集质量 | `603` 条真实主评估样本，含单行图 `515` 条、区域图 `84` 条、整页图 `4` 条；覆盖新印刷、旧印刷、规范手写、实拍/屏幕；合成样本不进入主评估 | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md) |
+| 评估集质量 | `603` 条真实主评估样本，含单行图 `515` 条、区域图 `84` 条、整页图 `4` 条；覆盖新印刷、旧印刷、手写拍照、实拍/屏幕；合成样本不进入主评估 | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md) |
 | 场景稀缺性 | 规范彝文公开文字识别资源少；本项目覆盖旧书、教材、工具书、彝汉混排、注音、手写和实拍资料 | [项目背景](docs/PROJECT_BACKGROUND.md) |
 | 任务复杂度 | 整页、PDF 和照片先用 Paddle 的 PP-DocLayout 做页面切割，再识别、恢复阅读顺序并合并页面文本 | [页面切割](page_processing/README.md)，[演示](demo/README.md) |
-| 训练数据科学性 | 训练包 `21504` 行；训练材料、训练侧合成样本和同标签重渲染分开记录，并检查缺图、空标签、替换符和公式化片段 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[训练包清单](configs/train_data_manifest_v5_16.json) |
-| 微调策略与创新 | 三阶段 LoRA 微调；训练侧用同标签重渲染补字体和旧印刷退化覆盖，并限制拉丁注音、脚注、多行区域等容易造成异常输出的样本比例 | [模型与训练](docs/MODEL_AND_TRAINING.md)，[训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md) |
+| 训练数据科学性 | 训练包 `21504` 行；不是简单堆量：真实材料定任务边界，合成样本补未见字和低频字，标签不变的图像外观增强覆盖字体、清晰度和旧印刷状态，再用清单剔除缺图、空标签和会诱发异常输出的标签 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[训练包清单](configs/train_data_manifest_v5_16.json) |
+| 微调策略与创新 | 三阶段 LoRA 微调；在不改文字标签的前提下扩展字体、清晰度和旧印刷外观，并给拉丁注音、脚注、多行区域等高风险格式设比例上限 | [模型与训练](docs/MODEL_AND_TRAINING.md)，[训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md) |
 | 开源与复现 | Hugging Face 模型、Hugging Face 评估集、线上演示、本地命令行演示、训练配置、评估脚本、逐样本输出和分组图表 | [演示](demo/README.md)，[scripts](scripts/README.md)，[model](model/README.md) |
 
 当前提交模型在 `603` 条主评估样本上的平均归一化编辑距离（Avg NED）为 `0.036068`，越低越好。只看彝文字符时为 `0.038309`，只看汉字时为 `0.022447`。
 
 输出风险检查结果为：替换符 `0`，公式化片段 `2`，多余拉丁字母 `0`，异常长输出 `0`。
 
-清晰单行图和区域图是当前最可靠的输入；复杂整页和规范手写单独报告，不和清晰印刷体混成一个结论。
+清晰单行图和区域图是当前最可靠的输入；复杂整页和手写拍照单独报告，不和清晰印刷体混成一个结论。
 
 ## 交付内容
 
@@ -43,25 +43,16 @@
 | 模型 | 基于 `PaddleOCR-VL-1.6 (0.9B)` 的 LoRA 微调模型，固定提示词为 `<image>OCR:` | [model](model/README.md)，[Hugging Face 模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) |
 | 真实评估集 | 真实来源样本，按视觉场景、输入粒度、文字混合和难度分层统计；主评估不使用合成样本 | [评估集说明](docs/EVALUATION_DATASET.md)，[质检报告](docs/EVALUATION_QUALITY_REPORT.md)，[Hugging Face 评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) |
 | 页面切割与识别流程 | 从整页、PDF、照片开始，切出识别单元，按阅读顺序合并页面文本，并按需补充注音输出 | [页面切割流程](page_processing/README.md)，[演示](demo/README.md)，[后处理工具](postprocess/README.md) |
-| 训练数据构建 | 训练材料、训练侧合成样本、同标签重渲染和训练侧约束样本分开记录，配合训练包质检、隔离检查和清单文件 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[configs](configs/) |
+| 训练数据构建 | 真实材料定边界，合成样本补字符长尾，标签不变的图像外观增强覆盖字体、清晰度和旧印刷状态；训练包清单记录每类来源、比例上限、质检和隔离检查 | [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，[configs](configs/) |
 | 复现工具 | 线上演示入口、单图演示、整页演示、评估脚本、训练脚本、模型/评估集下载说明 | [演示](demo/README.md)，[scripts](scripts/README.md)，[提交说明](docs/COMPETITION_SUBMISSION.md) |
 
 ## 页面切割与识别流程
 
-真实规范彝文资料常包含旧书页、页面照片、彝汉混排、脚注、注音和手写内容。项目按以下流程把图片转成可校对文本：
+真实规范彝文资料常包含旧书页、页面照片、彝汉混排、脚注、注音和手写内容。本项目不是只做裁好的单行识别，也提供从整页、PDF、照片到可校对页面文本的流程。
 
 ![规范彝文识别流程](docs/figures/ocr_workflow_photo.svg)
 
-| 子任务 | 当前实现 | 作用 |
-|---|---|---|
-| 整页/PDF/照片输入 | [页面切割入口脚本](page_processing/run.py) | 读取真实书页、PDF、手机拍照或拍屏 |
-| 页面切割 | [页面切割流程](page_processing/README.md) | 使用 Paddle 的 `PP-DocLayout` 生成识别单元，降低整页直接识别的漏行和错行风险 |
-| 阅读顺序记录 | 页面编号、裁切编号、阅读顺序和位置框 | 支持把识别结果合并为页面文本 |
-| 彝文/彝汉混排识别 | `<image>OCR:` | 输出规范彝文、汉字、数字、标点和可见拉丁注音 |
-| 页面文本合并 | [assemble_pages.py](page_processing/assemble_pages.py) | 按几何位置、块角色和阅读顺序拼合页面文本，生成可校对结果 |
-| 输出风险检查 | [analyze_submission_eval.py](scripts/analyze_submission_eval.py) / 整页检查 | 统计替换符、公式化片段、多余拉丁字母、异常长输出、空页和重复页等风险，用于复核而非自动改写 |
-| 注音/语料化输出 | [add_nuosu_pronunciation.py](postprocess/add_nuosu_pronunciation.py) | 服务教学、检字、人工校对和语料库建设 |
-| 整页演示 | [run_page_workflow.py](demo/run_page_workflow.py) | 跑通页面切割、识别、页面文本合并、异常检查和可选注音 |
+核心链路是：`PP-DocLayout` 页面切割 -> OCR 单元识别 -> 按阅读顺序合并页面文本 -> 异常检查 -> 可选注音。入口见 [页面切割流程](page_processing/README.md)、[整页演示](demo/README.md)、[拼合脚本](page_processing/assemble_pages.py) 和 [注音工具](postprocess/add_nuosu_pronunciation.py)。
 
 ### 整页切割对比实验
 
@@ -72,7 +63,7 @@
 | 识别路径 | 平均归一化编辑距离（Avg NED） | 主要差异 |
 |---|---:|---|
 | 页面切割后识别 | `0.0654` | 阅读顺序更稳，彝汉配对更接近人工标注，非文字干扰更少 |
-| 直接整页识别 | `0.5540` | 容易出现跨行、错行、彝汉配对拆散和花纹误识别 |
+| 直接整页识别 | `0.5540` | 容易出现跨行、错行、彝汉配对拆散和图案误识别 |
 
 这个实验说明：复杂整页先处理版式、再识别文字，通常比整页直接识别更稳定。详细说明见 [页面切割流程](docs/PAGE_PROCESSING.md)。
 
@@ -82,7 +73,7 @@
 
 结果表见 [提交说明](docs/COMPETITION_SUBMISSION.md)。评估集分布和质检见 [评估集说明](docs/EVALUATION_DATASET.md) 与 [质检报告](docs/EVALUATION_QUALITY_REPORT.md)。
 
-训练侧用真实训练材料打底，用训练侧合成样本和同标签重渲染补覆盖，并限制拉丁注音、脚注、多行区域等容易造成异常输出的样本比例。
+训练侧用真实材料打底，合成样本补未见字和低频字；对同一段文字只改变训练图像的字体、清晰度和旧印刷外观，并限制拉丁注音、脚注、多行区域等容易造成异常输出的样本比例。
 
 详细构建过程见 [训练数据构建报告](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)，模型设置和分支选择见 [模型与训练说明](docs/MODEL_AND_TRAINING.md)。
 

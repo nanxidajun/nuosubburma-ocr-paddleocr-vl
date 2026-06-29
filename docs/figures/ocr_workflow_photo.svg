@@ -52,9 +52,9 @@
   <rect class="card-main" x="832" y="116" width="228" height="120"/>
   <text class="label" x="856" y="152">合并、注音、校对</text>
   <text class="body" x="856" y="180">按 index 合并页面文本</text>
-  <text class="body" x="856" y="204">可选罗马注音和人工修订</text>
+  <text class="body" x="856" y="204">可选罗马注音和人工校对</text>
   <rect class="chip" x="856" y="255" width="130" height="26"/>
-  <text class="tag" x="868" y="273">教学与语料入口</text>
+  <text class="tag" x="868" y="273">检字与语料入口</text>
 
   <rect class="riskbox" x="40" y="292" width="1020" height="42"/>
   <text class="risk" x="64" y="318">边界策略：复杂整页不过度声称；line / region 是当前稳定入口；替换符、LaTeX 化、多余 Latin、超长输出全部进入复查。</text>

@@ -4,7 +4,7 @@
 
 ## 注音
 
-`add_nuosu_pronunciation.py` 使用 `nuosu_unicode.csv` 给规范彝文字添加罗马注音。它会在已有 OCR 文本旁新增字段，便于学习、检字、校对和语料整理。
+`add_nuosu_pronunciation.py` 使用 `nuosu_unicode.csv` 给规范彝文字添加罗马注音。它会在已有 OCR 文本旁新增字段，便于检字、校对和语料整理。
 
 典型用法：
 

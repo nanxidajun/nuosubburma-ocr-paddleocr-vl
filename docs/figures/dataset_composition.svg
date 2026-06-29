@@ -16,7 +16,7 @@
   <text class="label" x="72" y="154">视觉场景分布</text>
   <rect class="muted" x="220" y="132" width="820" height="30" rx="7"/>
   <rect class="accent" x="220" y="132" width="160" height="30" rx="7"/>
-  <text class="small" x="400" y="152">新印刷 309 / 旧书 235 / 规范手写 53 / 实拍与屏幕 6</text>
+  <text class="small" x="400" y="152">新印刷 309 / 旧书 235 / 手写拍照 53 / 实拍与屏幕 6</text>
 
   <text class="label" x="72" y="250">输入粒度</text>
   <rect class="muted" x="220" y="228" width="820" height="30" rx="7"/>
