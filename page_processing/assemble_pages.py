@@ -19,6 +19,7 @@ import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any
 
@@ -90,6 +91,19 @@ def clean_text(value: object) -> str:
 
 def compact_text(value: object) -> str:
     return re.sub(r"\s+", "", str(value or ""))
+
+
+def text_similarity(a: object, b: object) -> float:
+    left = compact_text(a)
+    right = compact_text(b)
+    if left == right:
+        return 1.0
+    if not left or not right:
+        return 0.0
+    shorter, longer = (left, right) if len(left) <= len(right) else (right, left)
+    if len(shorter) >= 6 and shorter in longer:
+        return len(shorter) / max(1, len(longer))
+    return SequenceMatcher(None, left, right).ratio()
 
 
 def sanitize_ocr_text(value: object) -> tuple[str, int, bool]:
@@ -221,6 +235,13 @@ def unit_text(row: dict[str, Any]) -> str:
     return str(row.get("text") or "")
 
 
+def unit_lines(row: dict[str, Any], keep_empty_units: bool = False) -> list[str]:
+    text = str(row.get("text") or "")
+    if keep_empty_units and not text.strip():
+        return [""]
+    return [line.strip() for line in text.replace("\r", "").splitlines() if line.strip()]
+
+
 def is_parent_child_overlap(a: dict[str, Any], b: dict[str, Any]) -> bool:
     a_box = a.get("bbox") or [0, 0, 0, 0]
     b_box = b.get("bbox") or [0, 0, 0, 0]
@@ -266,10 +287,20 @@ def suppress_contained_duplicates(rows: list[dict[str, Any]]) -> list[dict[str, 
             elif len(text) < len(other_text) and text in other_text:
                 drop.add(i)
                 break
+            elif overlap >= 0.82 and min(len(text), len(other_text)) >= 12 and text_similarity(text, other_text) >= 0.88:
+                if (len(other_text), other_area, str(other.get("id"))) > (len(text), area, str(row.get("id"))):
+                    drop.add(i)
+                    break
     return [row for idx, row in enumerate(candidates) if idx not in drop]
 
 
 def same_visual_line(group: list[dict[str, Any]], row: dict[str, Any]) -> bool:
+    row_route = str(row.get("route") or "body")
+    group_routes = {str(item.get("route") or "body") for item in group}
+    if row_route == "page_number" and group_routes != {"page_number"}:
+        return False
+    if row_route != "page_number" and "page_number" in group_routes:
+        return False
     if any(is_parent_child_overlap(item, row) for item in group):
         return False
     box = row.get("bbox") or [0, 0, 0, 0]
@@ -306,13 +337,33 @@ def visual_lines(rows: list[dict[str, Any]], keep_empty_units: bool = False) -> 
 
     lines: list[str] = []
     for group in sorted(groups, key=lambda items: min((item.get("bbox") or [0, 0, 0, 0])[1] for item in items)):
-        parts = [unit_text(item) for item in sorted(group, key=lambda item: (center_x(item), (item.get("bbox") or [0, 0, 0, 0])[0], sort_key(item)))]
-        line = "".join(part for part in parts if part)
-        if line or keep_empty_units:
-            lines.append(line)
+        parts = [
+            unit_lines(item, keep_empty_units=keep_empty_units)
+            for item in sorted(group, key=lambda item: (center_x(item), (item.get("bbox") or [0, 0, 0, 0])[0], sort_key(item)))
+        ]
+        if not parts:
+            continue
+        max_lines = max((len(part) for part in parts), default=0)
+        multiline_parts = [part for part in parts if len(part) > 1]
+        if max_lines <= 1:
+            line = "".join((part[0] if part else "") for part in parts)
+            if line or keep_empty_units:
+                lines.append(line)
+            continue
+        if len(multiline_parts) < 2:
+            for part in parts:
+                for line in part:
+                    if line or keep_empty_units:
+                        lines.append(line)
+            continue
+        for index in range(max_lines):
+            line = "".join(part[index] for part in parts if index < len(part))
+            if line or keep_empty_units:
+                lines.append(line)
     for row in sorted(unboxed, key=sort_key):
-        if unit_text(row) or keep_empty_units:
-            lines.append(unit_text(row))
+        for line in unit_lines(row, keep_empty_units=keep_empty_units):
+            if line or keep_empty_units:
+                lines.append(line)
     return lines
 
 

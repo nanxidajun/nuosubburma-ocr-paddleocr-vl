@@ -1,26 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="312" viewBox="0 0 980 312" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="278" viewBox="0 0 980 278" role="img">
 <rect width="100%" height="100%" fill="#fbfaf7"/>
-<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:13px;font-weight:650;fill:#111827}.base{fill:#9a3412}.lora{fill:#0f766e}</style>
-<text class="title" x="28" y="38">Output Risk Counts</text>
-<text class="sub" x="28" y="63">Final 758-sample comparison. Lower is better.</text>
-<text class="label" x="28" y="116">replacement</text>
-<rect class="base" x="260" y="96" width="26.9" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="294.9" y="110">base 16</text>
-<rect class="lora" x="260" y="120" width="1.0" height="18" rx="4" opacity="0.85"/>
-<text class="value" x="269.0" y="134">LoRA 0</text>
-<text class="label" x="28" y="170">LaTeX-like</text>
-<rect class="base" x="260" y="150" width="176.6" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="444.6" y="164">base 105</text>
-<rect class="lora" x="260" y="174" width="10.1" height="18" rx="4" opacity="0.85"/>
-<text class="value" x="278.1" y="188">LoRA 6</text>
-<text class="label" x="28" y="224">extra Latin</text>
-<rect class="base" x="260" y="204" width="540.0" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="808.0" y="218">base 321</text>
-<rect class="lora" x="260" y="228" width="1.7" height="18" rx="4" opacity="0.85"/>
-<text class="value" x="269.7" y="242">LoRA 1</text>
-<text class="label" x="28" y="278">long prediction</text>
-<rect class="base" x="260" y="258" width="57.2" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="325.2" y="272">base 34</text>
-<rect class="lora" x="260" y="282" width="1.7" height="18" rx="4" opacity="0.85"/>
-<text class="value" x="269.7" y="296">LoRA 1</text>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:14px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}</style>
+<text class="title" x="28" y="38">Safety Failure Counts</text>
+<text class="sub" x="28" y="63">Final LoRA model v5.16, latest 758-sample GT.</text>
+<text class="label" x="28" y="117">replacement</text>
+<rect x="255" y="98" width="2.0" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="267.0" y="117">0</text>
+<text class="note" x="845" y="117">0 rows</text>
+<text class="label" x="28" y="159">LaTeX-like</text>
+<rect x="255" y="140" width="545.0" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="810.0" y="159">9</text>
+<text class="note" x="845" y="159">9 rows</text>
+<text class="label" x="28" y="201">extra Latin</text>
+<rect x="255" y="182" width="60.6" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
+<text class="value" x="325.6" y="201">1</text>
+<text class="note" x="845" y="201">1 row</text>
+<text class="label" x="28" y="243">long prediction</text>
+<rect x="255" y="224" width="60.6" height="26" rx="6" fill="#c2410c" opacity="0.86"/>
+<text class="value" x="325.6" y="243">1</text>
+<text class="note" x="845" y="243">1 row</text>
 </svg>

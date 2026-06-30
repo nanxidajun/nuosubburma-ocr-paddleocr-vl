@@ -1,8 +1,8 @@
 {
   "name": "NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629",
-  "version": "20260629_final_locked_gt_complete",
-  "build_date": "2026-06-29",
-  "locked_at": "2026-06-29T21:22:14",
+  "version": "20260630_manual_gt_sync",
+  "build_date": "2026-06-30",
+  "locked_at": "2026-06-30T10:04:46",
   "rows": 758,
   "images": 758,
   "annotation_file": "annotations.jsonl",
@@ -90,16 +90,16 @@
     "屏幕拍照文本": 11,
     "实拍标牌照片": 7,
     "真实照片": 3,
-    "实拍电梯标识": 1,
     "凉山彝文资料选译第1集": 1,
     "四川彝族家支问题：论文集": 1,
     "大学彝语文：彝文": 1,
+    "实拍电梯标识": 1,
     "彝族语言文字论文选": 1,
+    "彝语语法（诺苏话）": 1,
     "汉彝成语词典": 1,
     "猎村的歌声彝文版": 1,
-    "现代彝语教程": 1,
     "现代凉山彝语语法": 1,
-    "彝语语法（诺苏话）": 1
+    "现代彝语教程": 1
   },
   "by_source_code": {
     "xuan_yi_3_extra": 123,
@@ -116,16 +116,16 @@
     "real_screen_photo_nonbook": 11,
     "real_sign_direct_20260624": 7,
     "real_photo": 3,
-    "real_photo_elevator_sign_9030": 1,
-    "xuan_yi_1": 1,
-    "sichuan_yi_clan_papers": 1,
     "college_yi_language": 1,
-    "yi_language_papers": 1,
     "han_yi_idiom_dictionary": 1,
     "liecun_song_yi": 1,
-    "modern_yi_course": 1,
     "modern_liangshan_yi_grammar": 1,
-    "nuosu_yi_grammar": 1
+    "modern_yi_course": 1,
+    "nuosu_yi_grammar": 1,
+    "real_photo_elevator_sign_9030": 1,
+    "sichuan_yi_clan_papers": 1,
+    "xuan_yi_1": 1,
+    "yi_language_papers": 1
   },
   "by_sample_type": {
     "line": 470,
@@ -174,19 +174,22 @@
   "by_gt_source": {
     "human_checked_existing_eval": 349,
     "external_reviewed_jsonl_20260628": 239,
-    "manual_xuezu_latest_gt_review_20260629": 65,
+    "manual_xuezu_latest_gt_review_20260629": 64,
     "screen_photo_repair_single_photo_page_gt_review_done_20260629": 43,
     "manual_initial_gt_from_user_chat_20260628": 14,
-    "manual_gt_from_user_desktop1_20260628": 11,
-    "manual_browser_editor_review_20260629": 10,
+    "manual_browser_editor_review_20260629": 9,
+    "manual_gt_from_user_desktop1_20260628": 9,
     "manual_uncertain_gt_review_20260629": 8,
     "screen_photo_repair_two_photo_manual_allocation_20260629": 8,
     "manual_cover_followup_user_review_20260629": 6,
-    "manual_gt_review_keep": 5
+    "manual_gt_review_keep": 5,
+    "manual_user_correction_20260630": 2,
+    "manual_user_correction_20260629_real_screen_photo_nonbook_004": 1,
+    "manual_user_correction_20260629_real_screen_photo_nonbook_005": 1
   },
   "by_digit_presence": {
-    "no_digit": 581,
-    "has_digit": 177
+    "False": 581,
+    "True": 177
   },
   "xuezu_final_gt": {
     "source_jsonl": "local_artifacts/layout_probe/xuezu_official_layout_v516_20260628/production_single_pass_20260629/xuezu_latest_gt_editor_seed.jsonl",
@@ -205,9 +208,9 @@
     "current_placeholder_gt_rows": 0
   },
   "final_lock": {
-    "version": "20260629_final_locked_gt_complete",
-    "locked_at": "2026-06-29T21:22:14",
-    "annotations_sha256": "066a762962b17db57069fb0d714e7f2454825e7dc5f3b134bf4b4c383f8a069d",
+    "version": "20260630_manual_gt_sync",
+    "locked_at": "2026-06-30T10:04:46",
+    "annotations_sha256": "2a33ced6df37b8d4bdea87d3ecdbab9abdc639528bf0a46ad3fb46974f52b22e",
     "checksum_file": "FINAL_LOCK_CHECKSUMS_20260629.sha256",
     "manifest_file": "FINAL_LOCK_MANIFEST_20260629.json",
     "backups": {
@@ -333,5 +336,19 @@
       "uncertain_gt_review_after_edits_20260629_200551.html": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/uncertain_gt_review_after_edits_20260629_200551.html.before_browser_editor_sync_20260629_211411",
       "dataset_summary.json": "local_artifacts/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/dataset_summary.json.before_browser_editor_sync_20260629_211411"
     }
+  },
+  "manual_gt_sync_20260630": {
+    "synced_at": "2026-06-30T10:04:46",
+    "canonical_source": "/Users/nanx/Desktop/OCR/submission_assets/NuosuBburma_OCR_Evaluation_Set_latest_integrated_20260629/annotations.jsonl",
+    "updated_dataset_file": "/Users/nanx/Desktop/OCR/github_release/nuosubburma-ocr-paddleocr-vl/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl",
+    "updated_ids": [
+      "luoe_teyi_cover_page_000001",
+      "xuezu_page_001"
+    ],
+    "notes": [
+      "Synchronized local release/HF mirror annotations.jsonl from canonical latest annotations.jsonl.",
+      "Regenerated samples.csv from synchronized annotations.",
+      "Removed stale page-eval GT copies separately so future reports must derive from canonical annotations."
+    ]
   }
 }

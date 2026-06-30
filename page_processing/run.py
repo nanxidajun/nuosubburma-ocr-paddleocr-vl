@@ -130,6 +130,12 @@ class LocalBox:
         return [self.x1, self.y1, self.x2, self.y2]
 
 
+@dataclass(frozen=True)
+class RoleDecision:
+    role: str
+    reason: str
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Cut page images into OCR-ready units with Paddle DocLayout.",
@@ -341,29 +347,105 @@ def iou(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> float:
     return inter / max(1, union)
 
 
+def overlap_over_smaller(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> float:
+    return intersection(a, b) / max(1, min(bbox_area(a), bbox_area(b)))
+
+
+def same_size_overlap(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> bool:
+    area_a = bbox_area(a)
+    area_b = bbox_area(b)
+    if not area_a or not area_b:
+        return False
+    ratio = max(area_a, area_b) / max(1, min(area_a, area_b))
+    return ratio <= 1.38 and overlap_over_smaller(a, b) >= 0.92
+
+
+def layout_block_rank(block: LayoutBlock) -> tuple[int, float]:
+    label = str(block.label or "").lower()
+    route = block.route
+    if route == "page_number":
+        route_rank = 5
+    elif route == "body":
+        route_rank = 4
+    elif route == "title":
+        route_rank = 3
+    elif route in {"header", "footer", "footnote"}:
+        route_rank = 2
+    else:
+        route_rank = 1
+    if label in {"text", "content", "aside_text", "formula", "table", "paragraph"}:
+        route_rank += 1
+    return route_rank, float(block.score or 0)
+
+
+def prefer_layout_block(a: LayoutBlock, b: LayoutBlock) -> LayoutBlock:
+    return a if layout_block_rank(a) >= layout_block_rank(b) else b
+
+
 def dedupe_blocks(blocks: list[LayoutBlock]) -> tuple[list[LayoutBlock], list[dict[str, Any]]]:
     kept: list[LayoutBlock] = []
     dropped: list[dict[str, Any]] = []
     for block in sorted(blocks, key=lambda item: (item.page_id, -float(item.score or 0), bbox_area(item.bbox))):
-        duplicate = None
-        for existing in kept:
-            if block.page_id != existing.page_id or block.route != existing.route:
+        duplicate_idx = None
+        drop_reason = "same_route_duplicate"
+        for idx, existing in enumerate(kept):
+            if block.page_id != existing.page_id:
                 continue
-            if iou(block.bbox, existing.bbox) >= 0.96:
-                duplicate = existing
+            if block.route != existing.route:
+                block_is_skip = block.route is None
+                existing_is_skip = existing.route is None
+                if block_is_skip != existing_is_skip and same_size_overlap(block.bbox, existing.bbox):
+                    skip = block if block_is_skip else existing
+                    text = existing if block_is_skip else block
+                    skip_score = float(skip.score or 0)
+                    text_score = float(text.score or 0)
+                    if skip_score >= text_score + 0.07 or text_score < 0.34:
+                        duplicate_idx = idx
+                        drop_reason = "image_alias_same_box"
+                        break
+                if iou(block.bbox, existing.bbox) < 0.96:
+                    continue
+                duplicate_idx = idx
+                drop_reason = "same_box_multi_label"
                 break
-        if duplicate:
-            dropped.append(
-                {
-                    "page_id": block.page_id,
-                    "index": block.index,
-                    "route": block.route or "skip",
-                    "bbox": list(block.bbox),
-                    "reason": "same_route_duplicate",
-                }
-            )
-        else:
+            if iou(block.bbox, existing.bbox) >= 0.96:
+                duplicate_idx = idx
+                drop_reason = "same_route_duplicate"
+                break
+
+        if duplicate_idx is None:
             kept.append(block)
+            continue
+
+        existing = kept[duplicate_idx]
+        if drop_reason == "image_alias_same_box":
+            block_is_skip = block.route is None
+            existing_is_skip = existing.route is None
+            if block_is_skip and not existing_is_skip:
+                winner = block
+                loser = existing
+            elif existing_is_skip and not block_is_skip:
+                winner = existing
+                loser = block
+            else:
+                winner = prefer_layout_block(existing, block)
+                loser = block if winner is existing else existing
+        elif drop_reason == "same_box_multi_label":
+            winner = prefer_layout_block(existing, block)
+            loser = block if winner is existing else existing
+        else:
+            winner = existing if float(existing.score or 0) >= float(block.score or 0) else block
+            loser = block if winner is existing else existing
+        kept[duplicate_idx] = winner
+        dropped.append(
+            {
+                "page_id": loser.page_id,
+                "index": loser.index,
+                "route": loser.route or "skip",
+                "bbox": list(loser.bbox),
+                "reason": drop_reason,
+            }
+        )
     return sorted(kept, key=lambda item: (item.bbox[1], item.bbox[0], item.index)), dropped
 
 
@@ -404,6 +486,30 @@ def dedupe_parent_blocks(blocks: list[LayoutBlock]) -> tuple[list[LayoutBlock], 
         if coverage > 0.52:
             drop.add(parent.index)
 
+    survivors = [block for block in blocks if block.index not in drop]
+    for child in survivors:
+        if child.route not in droppable_routes:
+            continue
+        child_area = bbox_area(child.bbox)
+        if not child_area:
+            continue
+        for parent in survivors:
+            if parent.index == child.index or parent.page_id != child.page_id:
+                continue
+            if parent.route != child.route:
+                continue
+            parent_area = bbox_area(parent.bbox)
+            if parent_area <= child_area * 1.18:
+                continue
+            parent_w = max(0, parent.bbox[2] - parent.bbox[0])
+            parent_h = max(0, parent.bbox[3] - parent.bbox[1])
+            parent_can_split = parent_h >= SPLIT_MIN_H or (parent_w * parent_h) >= SPLIT_MIN_AREA
+            if not parent_can_split:
+                continue
+            if intersection(parent.bbox, child.bbox) / max(1, child_area) > 0.88:
+                drop.add(child.index)
+                break
+
     kept = [block for block in blocks if block.index not in drop]
     dropped = [
         {
@@ -436,6 +542,91 @@ def binarize(crop: Image.Image) -> np.ndarray:
 
     threshold = int(np.percentile(gray, 48))
     return (gray < threshold).astype(np.uint8) * 255
+
+
+def suppress_edge_artifacts(binary: np.ndarray) -> np.ndarray:
+    """Remove scanner/screen border strokes before projection-based splitting."""
+    clean = binary.copy()
+    h, w = clean.shape[:2]
+    if h <= 0 or w <= 0:
+        return clean
+
+    x_margin = min(w, max(8, int(w * 0.030)))
+    y_margin = min(h, max(8, int(h * 0.030)))
+    col_density = (clean > 0).sum(axis=0) / max(1, h)
+    row_density = (clean > 0).sum(axis=1) / max(1, w)
+
+    for x in range(x_margin):
+        if col_density[x] > 0.42:
+            clean[:, x] = 0
+    for x in range(max(0, w - x_margin), w):
+        if col_density[x] > 0.42:
+            clean[:, x] = 0
+    for y in range(y_margin):
+        if row_density[y] > 0.42:
+            clean[y, :] = 0
+    for y in range(max(0, h - y_margin), h):
+        if row_density[y] > 0.42:
+            clean[y, :] = 0
+
+    return clean
+
+
+def layout_binary(crop: Image.Image) -> np.ndarray:
+    return suppress_edge_artifacts(binarize(crop))
+
+
+def content_box(crop: Image.Image, pad: int = 10) -> LocalBox:
+    """Find the visible text/content bounds inside a Paddle block.
+
+    Paddle Layout is treated as a candidate generator. Every text block still
+    passes through this postprocess step so page borders and large white margins
+    do not decide whether line splitting succeeds.
+    """
+    w, h = crop.size
+    full = LocalBox(0, 0, w, h)
+    binary = layout_binary(crop)
+    if cv2 is not None:
+        labels_count, labels, stats, _ = cv2.connectedComponentsWithStats((binary > 0).astype(np.uint8), 8)
+        boxes: list[tuple[int, int, int, int]] = []
+        min_area = max(8, int(w * h * 0.000006))
+        for idx in range(1, labels_count):
+            x, y, bw, bh, area = stats[idx]
+            if area < min_area:
+                continue
+            if bw >= w * 0.92 and bh <= max(3, h * 0.006):
+                continue
+            if bh >= h * 0.92 and bw <= max(3, w * 0.006):
+                continue
+            boxes.append((int(x), int(y), int(x + bw), int(y + bh)))
+        if boxes:
+            x1 = max(0, min(box[0] for box in boxes) - pad)
+            y1 = max(0, min(box[1] for box in boxes) - pad)
+            x2 = min(w, max(box[2] for box in boxes) + pad)
+            y2 = min(h, max(box[3] for box in boxes) + pad)
+            if x2 > x1 and y2 > y1:
+                return LocalBox(x1, y1, x2, y2)
+
+    row_projection = binary.sum(axis=1) / 255
+    col_projection = binary.sum(axis=0) / 255
+    active_rows = np.where(row_projection > max(1.0, w * 0.002))[0]
+    active_cols = np.where(col_projection > max(1.0, h * 0.002))[0]
+    if len(active_rows) == 0 or len(active_cols) == 0:
+        return full
+    return LocalBox(
+        max(0, int(active_cols.min()) - pad),
+        max(0, int(active_rows.min()) - pad),
+        min(w, int(active_cols.max()) + 1 + pad),
+        min(h, int(active_rows.max()) + 1 + pad),
+    )
+
+
+def same_local_box(a: LocalBox, b: LocalBox) -> bool:
+    return a.x1 == b.x1 and a.y1 == b.y1 and a.x2 == b.x2 and a.y2 == b.y2
+
+
+def offset_box(box: LocalBox, offset: LocalBox) -> LocalBox:
+    return LocalBox(offset.x1 + box.x1, offset.y1 + box.y1, offset.x1 + box.x2, offset.y1 + box.y2)
 
 
 def intervals(active: np.ndarray) -> list[tuple[int, int]]:
@@ -501,7 +692,7 @@ def local_line_boxes(crop: Image.Image) -> list[LocalBox]:
     w, h = crop.size
     if h < 52 or w < 40:
         return [LocalBox(0, 0, w, h)]
-    binary = binarize(crop)
+    binary = layout_binary(crop)
     col_boxes = find_column_boxes(binary)
     all_lines: list[LocalBox] = []
     for col in col_boxes:
@@ -535,7 +726,10 @@ def local_line_boxes(crop: Image.Image) -> list[LocalBox]:
             if xx2 - xx1 < max(22, int(cw * 0.05)):
                 continue
             lines.append(LocalBox(col.x1 + xx1, col.y1 + yy1, col.x1 + xx2, col.y1 + yy2))
-        if len(lines) <= 1:
+        if len(lines) == 1:
+            all_lines.append(lines[0])
+            continue
+        if not lines:
             all_lines.append(col)
             continue
         heights = np.array([line.h for line in lines], dtype=np.float32)
@@ -559,7 +753,7 @@ def is_blank_unit(parent_crop: Image.Image, box: LocalBox, route: str | None) ->
         return False
     crop = parent_crop.crop(box.as_tuple())
     try:
-        binary = binarize(crop)
+        binary = layout_binary(crop)
         ink_pixels = int(binary.sum() / 255)
         density = ink_pixels / max(1, box.area)
         return ink_pixels < 24 or (box.area > 5000 and density < 0.0018)
@@ -569,13 +763,32 @@ def is_blank_unit(parent_crop: Image.Image, box: LocalBox, route: str | None) ->
 
 def split_block_to_units(block: LayoutBlock, crop: Image.Image) -> list[tuple[LocalBox, str]]:
     full = LocalBox(0, 0, crop.width, crop.height)
+    text_like = block.route in TEXT_ROUTES or block.route == "title"
+    content = content_box(crop) if text_like else full
+    working_crop = crop.crop(content.as_tuple()) if text_like else crop
     if not should_split_block(block, crop.size):
-        return [(full, "keep_block")]
-    boxes = local_line_boxes(crop)
-    if len(boxes) <= 1:
-        return [(full, "keep_region")]
-    units = [(box, "split_line_or_small_region") for box in boxes if not is_blank_unit(crop, box, block.route)]
-    return units or [(full, "keep_region")]
+        action = "trim_text_block" if text_like and not same_local_box(content, full) else "keep_block"
+        if working_crop is not crop:
+            working_crop.close()
+        return [(content, action)]
+    try:
+        boxes = local_line_boxes(working_crop)
+        if len(boxes) <= 1:
+            action = "keep_region_after_postprocess" if not same_local_box(content, full) else "keep_region"
+            return [(content, action)]
+        shifted = [offset_box(box, content) for box in boxes]
+        units = [
+            (box, "postprocess_split_line_or_small_region")
+            for box in shifted
+            if not is_blank_unit(crop, box, block.route)
+        ]
+        if units:
+            return units
+        action = "keep_region_after_postprocess" if not same_local_box(content, full) else "keep_region"
+        return [(content, action)]
+    finally:
+        if working_crop is not crop:
+            working_crop.close()
 
 
 def global_box(crop_box: tuple[int, int, int, int], local_box: LocalBox) -> tuple[int, int, int, int]:
@@ -587,9 +800,55 @@ def global_box(crop_box: tuple[int, int, int, int], local_box: LocalBox) -> tupl
     )
 
 
-def unit_reading_order(block: LayoutBlock, unit_bbox: tuple[int, int, int, int], part_index: int) -> str:
+def unit_reading_order(route: str, block: LayoutBlock, unit_bbox: tuple[int, int, int, int], part_index: int) -> str:
     x1, y1, _, _ = unit_bbox
-    return f"{ROUTE_ORDER.get(block.route or 'body', 9):02d}_{y1:06d}_{x1:06d}_{block.index:04d}_{part_index:03d}"
+    return f"{ROUTE_ORDER.get(route, 9):02d}_{y1:06d}_{x1:06d}_{block.index:04d}_{part_index:03d}"
+
+
+def postprocess_unit_role_decision(
+    default_route: str,
+    unit_bbox: tuple[int, int, int, int],
+    sibling_bboxes: list[tuple[int, int, int, int]],
+    page_size: tuple[int, int],
+) -> RoleDecision:
+    if default_route != "body":
+        return RoleDecision(default_route, f"paddle_route:{default_route}")
+    if len(sibling_bboxes) <= 1:
+        return RoleDecision(default_route, "single_body_unit")
+    page_w, page_h = page_size
+    x1, y1, x2, y2 = unit_bbox
+    unit_w = x2 - x1
+    unit_h = y2 - y1
+    if unit_w <= 0 or unit_h <= 0:
+        return RoleDecision(default_route, "invalid_geometry_default_body")
+    heights = sorted(max(1, box[3] - box[1]) for box in sibling_bboxes)
+    median_h = heights[len(heights) // 2]
+    center_x = (x1 + x2) / 2
+
+    if (
+        y1 > page_h * 0.91
+        and unit_w < page_w * 0.22
+        and unit_h <= median_h * 1.12
+        and abs(center_x - page_w / 2) < page_w * 0.34
+    ):
+        return RoleDecision("page_number", "geometry:bottom_small_centered")
+
+    is_top_band = y1 < page_h * 0.30
+    is_larger_than_body = unit_h >= median_h * 1.12
+    is_title_width = page_w * 0.08 <= unit_w <= page_w * 0.62
+    is_not_full_height_noise = unit_h <= page_h * 0.10
+    if is_top_band and is_larger_than_body and is_title_width and is_not_full_height_noise:
+        return RoleDecision("title", "geometry:top_large_line")
+    return RoleDecision(default_route, "geometry:body_default")
+
+
+def postprocess_unit_role(
+    default_route: str,
+    unit_bbox: tuple[int, int, int, int],
+    sibling_bboxes: list[tuple[int, int, int, int]],
+    page_size: tuple[int, int],
+) -> str:
+    return postprocess_unit_role_decision(default_route, unit_bbox, sibling_bboxes, page_size).role
 
 
 def detect_page_blocks(model: Any, page_path: Path, layout_root: Path) -> tuple[list[LayoutBlock], list[dict[str, Any]]]:
@@ -671,7 +930,13 @@ def detect_page_blocks(model: Any, page_path: Path, layout_root: Path) -> tuple[
     return sorted(blocks, key=lambda item: (item.bbox[1], item.bbox[0], item.index)), raw_pages
 
 
-def draw_review_page(page_path: Path, blocks: list[LayoutBlock], review_dir: Path, crop_paths: list[Path]) -> None:
+def draw_review_page(
+    page_path: Path,
+    blocks: list[LayoutBlock],
+    review_dir: Path,
+    crop_paths: list[Path],
+    unit_rows: list[dict[str, Any]],
+) -> None:
     review_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(page_path, review_dir / f"00_original{page_path.suffix.lower()}")
 
@@ -693,6 +958,23 @@ def draw_review_page(page_path: Path, blocks: list[LayoutBlock], review_dir: Pat
     image.save(review_dir / "01_doclayout_boxes.png")
     image.close()
 
+    unit_image = Image.open(page_path).convert("RGB")
+    unit_draw = ImageDraw.Draw(unit_image)
+    for row in unit_rows:
+        try:
+            bbox = json.loads(str(row.get("bbox") or "[]"))
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(bbox, list) or len(bbox) != 4:
+            continue
+        role = str(row.get("role") or "body")
+        color = colors.get(role, "#111827")
+        unit_draw.rectangle(tuple(int(v) for v in bbox), outline=color, width=3)
+        label = f"{row.get('part_index', '')} {role}"
+        unit_draw.text((int(bbox[0]) + 4, int(bbox[1]) + 4), label, fill=color)
+    unit_image.save(review_dir / "02_postprocess_units.png")
+    unit_image.close()
+
     if not crop_paths:
         return
     thumbs: list[Image.Image] = []
@@ -709,7 +991,7 @@ def draw_review_page(page_path: Path, blocks: list[LayoutBlock], review_dir: Pat
         sheet = Image.new("RGB", (cols * 280, rows * 140), "#f8f5ef")
         for idx, thumb in enumerate(thumbs):
             sheet.paste(thumb, ((idx % cols) * 280, (idx // cols) * 140))
-        sheet.save(review_dir / "02_ocr_units_sheet.png")
+        sheet.save(review_dir / "03_ocr_units_sheet.png")
         sheet.close()
     finally:
         for thumb in thumbs:
@@ -753,6 +1035,7 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
         page_rows.append({"page_id": page_path.stem, "page_file": page_path.name, "layout_blocks": len(blocks)})
 
         crop_paths: list[Path] = []
+        page_unit_rows: list[dict[str, Any]] = []
         page_image = Image.open(page_path).convert("RGB")
         try:
             for block in blocks:
@@ -777,52 +1060,63 @@ def build_outputs(pages: list[Path], output_root: Path, model: Any) -> tuple[lis
                 try:
                     route = block.route or "body"
                     local_units = split_block_to_units(block, parent_crop)
+                    unit_global_boxes = [global_box(crop_box, unit_box) for unit_box, _ in local_units]
                     for part_index, (unit_box, action) in enumerate(local_units, start=1):
-                        unit_crop_box = global_box(crop_box, unit_box)
+                        unit_crop_box = unit_global_boxes[part_index - 1]
                         if unit_crop_box[2] <= unit_crop_box[0] or unit_crop_box[3] <= unit_crop_box[1]:
                             continue
+                        role_decision = postprocess_unit_role_decision(
+                            route,
+                            unit_crop_box,
+                            unit_global_boxes,
+                            (page_image.width, page_image.height),
+                        )
+                        unit_route = role_decision.role
                         unit_crop = parent_crop.crop(unit_box.as_tuple())
-                        crop_id = f"{block.crop_id}__part_{part_index:03d}"
-                        rel_path = Path("images") / route / block.page_id / f"{crop_id}.png"
+                        crop_id = f"{block.page_id}__doclayout_{block.index:03d}__{unit_route}__part_{part_index:03d}"
+                        rel_path = Path("images") / unit_route / block.page_id / f"{crop_id}.png"
                         crop_path = units_root / rel_path
                         crop_path.parent.mkdir(parents=True, exist_ok=True)
                         unit_crop.save(crop_path)
                         unit_crop.close()
                         crop_paths.append(crop_path)
 
-                        index_rows.append(
-                            {
-                                "crop_id": crop_id,
-                                "page_id": block.page_id,
-                                "page_file": block.page_file,
-                                "bucket": "ocr_units",
-                                "sub_bucket": route,
-                                "role": route,
-                                "source_stage": "doclayout_block_split",
-                                "source_box": block.index,
-                                "part_index": part_index,
-                                "label_or_decision": block.label,
-                                "ocr_ready": "1",
-                                "is_line_ocr_ready": "1",
-                                "summary_path": str(rel_path),
-                                "original_path": str(page_path),
-                                "reading_order": unit_reading_order(block, unit_crop_box, part_index),
-                                "bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
-                                "crop_bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
-                                "layout_bbox": json.dumps(list(block.bbox), ensure_ascii=False),
-                                "source_bbox": json.dumps(list(crop_box), ensure_ascii=False),
-                                "unit_bbox_local": json.dumps(unit_box.as_list(), ensure_ascii=False),
-                                "unit_action": action,
-                                "score": "" if block.score is None else block.score,
-                                "note": "Paddle DocLayout block split into OCR-ready unit",
-                            }
-                        )
+                        index_row = {
+                            "crop_id": crop_id,
+                            "page_id": block.page_id,
+                            "page_file": block.page_file,
+                            "bucket": "ocr_units",
+                            "sub_bucket": unit_route,
+                            "role": unit_route,
+                            "source_stage": "doclayout_postprocess_units",
+                            "source_box": block.index,
+                            "part_index": part_index,
+                            "label_or_decision": block.label,
+                            "ocr_ready": "1",
+                            "is_line_ocr_ready": "1",
+                            "summary_path": str(rel_path),
+                            "original_path": str(page_path),
+                            "reading_order": unit_reading_order(unit_route, block, unit_crop_box, part_index),
+                            "bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
+                            "crop_bbox": json.dumps(list(unit_crop_box), ensure_ascii=False),
+                            "layout_bbox": json.dumps(list(block.bbox), ensure_ascii=False),
+                            "source_bbox": json.dumps(list(crop_box), ensure_ascii=False),
+                            "unit_bbox_local": json.dumps(unit_box.as_list(), ensure_ascii=False),
+                            "unit_action": action,
+                            "postprocess_role": unit_route,
+                            "role_reason": role_decision.reason,
+                            "source_route": route,
+                            "score": "" if block.score is None else block.score,
+                            "note": "Paddle DocLayout candidate passed through mandatory unified postprocess before OCR",
+                        }
+                        index_rows.append(index_row)
+                        page_unit_rows.append(index_row)
                 finally:
                     parent_crop.close()
         finally:
             page_image.close()
 
-        draw_review_page(page_path, blocks, review_root / page_path.stem, crop_paths)
+        draw_review_page(page_path, blocks, review_root / page_path.stem, crop_paths, page_unit_rows)
 
         if parent_dropped:
             dropped_path = layout_root / "raw_json" / f"{page_path.stem}.dropped_parent_blocks.json"
@@ -872,7 +1166,8 @@ def write_run_docs(args: argparse.Namespace, pages: list[Path], page_rows: list[
     with (output_root / "run_summary.md").open("w", encoding="utf-8") as f:
         f.write("# Page Cutting Run Summary\n\n")
         f.write(f"- Input: `{args.input}`\n")
-        f.write(f"- DocLayout model: `{args.layout_model}`\n")
+        f.write(f"- DocLayout candidate model: `{args.layout_model}`\n")
+        f.write("- Mandatory postprocess: `trim -> dedupe -> visual rows/small regions -> role/read-order/bbox`\n")
         f.write(f"- Pages processed: {len(pages)}\n")
         f.write(f"- OCR units: {len(index_rows)}\n")
         f.write(f"- Validation: {'ok' if validation.get('ok') else 'failed'}\n\n")
@@ -887,22 +1182,24 @@ def write_run_docs(args: argparse.Namespace, pages: list[Path], page_rows: list[
         for action, count in sorted(action_counts.items()):
             f.write(f"| `{action}` | {count} |\n")
         f.write("\n## Review Entry Points\n\n")
-        f.write("- Visual review: `03_cut_review/`\n")
+        f.write("- Paddle candidate boxes: `03_cut_review/*/01_doclayout_boxes.png`\n")
+        f.write("- Postprocessed layout units: `03_cut_review/*/02_postprocess_units.png`\n")
+        f.write("- OCR unit thumbnails: `03_cut_review/*/03_ocr_units_sheet.png`\n")
         f.write("- OCR unit index: `02_ocr_units/index.csv`\n")
         f.write("- Validation report: `page_processing_validation.json`\n")
 
     with (output_root / "README.md").open("w", encoding="utf-8") as f:
         f.write("# Page Cutting Output\n\n")
-        f.write("This folder was generated by the single Paddle DocLayout page cutting flow.\n\n")
+        f.write("This folder was generated by the single Paddle DocLayout candidate + mandatory postprocess flow.\n\n")
         f.write("| Folder/File | Purpose |\n")
         f.write("|---|---|\n")
         f.write("| `00_input_pages/` | Page images used by the run |\n")
-        f.write("| `01_doclayout/` | Raw DocLayout results and block summary |\n")
-        f.write("| `02_ocr_units/index.csv` | OCR-ready units and reading order |\n")
-        f.write("| `03_cut_review/` | Visual review for each page |\n")
+        f.write("| `01_doclayout/` | Raw DocLayout candidate results and block summary |\n")
+        f.write("| `02_ocr_units/index.csv` | Postprocessed OCR-ready units, roles, reasons, boxes, and reading order |\n")
+        f.write("| `03_cut_review/` | Visual review for Paddle candidates and postprocessed layout units |\n")
         f.write("| `page_processing_validation.json` | Basic output validation |\n")
         f.write("| `run_summary.md` | Run-level counts |\n\n")
-        f.write("Start manual review from `03_cut_review/`.\n")
+        f.write("Start manual review from `03_cut_review/*/02_postprocess_units.png`.\n")
         f.write("Downstream OCR should read `02_ocr_units/index.csv`.\n")
 
 

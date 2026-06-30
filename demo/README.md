@@ -117,7 +117,8 @@ python demo/run_page_workflow.py \
 
 ```text
 整页图片 / PDF
--> 页面切割，生成 OCR 单元和阅读顺序
+-> Paddle DocLayout 生成候选版面块
+-> 统一后处理生成 OCR 单元、角色、阅读顺序和 bbox
 -> OCR 单元识别
 -> 页面文本合并
 -> 结构化页面输出
@@ -125,13 +126,16 @@ python demo/run_page_workflow.py \
 -> 可选注音
 ```
 
-整页 demo 的 `--max-image-side` 会传给页面切割步骤。超规格页面会先等比例压缩，再用 Paddle DocLayout 做页面切割。
+整页 demo 的 `--max-image-side` 会传给页面切割步骤。超规格页面会先等比例压缩，再用 Paddle DocLayout 做候选版面检测；候选框必须进入统一后处理，不能直接跳过后处理送 OCR。
 
 主要输出：
 
 | 输出 | 说明 |
 |---|---|
-| `outputs/demo_page_workflow/01_page_cutting/` | 页面切割输出和索引 |
+| `outputs/demo_page_workflow/01_page_cutting/` | 页面切割与版式理解输出 |
+| `outputs/demo_page_workflow/01_page_cutting/03_cut_review/*/01_doclayout_boxes.png` | Paddle 候选框复核图 |
+| `outputs/demo_page_workflow/01_page_cutting/03_cut_review/*/02_postprocess_units.png` | 后处理后的 title/body/page_number、阅读顺序和单元框复核图 |
+| `outputs/demo_page_workflow/01_page_cutting/02_ocr_units/index.csv` | 后处理后的 OCR 单元索引，含 `role`、`role_reason`、`reading_order`、`bbox` |
 | `outputs/demo_page_workflow/02_ocr_units/ocr_units_results.jsonl` | OCR 单元识别结果 |
 | `outputs/demo_page_workflow/03_page_text/submission_pages.jsonl` | 页面文本结果 |
 | `outputs/demo_page_workflow/03_page_text/submission_pages.md` | 便于人工阅读的页面文本 |

@@ -1,14 +1,14 @@
 # 页面切割流程说明
 
-本项目只有一条页面切割、拼合与结构化流程：使用 Paddle DocLayout 对整页图片或 PDF 做版面块检测，并对较大的正文、页眉、页脚或脚注块继续按视觉行/小区域细分，得到识别单元、阅读顺序和位置框；识别后统一由 `page_processing/assemble_pages.py` 做页面文本拼合，再由 `page_processing/structure_pages.py` 导出可复核的页面结构。线上演示是交互入口，本地 `demo/run_page_workflow.py` 是命令行入口。
+本项目只有一条页面切割、拼合与结构化流程：使用 Paddle DocLayout 对整页图片或 PDF 生成候选版面块，所有候选块都必须进入统一后处理，再得到识别单元、角色、阅读顺序和位置框；识别后统一由 `page_processing/assemble_pages.py` 做页面文本拼合，再由 `page_processing/structure_pages.py` 导出可复核的页面结构。线上演示是交互入口，本地 `demo/run_page_workflow.py` 是命令行入口。
 
 ## 流程
 
 ```text
 整页图片 / PDF / 页面照片 / 屏幕拍照
--> Paddle DocLayout 版面块检测
--> 大文本块按视觉行/小区域细分
--> 生成识别单元和阅读顺序
+-> Paddle DocLayout 候选版面块
+-> 统一后处理：去边缘、去重、按视觉行/小区域细分
+-> 生成识别单元、角色、阅读顺序和 bbox
 -> 文本区域识别
 -> 页面文本合并
 -> 结构化页面输出
@@ -50,11 +50,13 @@ outputs/page_cutting_demo/
 | 输出 | 用途 |
 |---|---|
 | `00_input_pages/` | 本次使用的页面图片；单图和 PDF 会先复制或渲染到这里 |
-| `01_doclayout/` | Paddle DocLayout 原始结果和版面块统计 |
-| `02_ocr_units/index.csv` | 识别单元索引，记录裁切编号、页面编号、图片路径、阅读顺序、父级版面框和识别单元位置 |
-| `03_cut_review/` | 人工检查用的页面检测框和文本块预览 |
+| `01_doclayout/` | Paddle DocLayout 候选结果和版面块统计 |
+| `02_ocr_units/index.csv` | 后处理后的识别单元索引，记录裁切编号、页面编号、图片路径、角色、角色原因、阅读顺序、父级候选框和识别单元位置 |
+| `03_cut_review/` | 人工检查用的候选框、后处理单元和文本块预览 |
 | `page_processing_validation.json` | 检查识别单元是否缺图、裁切编号是否重复等基础问题 |
 | `run_summary.md` | 本次处理的页数、识别单元数量和分组数量 |
+
+`03_cut_review/*/01_doclayout_boxes.png` 用来看 Paddle 候选框；`03_cut_review/*/02_postprocess_units.png` 用来看真正进入 OCR 的版式理解结果；`03_cut_review/*/03_ocr_units_sheet.png` 用来看单元缩略图。
 
 ## 识别单元索引
 
@@ -66,10 +68,13 @@ outputs/page_cutting_demo/
 | `page_id` | 原页面编号 |
 | `page_file` | 原页面文件名 |
 | `summary_path` | 文本块图片相对路径 |
-| `role` | 版面检测后映射的块类型，如 `body`、`title`、`footnote` |
+| `role` | 版式初判后的块类型，如 `body`、`title`、`footnote`、`page_number` |
+| `role_reason` | 角色来源，例如 Paddle 标签、页面底部小框、页面上方大行或默认正文 |
 | `reading_order` | 页面文本合并时使用的阅读顺序 |
 | `bbox` | 识别单元在页面中的位置框 |
 | `crop_bbox` | 实际送入 OCR 的裁剪框 |
+
+这里的 `role` 是版式理解的初判，不是 OCR 读字后的最终语义判断。标题、正文和页码先由 Paddle 标签、位置、尺寸、行高、居中程度等几何特征给出；OCR 完成后，`structure_pages.py` 会再用文本形态做轻量复核，例如短数字页码、注音行或明显非正文块。
 
 ## 页面文本拼合
 
@@ -81,6 +86,8 @@ python page_processing/assemble_pages.py \
   --out-dir outputs/demo_page_workflow/03_page_text \
   --image-root outputs/demo_page_workflow/01_page_cutting/02_ocr_units
 ```
+
+2026-06-30 的小改只发生在这个拼合阶段：复用既有 OCR 单元和 v5.16 OCR 结果，重新组合页级文本。它改善了高度重叠 OCR 单元的近重复、页码混入正文、多行块被强行横拼等问题；它不是切图后处理，也不会改变 `02_ocr_units/index.csv`。在页面评估集上，平均 NED 从 `0.113530` 降到 `0.104330`，漏行页从 `75` 降到 `71`，重复页从 `41` 降到 `39`，错序总数从 `476` 降到 `430`。
 
 ## 结构化页面输出
 
@@ -120,13 +127,13 @@ python page_processing/structure_pages.py \
 paddleocr==3.4.0
 ```
 
-默认版面检测模型：
+默认候选版面检测模型：
 
 ```text
 PP-DocLayout_plus-L
 ```
 
-脚本参数 `--layout-model` 可切换为其他 Paddle DocLayout 模型，例如 `PP-DocLayout`。
+脚本参数 `--layout-model` 可切换为其他 Paddle DocLayout 模型，例如 `PP-DocLayout`。不管换哪一个模型，候选框都必须进入统一后处理，不能跳过后处理直接作为最终 OCR 单元。
 
 PDF 输入还需要 Poppler：
 

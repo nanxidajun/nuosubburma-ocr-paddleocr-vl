@@ -63,14 +63,14 @@ https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | 758 | 758 |
-| Avg NED | 0.726733 | 0.070123 |
-| WS Avg NED | 0.719600 | 0.069809 |
-| NFKC+WS Avg NED | 0.706794 | 0.069627 |
-| Exact | 0 / 758 | 447 / 758 (59.0%) |
-| Yi-only Avg NED | 1.000000 | 0.069797 |
-| Han-only Avg NED | 0.209245 | 0.055544 |
-| Digit-only Avg NED | 0.369451 | 0.260416 |
-| replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 6 / 1 / 1 |
+| Avg NED | 0.726733 | 0.052310 |
+| WS Avg NED | 0.719600 | 0.051771 |
+| NFKC+WS Avg NED | 0.706794 | 0.051670 |
+| Exact | 0 / 758 | 445 / 758 (58.7%) |
+| Yi-only Avg NED | 1.000000 | 0.054440 |
+| Han-only Avg NED | 0.209245 | 0.037348 |
+| Digit-only Avg NED | 0.369451 | 0.178630 |
+| replacement / LaTeX-like / extra Latin / long prediction | 16 / 105 / 321 / 34 | 0 / 9 / 1 / 1 |
 
 完整评估结果见：
 
@@ -81,9 +81,9 @@ evaluation/
 ## 使用边界
 
 - 本模型可以输入整页、区域和行图。
-- 当前最稳定的使用方式通常是 line / region OCR。
-- 直接 page OCR 更适合作为诊断入口；复杂整页可能出现与人工标注不一致的换行、阅读顺序偏差或段落边界误判。
-- 复杂整页文档在版面较密、手写拍照、多栏、脚注、注音块或图文混排较强时，建议先走 [页面处理说明](../docs/PAGE_PROCESSING.md)，再做 line/region OCR 和人工核验。
+- 当前最稳定的使用方式通常是清晰单行图和文本区域图。
+- 复杂整页可能出现与人工标注不一致的换行、阅读顺序偏差或段落边界误判。
+- 复杂整页文档在版面较密、手写拍照、多栏、脚注、注音块或图文混排较强时，建议结合 [页面处理说明](../docs/PAGE_PROCESSING.md) 做结构化复核。
 - 手写拍照样本已纳入独立观察，结果与印刷体分开解读。
 - 本版本尚未进行专门的端侧/移动端优化。
 

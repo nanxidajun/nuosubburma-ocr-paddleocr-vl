@@ -1,40 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="510" viewBox="0 0 980 510" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img">
 <rect width="100%" height="100%" fill="#fbfaf7"/>
-<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:13px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}.base{fill:#9a3412}.lora{fill:#0f766e}</style>
-<text class="title" x="28" y="38">Core NED Comparison: Base vs LoRA</text>
-<text class="sub" x="28" y="63">Final 758-sample evaluation. Lower is better.</text>
-<rect class="base" x="275" y="76" width="16" height="10" rx="2" opacity="0.75"/>
-<text class="note" x="298" y="86">PaddleOCR-VL-1.6 base</text>
-<rect class="lora" x="475" y="76" width="16" height="10" rx="2" opacity="0.88"/>
-<text class="note" x="498" y="86">LoRA fine-tuned</text>
-<text class="label" x="28" y="124">Avg NED</text>
-<rect class="base" x="275" y="102" width="396.1" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="679.1" y="116">base 0.726733</text>
-<rect class="lora" x="275" y="126" width="38.2" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.2" y="140">LoRA 0.070123</text>
-<text class="label" x="28" y="190">WS Avg NED</text>
-<rect class="base" x="275" y="168" width="392.2" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="675.2" y="182">base 0.719600</text>
-<rect class="lora" x="275" y="192" width="38.0" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.0" y="206">LoRA 0.069809</text>
-<text class="label" x="28" y="256">NFKC+WS NED</text>
-<rect class="base" x="275" y="234" width="385.2" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="668.2" y="248">base 0.706794</text>
-<rect class="lora" x="275" y="258" width="37.9" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="320.9" y="272">LoRA 0.069627</text>
-<text class="label" x="28" y="322">Yi-only NED</text>
-<rect class="base" x="275" y="300" width="545.0" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="828.0" y="314">base 1.000000</text>
-<rect class="lora" x="275" y="324" width="38.0" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="321.0" y="338">LoRA 0.069797</text>
-<text class="label" x="28" y="388">Han-only NED</text>
-<rect class="base" x="275" y="366" width="114.0" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="397.0" y="380">base 0.209245</text>
-<rect class="lora" x="275" y="390" width="30.3" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="313.3" y="404">LoRA 0.055544</text>
-<text class="label" x="28" y="454">Digit-only NED</text>
-<rect class="base" x="275" y="432" width="201.4" height="18" rx="4" opacity="0.75"/>
-<text class="value" x="484.4" y="446">base 0.369451</text>
-<rect class="lora" x="275" y="456" width="141.9" height="18" rx="4" opacity="0.88"/>
-<text class="value" x="424.9" y="470">LoRA 0.260416</text>
+<style>text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC",Arial,sans-serif}.title{font-size:25px;font-weight:700;fill:#111827}.sub{font-size:14px;fill:#6b7280}.label{font-size:14px;fill:#111827}.value{font-size:14px;font-weight:650;fill:#111827}.note{font-size:12px;fill:#6b7280}</style>
+<text class="title" x="28" y="38">NED Overview</text>
+<text class="sub" x="28" y="63">Final 758-sample latest GT.</text>
+<text class="label" x="28" y="117">Base Avg NED</text>
+<rect x="255" y="98" width="545.0" height="26" rx="6" fill="#176b87" opacity="0.86"/>
+<text class="value" x="810.0" y="117">0.726733</text>
+<text class="note" x="845" y="117">unfine-tuned</text>
+<text class="label" x="28" y="159">LoRA Avg NED</text>
+<rect x="255" y="140" width="39.2" height="26" rx="6" fill="#8b5cf6" opacity="0.86"/>
+<text class="value" x="304.2" y="159">0.052310</text>
+<text class="note" x="845" y="159">full 758</text>
+<text class="label" x="28" y="201">LoRA line</text>
+<rect x="255" y="182" width="19.1" height="26" rx="6" fill="#0f766e" opacity="0.86"/>
+<text class="value" x="284.1" y="201">0.025444</text>
+<text class="note" x="845" y="201">470 rows</text>
+<text class="label" x="28" y="243">LoRA region</text>
+<rect x="255" y="224" width="61.7" height="26" rx="6" fill="#c2410c" opacity="0.86"/>
+<text class="value" x="326.7" y="243">0.082315</text>
+<text class="note" x="845" y="243">119 rows</text>
+<text class="label" x="28" y="285">LoRA page</text>
+<rect x="255" y="266" width="79.4" height="26" rx="6" fill="#7c3aed" opacity="0.86"/>
+<text class="value" x="344.4" y="285">0.105898</text>
+<text class="note" x="845" y="285">169 rows</text>
 </svg>

@@ -31,13 +31,13 @@ model-index:
         metrics:
           - type: avg_ned
             name: Avg NED
-            value: 0.070123
+            value: 0.052310
           - type: yi_avg_ned
             name: Yi-only Avg NED
-            value: 0.069797
+            value: 0.054440
           - type: han_avg_ned
             name: Han-only Avg NED
-            value: 0.055544
+            value: 0.037348
 ---
 
 # NuosuBburma OCR：规范彝文识别模型
@@ -68,11 +68,11 @@ model-index:
 | 主要输出 | 图片中可见文本的 Unicode 转写 |
 | 稳定输入 | 单行图、区域图 |
 | 扩展输入 | 整页图、PDF 渲染页、手机拍照页、屏幕拍照、实拍标牌 |
-| 推荐整页处理 | 先用 Paddle DocLayout 做页面切割，再识别、合并页面文本并生成结构化结果 |
+| 推荐整页处理 | 先用 Paddle DocLayout 生成候选版面块，再经统一后处理生成 OCR 单元，最后识别、合并页面文本并生成结构化结果 |
 
 ## 当前评估口径
 
-最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座和 LoRA 微调后结果均已完成，LoRA Avg NED 为 `0.070123`。
+最终评估集为 `758` 条真实来源样本，含 `line 470` / `region 119` / `page 169`，空 GT、缺图、重复 ID 和合成样本标记均为 `0`。未微调基座和 LoRA 微调后结果均已完成，LoRA Avg NED 为 `0.052310`。
 
 模型卡 metadata 中的 NED 指标是 LoRA 微调模型在最终 `758` 条评估集、最新人工 GT 上的结果。
 
@@ -143,8 +143,9 @@ scripts/smoke_check.sh
 
 ```text
 整页图片 / PDF / 页面照片 / 屏幕拍照
--> Paddle DocLayout 页面切割
--> 切出文本区域后识别
+-> Paddle DocLayout 候选版面块
+-> 统一后处理生成 OCR 单元、角色、阅读顺序和 bbox
+-> OCR 单元识别
 -> 页面文本合并
 -> 结构化页面输出
 -> 异常检查
@@ -167,16 +168,16 @@ scripts/smoke_check.sh
 | 指标 | 未微调基座 | LoRA 微调后 |
 |---|---:|---:|
 | 评估样本 | `758` | `758` |
-| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | `0.070123` |
-| 忽略空白后的平均编辑距离 | `0.719600` | `0.069809` |
-| NFKC+WS Avg NED | `0.706794` | `0.069627` |
-| Exact | `0 / 758` | `447 / 758 (59.0%)` |
-| Yi-only Avg NED | `1.000000` | `0.069797` |
-| Han-only Avg NED | `0.209245` | `0.055544` |
-| Digit-only Avg NED | `0.369451` | `0.260416` |
-| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 6 / 1 / 1` |
+| 平均归一化编辑距离（Avg NED，越低越好） | `0.726733` | `0.052310` |
+| 忽略空白后的平均编辑距离 | `0.719600` | `0.051771` |
+| NFKC+WS Avg NED | `0.706794` | `0.051670` |
+| Exact | `0 / 758` | `445 / 758 (58.7%)` |
+| Yi-only Avg NED | `1.000000` | `0.054440` |
+| Han-only Avg NED | `0.209245` | `0.037348` |
+| Digit-only Avg NED | `0.369451` | `0.178630` |
+| replacement / LaTeX-like / extra Latin / long prediction | `16 / 105 / 321 / 34` | `0 / 9 / 1 / 1` |
 
-按输入粒度拆分：line `470` 条 Avg NED `0.025444`，region `119` 条 `0.082315`，page `169` 条 `0.185795`。整页 exact 低，主要因为长文本、换行、阅读顺序和页面边界对完全匹配非常敏感。
+按输入粒度拆分：line `470` 条 Avg NED `0.025444`，region `119` 条 `0.082315`，page `169` 条 `0.105898`。整页 exact 低，主要因为长文本、换行、阅读顺序和页面边界对完全匹配非常敏感。
 
 指标解释：
 
