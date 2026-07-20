@@ -4,7 +4,7 @@
 
 - `eval_nuosubburma.py`：对 JSONL 评估集逐图运行端到端 OCR 推理，每张图片直接进模型输出一条预测文本。
 - `run_eval.sh`：`paddle.distributed.launch` 的评估封装。
-- `analyze_submission_eval.py`：计算 Raw / 去空白 / 规范化 Avg NED、分组 NED（场景、难度、文字构成）和复核表。
+- `analyze_submission_eval.py`：计算 Raw / 去空白 / 规范化 Avg NED、分组 NED（场景、难度）和复核表。
 - `smoke_check.sh`：安装后健康检查，检查依赖与样例图，本地有模型时跑一张单图 OCR。
 
 评估依赖：`paddle`、`paddleformers`、`Pillow`、`tqdm`、`python-Levenshtein`。
@@ -55,7 +55,7 @@ python scripts/analyze_submission_eval.py \
   --title "NuosuBburma OCR: full evaluation set"
 ```
 
-主口径为 Raw Avg NED；`analyze_submission_eval.py` 会同时输出去空白、规范化 NED 及按场景 / 难度 / 文字构成的分组表，用于定位薄弱项。
+主口径为 Raw Avg NED；`analyze_submission_eval.py` 会同时输出去空白、规范化 NED 及按场景 / 难度的分组表，用于定位薄弱项。
 
 ## 相关目录
 
