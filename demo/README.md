@@ -60,4 +60,4 @@ python demo/infer_single_image.py \
 | `sample_images/screen_page.jpg` | 屏幕拍照整页 |
 | `sample_images/sign_photo.jpg` | 实景招牌照片 |
 
-OCR 之后的可选彝文注音见 [postprocess](../postprocess/)。批量评估见 [scripts](../scripts/)。
+批量评估见 [scripts](../scripts/)。

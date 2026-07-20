@@ -95,7 +95,6 @@ configs/             训练与导出配置、数据清单
 demo/                本地单图 OCR 演示 + 样例图
 docs/                背景、评估集、质量、结果分析、模型与训练、数据构建
 model/               模型下载说明（权重托管在 Hugging Face）
-postprocess/         彝文注音后处理
 scripts/             端到端评估与训练脚本
 ```
 

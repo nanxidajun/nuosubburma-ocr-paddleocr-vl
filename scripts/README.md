@@ -60,4 +60,5 @@ python scripts/analyze_submission_eval.py \
 ## 相关目录
 
 - 本地单图 OCR 演示：[demo](../demo/)。`demo/infer_single_image.py` 跑单张图片 OCR。
-- OCR 之后的注音添加：[postprocess](../postprocess/)。评估脚本中的输出风险字段仅用于审计复核，不会自动改写预测文本。
+
+评估脚本中的输出风险字段仅用于审计复核，不会自动改写预测文本。
