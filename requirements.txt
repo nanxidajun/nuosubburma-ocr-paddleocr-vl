@@ -1,5 +1,5 @@
 # NuosuBburma OCR Python 依赖
-# 用于安装运行本地 demo、评估脚本和页面切割流程所需的 Python 包。
+# 用于安装运行本地 demo 和评估脚本所需的 Python 包。
 #
 # 参考环境：
 # - Python 3.11
@@ -24,19 +24,13 @@
 #
 #    安装后自检：
 #    python -m pip check
-#    python -c "import paddle, importlib.metadata as m; print('paddle', paddle.__version__, paddle.device.get_device()); print('paddleocr', m.version('paddleocr')); print('paddleformers', m.version('paddleformers'))"
-
-# 页面切割依赖。
-paddleocr==3.4.0
+#    python -c "import paddle, importlib.metadata as m; print('paddle', paddle.__version__, paddle.device.get_device()); print('paddleformers', m.version('paddleformers'))"
 
 # PaddleOCR-VL 模型加载与推理依赖。
 paddleformers==1.1.1
 
 # 图片读取。
 Pillow>=10.0.0,<11.0.0
-
-# 页面块内行级细分。
-opencv-python-headless>=4.8.0,<5.0.0
 
 # 进度条。
 tqdm>=4.66.0,<5.0.0

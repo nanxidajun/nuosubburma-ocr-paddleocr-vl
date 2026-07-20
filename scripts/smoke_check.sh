@@ -75,7 +75,6 @@ import sys
 from pathlib import Path
 
 packages = [
-    "paddleocr",
     "paddleformers",
     "Pillow",
     "tqdm",

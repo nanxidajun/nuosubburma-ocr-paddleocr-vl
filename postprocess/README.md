@@ -10,9 +10,9 @@
 
 ```bash
 python postprocess/add_nuosu_pronunciation.py \
-  --input outputs/demo_page_workflow/03_page_text/submission_pages.jsonl \
-  --field text \
-  --output outputs/demo_page_workflow/03_page_text/submission_pages_pronounced.jsonl
+  --input outputs/eval_result.jsonl \
+  --field prediction \
+  --output outputs/eval_result_pronounced.jsonl
 ```
 
 脚本会新增：
@@ -41,4 +41,4 @@ U+A000,ꀀ,Yi Syllable It,it
 
 ## 边界
 
-注音是 OCR 后处理，不参与模型评分，也不会把模型预测文本改成标准答案。需要定位空结果、局部识别失败或异常长输出时，看评估脚本和 demo 生成的异常审计文件。
+注音是 OCR 后处理，不参与模型评分，也不会把模型预测文本改成标准答案。需要定位空结果、局部识别失败或异常长输出时，看评估脚本 `analyze_submission_eval.py` 生成的复核表。
