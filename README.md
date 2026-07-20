@@ -8,7 +8,7 @@
   <img alt="微调" src="https://img.shields.io/badge/Fine__tuning-LoRA-8a5cf6">
 </p>
 
-输入一张图片，**端到端**输出其中规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）、汉字、拉丁字母、数字和标点的 Unicode 文本——单模型一次推理，不做文字分类、双模型路由或检测识别切割。输出的可搜索、可校对文本可直接进入语料库，支撑规范彝文的检索、校对与低资源 NLP。
+输入一张图片，输出其中规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）、汉字、拉丁字母、数字和标点的 Unicode 文本。输出的可搜索、可校对文本可直接进入语料库，支撑规范彝文的检索、校对与低资源 NLP。
 
 [模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [评估集可视化](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [在线演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [模型与训练](docs/MODEL_AND_TRAINING.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
