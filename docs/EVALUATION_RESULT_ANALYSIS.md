@@ -10,8 +10,6 @@
 - 随仓库发布的预测 [final1030_predictions.jsonl](final1030_predictions.jsonl)（保留 `id` / `image` / `prediction` / `meta` 复算所需字段）SHA-256：`aab840bcc3fd634fbea5eb9836911a9ee2acd36e05f6b8ac4ba57cb73c27f132`
 - 对齐结果：1,030 个唯一图片 SHA-256 全部一一匹配，无缺失、无重复。
 
-预测文件在最后 7 条人工 GT 修订前已经固定；修订只更正经原图核实的标注，不更改模型、推理参数或预测文本。修订后使用当前标注哈希重算全部指标。
-
 ## NED 计算
 
 每张图片先独立计算字符级 Levenshtein 编辑距离。一次替换、删除或插入都记为一次编辑：
