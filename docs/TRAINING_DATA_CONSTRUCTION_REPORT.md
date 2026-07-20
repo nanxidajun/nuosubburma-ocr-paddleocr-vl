@@ -71,7 +71,7 @@ layout_family · random_seed · degradation_profile
 operation_order · image_sha256
 ```
 
-正式构建锁定的生成器组件及其 SHA-256：
+正式构建锁定的生成器组件及其 SHA-256（脚本已随仓库发布于 [`data_generation/`](../data_generation/)，另含 `build_shape_pairs_v3.py`、`build_shape_pairs.py`、`confusable_injection.py` 三个依赖模块）：
 
 | 组件 | SHA-256 |
 |---|---|
