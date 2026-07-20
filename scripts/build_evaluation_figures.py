@@ -577,14 +577,6 @@ def render_performance_overview(metrics: dict[str, Any], path: Path) -> None:
         width=695,
         colors=[COLORS["green"], COLORS["amber"], COLORS["red"]],
     )
-    text(
-        root,
-        70,
-        1075,
-        "表现较好：书籍扫描 0.0259、低难度 0.0163。主要不足：手写拍照 0.2000、高难度 0.0957。实景拍照 0.0247（n=9）。",
-        size=19,
-        fill=COLORS["muted"],
-    )
     write_svg(path, root)
 
 
