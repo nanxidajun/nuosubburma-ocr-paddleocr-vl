@@ -70,5 +70,3 @@
   <text x="835.0" y="834.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="19" font-weight="400" text-anchor="start">高难度  n=258</text>
   <rect x="1015.0" y="809.0" width="189.2" height="34.0" rx="4" fill="#A13A32" />
   <text x="1214.2" y="834.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="18" font-weight="400" text-anchor="start">0.0957</text>
-  <text x="70.0" y="1075.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="19" font-weight="400" text-anchor="start">表现较好：书籍扫描 0.0259、低难度 0.0163。主要不足：手写拍照 0.2000、高难度 0.0957。实景拍照 0.0247（n=9）。</text>
-</svg>
