@@ -53,11 +53,13 @@ python demo/infer_single_image.py \
 
 ## 样例图
 
+下面四张样例图均来自公开评估集的当前图片快照；样例只用于复现输入形态，正式指标以评估集报告为准。
+
 | 图片 | 用途 |
 |---|---|
-| `sample_images/mixed_line.png` | 彝汉混排行图 |
-| `sample_images/handwriting_region.jpg` | 手写区域图 |
-| `sample_images/screen_page.jpg` | 屏幕拍照整页 |
-| `sample_images/sign_photo.jpg` | 实景招牌照片 |
+| `sample_images/mixed_line.png` | 彝汉混排区域；评估样本 `liangshan_selection_2_p040_region_01` |
+| `sample_images/handwriting_region.jpg` | 手写区域；评估样本 `liangshan_selection_2_p022_handwriting_01` |
+| `sample_images/screen_page.jpg` | 屏幕拍摄页面；评估样本 `real_screen_photo_page_001_part1` |
+| `sample_images/sign_photo.jpg` | 实景拍摄；评估样本 `real_photo_001` |
 
 批量评估见 [scripts](../scripts/)。
