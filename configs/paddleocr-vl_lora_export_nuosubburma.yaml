@@ -1,2 +1,2 @@
 model_name_or_path: /root/.cache/huggingface/hub/models--PaddlePaddle--PaddleOCR-VL-1.6/snapshots/66317acc4c9fc17bd154591ce650735cd2855f3e
-output_dir: outputs/nuosubburma_v5_16_synth_capped_rerender_lora
+output_dir: outputs/nuosubburma_lora

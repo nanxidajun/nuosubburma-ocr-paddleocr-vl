@@ -3,9 +3,9 @@
 本目录保存本次提交使用的训练/导出配置快照，以及训练数据 manifest。
 
 ```text
-paddleocr-vl_lora_16k_nuosubburma_v5_16.yaml
-paddleocr-vl_lora_export_nuosubburma_v5_16.yaml
-train_data_manifest_v5_16.json
+paddleocr-vl_lora_16k_nuosubburma.yaml
+paddleocr-vl_lora_export_nuosubburma.yaml
+train_data_manifest.json
 ```
 
 复现环境摘要：

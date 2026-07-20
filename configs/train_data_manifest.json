@@ -1,7 +1,7 @@
 {
-  "package": "v5_16_synth_capped_rerender_official",
+  "package": "nuosubburma_synth_official",
   "base_package": "v5_15_layout_latin_rebalance_official",
-  "created_by": "scripts/build_v5_16_synth_stratified_double_package.py",
+  "created_by": "scripts/build_synth_stratified_double_package.py",
   "seed": 20260621,
   "clean_base_rows": 7617,
   "clean_base_images_copied": 7617,

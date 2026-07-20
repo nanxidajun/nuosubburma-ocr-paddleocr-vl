@@ -37,8 +37,8 @@ save_strategy: steps
 save_total_limit: 3
 logging_steps: 1
 gradient_accumulation_steps: 16
-logging_dir: outputs/nuosubburma_v5_16_synth_capped_rerender_lora/visualdl_logs/
-output_dir: outputs/nuosubburma_v5_16_synth_capped_rerender_lora
+logging_dir: outputs/nuosubburma_lora/visualdl_logs/
+output_dir: outputs/nuosubburma_lora
 disable_tqdm: true
 eval_accumulation_steps: 16
 

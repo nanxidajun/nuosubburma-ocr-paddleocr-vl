@@ -20,4 +20,4 @@ MODEL_NAME_OR_PATH="${MODEL_NAME_OR_PATH:-${LOCAL_MODEL_SNAPSHOT}}"
 
 mkdir -p outputs
 
-CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}" paddleformers-cli train   configs/paddleocr-vl_lora_16k_nuosubburma_v5_16.yaml   model_name_or_path="${MODEL_NAME_OR_PATH}"   train_dataset_path="${TRAIN_DATASET_PATH:-jsonl/train.jsonl}"   eval_dataset_path="${EVAL_DATASET_PATH:-jsonl/eval_yi.jsonl}"   output_dir="${OUTPUT_DIR:-outputs/nuosubburma_v5_16_synth_capped_rerender_lora}"   logging_dir="${LOGGING_DIR:-outputs/nuosubburma_v5_16_synth_capped_rerender_lora/visualdl_logs}"   pre_alloc_memory="${PRE_ALLOC_MEMORY:-18}"   "$@"
+CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}" paddleformers-cli train   configs/paddleocr-vl_lora_16k_nuosubburma.yaml   model_name_or_path="${MODEL_NAME_OR_PATH}"   train_dataset_path="${TRAIN_DATASET_PATH:-jsonl/train.jsonl}"   eval_dataset_path="${EVAL_DATASET_PATH:-jsonl/eval_yi.jsonl}"   output_dir="${OUTPUT_DIR:-outputs/nuosubburma_lora}"   logging_dir="${LOGGING_DIR:-outputs/nuosubburma_lora/visualdl_logs}"   pre_alloc_memory="${PRE_ALLOC_MEMORY:-18}"   "$@"

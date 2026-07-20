@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
-MODEL_PATH="${1:-outputs/nuosubburma_v5_16_synth_capped_rerender_lora/export}"
+MODEL_PATH="${1:-outputs/nuosubburma_lora/export}"
 DATASET="${2:-datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl}"
 OUTPUT_PATH="${3:-outputs/eval_yi_result.jsonl}"
 
