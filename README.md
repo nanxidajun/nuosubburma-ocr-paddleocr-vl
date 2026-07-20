@@ -106,7 +106,7 @@ README.md            项目说明（背景、目标、评估结果、使用）
 LICENSE              Apache-2.0
 requirements.txt     运行依赖
 configs/             训练与导出配置、数据清单
-data_generation/     合成训练数据生成器（含 SHA 锁定的核心脚本）
+training_data/     合成训练数据生成器（含 SHA 锁定的核心脚本）
 demo/                本地单图 OCR 演示 + 样例图
 docs/                评估集、结果分析、模型与训练、数据构建
 model/               模型下载说明（权重托管在 Hugging Face）

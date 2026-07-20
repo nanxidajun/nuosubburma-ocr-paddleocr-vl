@@ -51,6 +51,8 @@
 
 ## 2. 构建流程与可复现性
 
+> **生成脚本已随仓库开源**，位于 [`training_data/`](../training_data/)（含按 SHA-256 锁定的核心生成器与依赖模块，见下表）。字符表与锁定字体为外部输入、不随仓库发布（字体受商用许可约束），字体各自遵循其许可。
+
 构建链路固定，每一步的输入与产物都被记录：
 
 ```text
@@ -71,7 +73,7 @@ layout_family · random_seed · degradation_profile
 operation_order · image_sha256
 ```
 
-正式构建锁定的生成器组件及其 SHA-256（脚本已随仓库发布于 [`data_generation/`](../data_generation/)，另含 `build_shape_pairs_v3.py`、`build_shape_pairs.py`、`confusable_injection.py` 三个依赖模块）：
+正式构建锁定的生成器组件及其 SHA-256（脚本已随仓库发布于 [`training_data/`](../training_data/)，另含 `build_shape_pairs_v3.py`、`build_shape_pairs.py`、`confusable_injection.py` 三个依赖模块）：
 
 | 组件 | SHA-256 |
 |---|---|
@@ -137,7 +139,7 @@ operation_order · image_sha256
 
 第二阶段数据不从评估错误反向挖掘，而由训练侧字符来源、字形关系和固定规则独立构建。2,162 个形近字对来自两条独立线索：
 
-**① 多字体字形相似度聚类。** 把全部 1,165 个规范彝文字符在多款字体下渲染，计算字形相似度，只保留在多款字体下都互为最近邻的字对——跨字体一致可排除单一字体的渲染巧合。整个过程只看字形像素，不读取模型输出或评估错误。例如 ꁛ↔ꄄ（相似度 0.986）、ꃽ↔ꅫ（0.983）、ꂷ↔ꆪ（0.983）。完整特征与阈值见 [`data_generation/build_shape_pairs.py`](../data_generation/build_shape_pairs.py)。
+**① 多字体字形相似度聚类。** 把全部 1,165 个规范彝文字符在多款字体下渲染，计算字形相似度，只保留在多款字体下都互为最近邻的字对——跨字体一致可排除单一字体的渲染巧合。整个过程只看字形像素，不读取模型输出或评估错误。例如 ꁛ↔ꄄ（相似度 0.986）、ꃽ↔ꅫ（0.983）、ꂷ↔ꆪ（0.983）。完整特征与阈值见 [`training_data/build_shape_pairs.py`](../training_data/build_shape_pairs.py)。
 
 **② 彝文声调语言规律。** 规范彝文中“次高调”与其对应的“中平调”字形相同、仅相差一个笔画（声调弧），可由字符体系直接推出，与像素聚类互补。例如 ꀊ→ꀉ（a / ax）、ꃅ→ꃄ（mu / mux）。
 
