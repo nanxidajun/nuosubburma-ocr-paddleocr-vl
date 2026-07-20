@@ -6,7 +6,8 @@
 
 - 最终模型权重 SHA-256：`910c01816ad1b75d4cf958e7eb33ab730a3f0a2127c1b4606e1900901509161f`
 - 最终标注 SHA-256：`3cec2d96a9b175367d1a20e27ded34f965ba2ae13d5951c539bcfd79dcf44333`
-- 固定预测 SHA-256：`a8b57a574225d8519d563c0a4976f0c9dc79cbd4cc122147801613640a559b62`
+- 固定预测（评分时冻结的完整文件）SHA-256：`a8b57a574225d8519d563c0a4976f0c9dc79cbd4cc122147801613640a559b62`
+- 随仓库发布的预测 [final1030_predictions.jsonl](final1030_predictions.jsonl)（保留 `id` / `image` / `prediction` / `meta` 复算所需字段）SHA-256：`aab840bcc3fd634fbea5eb9836911a9ee2acd36e05f6b8ac4ba57cb73c27f132`
 - 对齐结果：1,030 个唯一图片 SHA-256 全部一一匹配，无缺失、无重复。
 
 预测文件在最后 7 条人工 GT 修订前已经固定；修订只更正经原图核实的标注，不更改模型、推理参数或预测文本。修订后使用当前标注哈希重算全部指标。
@@ -59,4 +60,4 @@
 
 规范化后完全一致为 333 / 1,030，即 `32.3%`。语料级 CER 为 `6.22%`，计算方式是全部编辑距离之和除以全部 GT 字符数；它会让长页面占更大权重，因此只作为补充，不替代答辩材料中的逐样本平均 NED。NFKC + 去空白平均 NED 为 `0.0346`，也只用于 Unicode 表示差异诊断。
 
-机器可读汇总见 [evaluation_metrics.json](evaluation_metrics.json)。[build_evaluation_figures.py](../scripts/build_evaluation_figures.py) 使用当前评估标注、固定预测和最终模型权重哈希重新计算指标并生成 SVG。评估集构成、标注流程与质量审计见 [评估集说明](EVALUATION_DATASET.md)。
+发布的预测文件 [final1030_predictions.jsonl](final1030_predictions.jsonl) 配合 Hugging Face 评估集的标注，即可复算上述全部指标（语料级 CER 6.22%）。机器可读汇总见 [evaluation_metrics.json](evaluation_metrics.json)；[build_evaluation_figures.py](../scripts/build_evaluation_figures.py) 使用当前评估标注、固定预测和最终模型权重哈希重新计算指标并生成 SVG。评估集构成、标注流程与质量审计见 [评估集说明](EVALUATION_DATASET.md)。
