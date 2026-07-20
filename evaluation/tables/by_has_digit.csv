@@ -1,3 +1,0 @@
-has_digit,rows,avg_ned,avg_ws_ned,avg_nfkc_ws_ned,exact,exact_rate,yi_ned,yi_exact_rate,yi_rows,han_ned,han_exact_rate,han_rows,digit_ned,digit_exact_rate,digit_rows,replacement,latex,extra_ascii_letter,long_pred,avg_pred_len,avg_label_len
-False,581,0.047562,0.047212,0.047383,403,0.693632,0.053205,0.728055,581,0.032404,0.861940,268,0.299257,0.333333,9,0,0,0,1,35.001721,33.051635
-True,177,0.067896,0.066735,0.065740,42,0.237288,0.058517,0.346591,176,0.046424,0.294521,146,0.172461,0.664773,176,0,9,1,0,295.237288,291.836158

@@ -1,4 +1,0 @@
-difficulty,rows,avg_ned,avg_ws_ned,avg_nfkc_ws_ned,exact,exact_rate,yi_ned,yi_exact_rate,yi_rows,han_ned,han_exact_rate,han_rows,digit_ned,digit_exact_rate,digit_rows,replacement,latex,extra_ascii_letter,long_pred,avg_pred_len,avg_label_len
-easy,83,0.031944,0.030882,0.030070,67,0.807229,0.029882,0.831325,83,,,0,0.200000,0.800000,20,0,0,0,0,12.638554,12.662651
-medium,467,0.036846,0.035866,0.035829,366,0.783726,0.042100,0.830835,467,0.019408,0.913858,267,0.111111,0.871795,39,0,1,0,0,16.177730,15.719486
-hard,208,0.095156,0.095817,0.095855,12,0.057692,0.092128,0.130435,207,0.069934,0.204082,147,0.196136,0.555556,126,0,8,1,1,307.639423,300.317308

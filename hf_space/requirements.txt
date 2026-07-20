@@ -1,5 +1,0 @@
-paddleocr==3.4.0
-paddleformers==1.1.1
-huggingface_hub>=0.23.0,<2.0.0
-Pillow>=10.0.0,<11.0.0
-numpy>=1.24.0,<3.0.0

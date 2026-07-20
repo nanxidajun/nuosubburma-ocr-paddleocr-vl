@@ -1,17 +1,16 @@
 # 脚本
 
-本目录只保留训练、评估和统计复现需要的核心脚本。
+本目录只保留推理、评估和统计需要的核心脚本。
 
 - `eval_nuosubburma.py`：对 JSONL 评估集运行 OCR 推理。
 - `smoke_check.sh`：安装后健康检查；检查依赖和样例图，本地有模型时跑一张单图 OCR。
 - `run_eval.sh`：Paddle distributed launch 的评估封装。
-- `run_train_lora.sh`：训练命令封装。
 - `analyze_submission_eval.py`：计算 NED、分组 NED 和复核表；同时统计 replacement、LaTeX-like、extra Latin、long_pred 等输出风险。
 - `split_eval_for_final_routes.py`：把最新评估集拆成直接 OCR 路线和 page workflow 路线。
 - `page_workflow_to_eval_result.py`：把页面切割拼合结果转成可打分的评估 JSONL。
 - `merge_final_route_results.py`：把直接 OCR 和 page workflow 两路结果合并成最终全量评估 JSONL。
 
-评估/训练依赖包括 `paddle`、`paddleformers`、`Pillow`、`tqdm` 和 `python-Levenshtein`。
+评估依赖包括 `paddle`、`paddleformers`、`Pillow`、`tqdm` 和 `python-Levenshtein`。
 
 安装后可先跑一次健康检查：
 
@@ -96,7 +95,7 @@ python scripts/merge_final_route_results.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
   --direct-result outputs/final_eval_routes/direct_result.jsonl \
   --page-result outputs/final_eval_routes/page_workflow_result.jsonl \
-  --output outputs/final_eval_routes/final_system_result_758.jsonl
+  --output outputs/final_eval_routes/final_system_result_1030.jsonl
 ```
 
 对完整评估集打主分：
@@ -104,7 +103,7 @@ python scripts/merge_final_route_results.py \
 ```bash
 python scripts/analyze_submission_eval.py \
   --annotations datasets/NuosuBburma_OCR_Evaluation_Set/annotations.jsonl \
-  --result outputs/final_eval_routes/final_system_result_758.jsonl \
+  --result outputs/final_eval_routes/final_system_result_1030.jsonl \
   --out-dir outputs/final_eval_routes/final_system_analysis \
   --title "NuosuBburma OCR final system: full evaluation set"
 ```
