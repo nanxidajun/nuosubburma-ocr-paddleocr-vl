@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Recompute the frozen final-model evaluation and render public SVG figures.
-
-The primary metric is corpus CER after NFC normalization and removal of all
-Unicode whitespace. Mean per-sample NED is reported separately because it gives
-every image equal weight and therefore answers a different question.
-"""
+"""Recompute the frozen final-model NED analysis and render public SVG figures."""
 
 from __future__ import annotations
 
@@ -31,14 +26,10 @@ DIFFICULTY_LABELS = {
     "hard": "高难度",
 }
 
-NED_BINS = (
-    ("完全一致", 0.0, 0.0),
-    ("0-1%", 0.0, 0.01),
-    ("1-5%", 0.01, 0.05),
-    ("5-10%", 0.05, 0.10),
-    ("10-25%", 0.10, 0.25),
-    (">25%", 0.25, None),
-)
+SAMPLE_TYPE_LABELS = {
+    "page": "整页",
+    "region": "区域",
+}
 
 COLORS = {
     "ink": "#1F2933",
@@ -46,13 +37,11 @@ COLORS = {
     "grid": "#D9E0E6",
     "blue": "#315F7D",
     "green": "#2F766D",
+    "mint": "#70A99E",
     "amber": "#B27A2D",
     "red": "#A13A32",
     "purple": "#73556F",
-    "light_blue": "#B8CBD8",
-    "light_red": "#DDB7B2",
     "white": "#FFFFFF",
-    "soft": "#F5F7F8",
 }
 
 FONT = (
@@ -110,6 +99,10 @@ def normalize_primary(text: str) -> str:
 
 def normalize_nfkc(text: str) -> str:
     return "".join(ch for ch in unicodedata.normalize("NFKC", text) if not ch.isspace())
+
+
+def keep_yi(text: str) -> str:
+    return "".join(ch for ch in text if 0xA000 <= ord(ch) <= 0xA48C)
 
 
 def levenshtein(left: str, right: str) -> int:
@@ -219,7 +212,6 @@ def build_breakdown(
     groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         groups[row[key]].append(row)
-    overall = summarize(rows)
     output: list[dict[str, Any]] = []
     for value in labels:
         metrics = summarize(groups[value])
@@ -227,38 +219,9 @@ def build_breakdown(
             {
                 "key": value,
                 "label": labels[value],
-                "sample_share": metrics["samples"] / overall["samples"],
-                "character_share": metrics["gt_characters"]
-                / overall["gt_characters"],
-                "error_share": metrics["edit_distance"] / overall["edit_distance"],
             }
         )
         output.append(metrics)
-    return output
-
-
-def bin_distribution(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    total_errors = sum(row["edit_distance"] for row in rows)
-    output: list[dict[str, Any]] = []
-    for label, low, high in NED_BINS:
-        if label == "完全一致":
-            selected = [row for row in rows if row["ned"] == 0]
-        elif high is None:
-            selected = [row for row in rows if row["ned"] > low]
-        else:
-            selected = [row for row in rows if low < row["ned"] <= high]
-        errors = sum(row["edit_distance"] for row in selected)
-        output.append(
-            {
-                "label": label,
-                "samples": len(selected),
-                "sample_share": len(selected) / len(rows),
-                "edit_distance": errors,
-                "error_share": errors / total_errors if total_errors else 0.0,
-            }
-        )
-    if sum(item["samples"] for item in output) != len(rows):
-        raise ValueError("NED bins do not partition all samples")
     return output
 
 
@@ -297,20 +260,30 @@ def compute_metrics(
         nfkc_gt = normalize_nfkc(gt_raw)
         nfkc_pred = normalize_nfkc(pred_raw)
         nfkc_distance, nfkc_ned = normalized_distance(nfkc_pred, nfkc_gt)
+        yi_gt = keep_yi(gt)
+        yi_pred = keep_yi(pred)
+        yi_distance, yi_ned = normalized_distance(yi_pred, yi_gt)
         meta = annotation.get("meta") or {}
         if not isinstance(meta, dict):
             raise ValueError(f"annotation {sample_id}: meta must be an object")
         scene = meta.get("scene")
         difficulty = meta.get("difficulty")
-        if scene not in SCENE_LABELS or difficulty not in DIFFICULTY_LABELS:
+        sample_type = meta.get("sample_type")
+        if (
+            scene not in SCENE_LABELS
+            or difficulty not in DIFFICULTY_LABELS
+            or sample_type not in SAMPLE_TYPE_LABELS
+        ):
             raise ValueError(
-                f"annotation {sample_id}: unsupported scene/difficulty {scene}/{difficulty}"
+                f"annotation {sample_id}: unsupported scene/difficulty/sample_type "
+                f"{scene}/{difficulty}/{sample_type}"
             )
         scored.append(
             {
                 "id": sample_id,
                 "scene": scene,
                 "difficulty": difficulty,
+                "sample_type": sample_type,
                 "gt_characters": len(gt),
                 "prediction_characters": len(pred),
                 "edit_distance": distance,
@@ -322,6 +295,10 @@ def compute_metrics(
                 "nfkc_gt_characters": len(nfkc_gt),
                 "nfkc_edit_distance": nfkc_distance,
                 "nfkc_ned": nfkc_ned,
+                "yi_gt_characters": len(yi_gt),
+                "yi_prediction_characters": len(yi_pred),
+                "yi_edit_distance": yi_distance,
+                "yi_ned": yi_ned,
             }
         )
 
@@ -342,9 +319,9 @@ def compute_metrics(
         "schema": "nuosubburma_final_evaluation/1.0",
         "scope": "frozen_final_release_model_full_1030_sample_evaluation",
         "metric": {
-            "primary": "corpus CER = sum Levenshtein distance / sum GT code points",
+            "primary": "mean per-sample NED after NFC normalization and Unicode-whitespace removal",
             "normalization": "NFC, then remove all Unicode whitespace",
-            "secondary": "mean per-sample NED = mean(distance / max(pred length, GT length))",
+            "secondary": "corpus CER = sum Levenshtein distance / sum GT code points",
             "diagnostic": "NFKC results are diagnostic only because compatibility normalization can fold OCR-significant symbols",
         },
         "provenance": {
@@ -354,13 +331,30 @@ def compute_metrics(
             "alignment": "unique image SHA-256; all 1,030 image hashes matched exactly",
         },
         "overall": overall,
+        "character_slices": {
+            "yi": {
+                "gt_characters": sum(row["yi_gt_characters"] for row in scored),
+                "prediction_characters": sum(
+                    row["yi_prediction_characters"] for row in scored
+                ),
+                "edit_distance": sum(row["yi_edit_distance"] for row in scored),
+                "cer": sum(row["yi_edit_distance"] for row in scored)
+                / sum(row["yi_gt_characters"] for row in scored),
+                "mean_sample_ned": sum(row["yi_ned"] for row in scored)
+                / len(scored),
+            }
+        },
         "breakdowns": {
             "scene": build_breakdown(scored, "scene", SCENE_LABELS),
             "difficulty": build_breakdown(
                 scored, "difficulty", DIFFICULTY_LABELS
             ),
+            "book_scan_sample_type": build_breakdown(
+                [row for row in scored if row["scene"] == "book_scan"],
+                "sample_type",
+                SAMPLE_TYPE_LABELS,
+            ),
         },
-        "ned_distribution": bin_distribution(scored),
     }
 
 
@@ -456,186 +450,148 @@ def heading(root: ET.Element, title_value: str, subtitle: str) -> None:
     line(root, 70, 142, 1530, 142, COLORS["grid"], 2)
 
 
-def format_share(value: float) -> str:
-    percent = value * 100
-    if 0 < percent < 0.1:
-        return "<0.1%"
-    return f"{percent:.1f}%"
-
-
 def write_svg(path: Path, root: ET.Element) -> None:
     ET.indent(root, space="  ")
     path.parent.mkdir(parents=True, exist_ok=True)
     ET.ElementTree(root).write(path, encoding="utf-8", xml_declaration=True)
 
 
-def render_overview(metrics: dict[str, Any], path: Path) -> None:
+def overview_panel(
+    root: ET.Element,
+    title_value: str,
+    rows: list[dict[str, Any]],
+    *,
+    left: int,
+    top: int,
+    width: int,
+    colors: list[str],
+) -> None:
+    label_width = 180
+    plot_left = left + label_width
+    plot_width = width - label_width - 80
+    text(root, left, top, title_value, size=27, weight=500)
+    for tick in (0.0, 0.05, 0.10, 0.15, 0.20):
+        x = plot_left + plot_width * tick / 0.22
+        line(root, x, top + 35, x, top + 75 + len(rows) * 82, COLORS["grid"], 1)
+        text(root, x, top + 28, f"{tick:.2f}", size=16, fill=COLORS["muted"], anchor="middle")
+    for index, (row, color) in enumerate(zip(rows, colors)):
+        y = top + 70 + index * 82
+        text(root, left, y + 25, f"{row['label']}  n={row['samples']}", size=19)
+        bar_width = plot_width * row["mean_sample_ned"] / 0.22
+        rect(root, plot_left, y, bar_width, 34, color)
+        text(
+            root,
+            plot_left + bar_width + 10,
+            y + 25,
+            f"{row['mean_sample_ned']:.4f}",
+            size=18,
+        )
+
+
+def render_performance_overview(metrics: dict[str, Any], path: Path) -> None:
     overall = metrics["overall"]
-    provenance = metrics["provenance"]
+    yi = metrics["character_slices"]["yi"]
     root = svg_root(
         1600,
-        820,
-        "最终发布模型评估口径与结果",
-        "展示语料级 CER、逐样本平均 NED、完全一致率及模型和评估输入哈希。",
+        1120,
+        "最终模型总体、场景与难度 NED",
+        "展示总彝文 NED、去空白平均 NED、原始平均 NED、完全正确样本的场景构成，以及按采集场景和难度划分的平均 NED。",
     )
-    heading(root, "最终发布模型：完整评估结果", "同一模型、同一评估集、同一评分公式；1,030 张全部纳入")
+    heading(
+        root,
+        "最终模型表现：总体、场景与难度",
+        "1,030 张真实图片；NED 越低越好；场景与难度使用同一条 0-0.22 横轴",
+    )
 
     columns = [80, 565, 1050]
-    labels = ["主指标：语料级 CER", "分布指标：平均 NED", "严格指标：完全一致"]
-    formulas = [
-        "总编辑距离 / GT 总字符数",
-        "逐样本 NED 的等权平均",
-        "预测与 GT 规范化后完全相同",
-    ]
+    labels = ["总彝文 NED", "去空白平均 NED", "原始平均 NED"]
     values = [
-        f"{overall['cer'] * 100:.2f}%",
-        f"{overall['mean_sample_ned'] * 100:.2f}%",
-        f"{overall['exact_match_rate'] * 100:.1f}%",
+        f"{yi['mean_sample_ned']:.4f}",
+        f"{overall['mean_sample_ned']:.4f}",
+        f"{overall['raw_mean_sample_ned']:.4f}",
     ]
-    details = [
-        f"{overall['edit_distance']:,} / {overall['gt_characters']:,}",
-        f"1,030 张逐张归一后再平均",
-        f"{overall['exact_matches']:,} / {overall['samples']:,}",
-    ]
-    accents = [COLORS["red"], COLORS["blue"], COLORS["green"]]
-    for x, label, formula, value, detail, accent in zip(
-        columns, labels, formulas, values, details, accents
-    ):
-        rect(root, x, 205, 8, 210, accent, 0)
-        text(root, x + 28, 240, label, size=23, weight=500)
-        text(root, x + 28, 282, formula, size=19, fill=COLORS["muted"])
-        text(root, x + 28, 358, value, size=52, fill=accent, weight=500)
-        text(root, x + 28, 400, detail, size=20, fill=COLORS["muted"])
+    notes = ["只保留规范彝文字符", "忽略空格与换行差异", "保留模型原始输出格式"]
+    accents = [COLORS["purple"], COLORS["blue"], COLORS["amber"]]
+    for x, label, value, note, accent in zip(columns, labels, values, notes, accents):
+        rect(root, x, 195, 8, 155, accent, 0)
+        text(root, x + 28, 230, label, size=22, weight=500)
+        text(root, x + 28, 300, value, size=48, fill=accent, weight=500)
+        text(root, x + 28, 338, note, size=18, fill=COLORS["muted"])
 
-    line(root, 70, 480, 1530, 480, COLORS["grid"], 2)
-    text(root, 70, 535, "可复核证据链", size=25, weight=500)
-    proof = [
-        ("最终权重", provenance["model_weight_sha256"]),
-        ("最终标注", provenance["annotations_sha256"]),
-        ("固定预测", provenance["predictions_sha256"]),
+    line(root, 70, 385, 1530, 385, COLORS["grid"], 2)
+
+    scene_rows = {row["key"]: row for row in metrics["breakdowns"]["scene"]}
+    book_type_rows = {
+        row["key"]: row for row in metrics["breakdowns"]["book_scan_sample_type"]
+    }
+    exact_total = overall["exact_matches"]
+    exact_groups = [
+        (book_type_rows["page"]["exact_matches"], COLORS["green"]),
+        (book_type_rows["region"]["exact_matches"], COLORS["mint"]),
+        (scene_rows["real_screen_photo"]["exact_matches"], COLORS["amber"]),
+        (scene_rows["phone_handwritten"]["exact_matches"], COLORS["red"]),
+        (scene_rows["real_photo"]["exact_matches"], COLORS["blue"]),
     ]
-    for index, (label, digest) in enumerate(proof):
-        y = 586 + index * 60
-        text(root, 70, y, label, size=20, fill=COLORS["muted"])
-        text(root, 210, y, digest, size=20)
+    text(root, 70, 435, f"完全正确 {exact_total} 张的场景构成", size=23, weight=500)
+    stack_left = 450
+    stack_top = 405
+    stack_width = 840
+    cursor = stack_left
+    for count, color in exact_groups:
+        segment_width = stack_width * count / exact_total
+        if segment_width:
+            rect(root, cursor, stack_top, segment_width, 34, color, 0)
+        cursor += segment_width
+    text(
+        root,
+        450,
+        468,
+        "书籍整页 54（16.2%） · 书籍区域 228（68.5%） · 屏幕拍摄 45（13.5%） · 手写 0 · 实景 6（1.8%）",
+        size=18,
+    )
+    text(
+        root,
+        450,
+        495,
+        "书籍整页完全正确率 54/437（12.4%）；书籍区域 228/350（65.1%）。构成受原始样本量影响。",
+        size=17,
+        fill=COLORS["muted"],
+    )
+
+    line(root, 70, 520, 1530, 520, COLORS["grid"], 2)
+    overview_panel(
+        root,
+        "采集场景",
+        metrics["breakdowns"]["scene"],
+        left=70,
+        top=575,
+        width=725,
+        colors=[COLORS["green"], COLORS["amber"], COLORS["red"], COLORS["blue"]],
+    )
+    overview_panel(
+        root,
+        "难度",
+        metrics["breakdowns"]["difficulty"],
+        left=835,
+        top=575,
+        width=695,
+        colors=[COLORS["green"], COLORS["amber"], COLORS["red"]],
+    )
     text(
         root,
         70,
-        785,
-        "主口径：NFC 后删除 Unicode 空白；NFKC 仅作诊断，不用于主成绩。",
+        1075,
+        "表现较好：书籍扫描 0.0259、低难度 0.0163。主要不足：手写拍照 0.2000、高难度 0.0957。实景拍照仅 9 张，只作参考。",
         size=19,
         fill=COLORS["muted"],
     )
     write_svg(path, root)
 
 
-def contribution_panel(
-    root: ET.Element,
-    title_value: str,
-    rows: list[dict[str, Any]],
-    top: int,
-) -> None:
-    left = 255
-    plot_width = 1100
-    text(root, 70, top, title_value, size=27, weight=500)
-    text(root, 1375, top, "组内 CER", size=19, fill=COLORS["muted"])
-    for tick in range(0, 101, 20):
-        x = left + plot_width * tick / 100
-        line(root, x, top + 35, x, top + 65 + len(rows) * 92, COLORS["grid"], 1)
-        text(root, x, top + 28, f"{tick}%", size=17, fill=COLORS["muted"], anchor="middle")
-    for index, row in enumerate(rows):
-        y = top + 65 + index * 92
-        text(root, 70, y + 22, f"{row['label']}  n={row['samples']}", size=20)
-        rect(root, left, y, plot_width * row["character_share"], 24, COLORS["light_blue"])
-        rect(root, left, y + 32, plot_width * row["error_share"], 24, COLORS["red"])
-        text(
-            root,
-            left + plot_width * row["character_share"] + 10,
-            y + 19,
-            format_share(row["character_share"]),
-            size=17,
-            fill=COLORS["muted"],
-        )
-        text(
-            root,
-            left + plot_width * row["error_share"] + 10,
-            y + 52,
-            format_share(row["error_share"]),
-            size=17,
-            fill=COLORS["red"],
-        )
-        text(root, 1450, y + 38, f"{row['cer'] * 100:.2f}%", size=20, anchor="middle")
-
-
-def render_contribution(metrics: dict[str, Any], path: Path) -> None:
-    root = svg_root(
-        1600,
-        1160,
-        "评估字符与编辑错误贡献",
-        "按采集场景和难度比较 GT 字符占比、总编辑错误贡献以及组内 CER。",
-    )
-    heading(
-        root,
-        "误差从哪里来：曝光量、错误贡献与组内 CER",
-        "浅蓝表示该组占全部 GT 字符的比例；红色表示该组占全部编辑错误的比例；每组错误贡献之和为 100%",
-    )
-    rect(root, 70, 165, 34, 16, COLORS["light_blue"])
-    text(root, 116, 180, "GT 字符占比", size=18)
-    rect(root, 280, 165, 34, 16, COLORS["red"])
-    text(root, 326, 180, "编辑错误贡献", size=18)
-
-    contribution_panel(root, "按采集场景", metrics["breakdowns"]["scene"], 245)
-    line(root, 70, 675, 1530, 675, COLORS["grid"], 2)
-    contribution_panel(root, "按难度", metrics["breakdowns"]["difficulty"], 730)
-    write_svg(path, root)
-
-
-def render_distribution(metrics: dict[str, Any], path: Path) -> None:
-    rows = metrics["ned_distribution"]
-    root = svg_root(
-        1600,
-        900,
-        "逐样本 NED 分布与错误贡献",
-        "每个 NED 区间同时展示样本占比和其贡献的编辑错误占比。",
-    )
-    heading(
-        root,
-        "均值背后的分布：多少样本、贡献多少错误",
-        "同一 NED 区间内，蓝色为样本占比，红色为编辑错误贡献；错误贡献按编辑距离计算",
-    )
-    left = 300
-    plot_width = 1150
-    for tick in range(0, 101, 20):
-        x = left + plot_width * tick / 100
-        line(root, x, 190, x, 805, COLORS["grid"], 1)
-        text(root, x, 178, f"{tick}%", size=17, fill=COLORS["muted"], anchor="middle")
-    for index, row in enumerate(rows):
-        y = 220 + index * 96
-        text(root, 70, y + 24, f"{row['label']}  n={row['samples']}", size=21)
-        rect(root, left, y, plot_width * row["sample_share"], 25, COLORS["blue"])
-        rect(root, left, y + 35, plot_width * row["error_share"], 25, COLORS["red"])
-        text(
-            root,
-            left + plot_width * row["sample_share"] + 10,
-            y + 20,
-            f"样本 {row['sample_share'] * 100:.1f}%",
-            size=17,
-        )
-        text(
-            root,
-            left + plot_width * row["error_share"] + 10,
-            y + 55,
-            f"错误 {row['error_share'] * 100:.1f}%",
-            size=17,
-            fill=COLORS["red"],
-        )
-    write_svg(path, root)
-
-
 def render_figures(metrics: dict[str, Any], figure_dir: Path) -> None:
-    render_overview(metrics, figure_dir / "evaluation-final-model-overview.svg")
-    render_contribution(metrics, figure_dir / "evaluation-error-contribution.svg")
-    render_distribution(metrics, figure_dir / "evaluation-ned-distribution.svg")
+    render_performance_overview(
+        metrics, figure_dir / "evaluation-performance-overview.svg"
+    )
 
 
 def main() -> None:

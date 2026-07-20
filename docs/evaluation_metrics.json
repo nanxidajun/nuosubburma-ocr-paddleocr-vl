@@ -2,9 +2,9 @@
   "schema": "nuosubburma_final_evaluation/1.0",
   "scope": "frozen_final_release_model_full_1030_sample_evaluation",
   "metric": {
-    "primary": "corpus CER = sum Levenshtein distance / sum GT code points",
+    "primary": "mean per-sample NED after NFC normalization and Unicode-whitespace removal",
     "normalization": "NFC, then remove all Unicode whitespace",
-    "secondary": "mean per-sample NED = mean(distance / max(pred length, GT length))",
+    "secondary": "corpus CER = sum Levenshtein distance / sum GT code points",
     "diagnostic": "NFKC results are diagnostic only because compatibility normalization can fold OCR-significant symbols"
   },
   "provenance": {
@@ -27,6 +27,15 @@
     "nfkc_ws_cer": 0.055408970976253295,
     "nfkc_ws_mean_sample_ned": 0.03460375194432007
   },
+  "character_slices": {
+    "yi": {
+      "gt_characters": 94872,
+      "prediction_characters": 95022,
+      "edit_distance": 4023,
+      "cer": 0.0424045029091829,
+      "mean_sample_ned": 0.04318077613251851
+    }
+  },
   "breakdowns": {
     "scene": [
       {
@@ -39,10 +48,7 @@
         "exact_matches": 282,
         "exact_match_rate": 0.3583227445997459,
         "key": "book_scan",
-        "label": "书籍扫描",
-        "sample_share": 0.7640776699029126,
-        "character_share": 0.698837101488881,
-        "error_share": 0.5440138082535697
+        "label": "书籍扫描"
       },
       {
         "samples": 164,
@@ -54,10 +60,7 @@
         "exact_matches": 45,
         "exact_match_rate": 0.27439024390243905,
         "key": "real_screen_photo",
-        "label": "屏幕拍摄",
-        "sample_share": 0.15922330097087378,
-        "character_share": 0.2844196975390276,
-        "error_share": 0.40342068099796013
+        "label": "屏幕拍摄"
       },
       {
         "samples": 70,
@@ -69,10 +72,7 @@
         "exact_matches": 0,
         "exact_match_rate": 0.0,
         "key": "phone_handwritten",
-        "label": "手写拍照",
-        "sample_share": 0.06796116504854369,
-        "character_share": 0.015762325601823158,
-        "error_share": 0.05233014278989487
+        "label": "手写拍照"
       },
       {
         "samples": 9,
@@ -84,10 +84,7 @@
         "exact_matches": 6,
         "exact_match_rate": 0.6666666666666666,
         "key": "real_photo",
-        "label": "实景拍照",
-        "sample_share": 0.008737864077669903,
-        "character_share": 0.0009808753702682522,
-        "error_share": 0.00023536795857523928
+        "label": "实景拍照"
       }
     ],
     "difficulty": [
@@ -101,10 +98,7 @@
         "exact_matches": 169,
         "exact_match_rate": 0.6236162361623616,
         "key": "easy",
-        "label": "低难度",
-        "sample_share": 0.26310679611650484,
-        "character_share": 0.07013014898569679,
-        "error_share": 0.018123332810293425
+        "label": "低难度"
       },
       {
         "samples": 501,
@@ -116,10 +110,7 @@
         "exact_matches": 112,
         "exact_match_rate": 0.22355289421157684,
         "key": "medium",
-        "label": "中难度",
-        "sample_share": 0.48640776699029126,
-        "character_share": 0.6254910476822549,
-        "error_share": 0.33602698885925
+        "label": "中难度"
       },
       {
         "samples": 258,
@@ -131,55 +122,34 @@
         "exact_matches": 52,
         "exact_match_rate": 0.20155038759689922,
         "key": "hard",
-        "label": "高难度",
-        "sample_share": 0.2504854368932039,
-        "character_share": 0.30437880333204825,
-        "error_share": 0.6458496783304566
+        "label": "高难度"
+      }
+    ],
+    "book_scan_sample_type": [
+      {
+        "samples": 437,
+        "gt_characters": 116319,
+        "prediction_characters": 120493,
+        "edit_distance": 6651,
+        "cer": 0.05717896474350708,
+        "mean_sample_ned": 0.03573378455920574,
+        "exact_matches": 54,
+        "exact_match_rate": 0.12356979405034325,
+        "key": "page",
+        "label": "整页"
+      },
+      {
+        "samples": 350,
+        "gt_characters": 26886,
+        "prediction_characters": 26948,
+        "edit_distance": 283,
+        "cer": 0.010525924272855761,
+        "mean_sample_ned": 0.013720984008090922,
+        "exact_matches": 228,
+        "exact_match_rate": 0.6514285714285715,
+        "key": "region",
+        "label": "区域"
       }
     ]
-  },
-  "ned_distribution": [
-    {
-      "label": "完全一致",
-      "samples": 333,
-      "sample_share": 0.3233009708737864,
-      "edit_distance": 0,
-      "error_share": 0.0
-    },
-    {
-      "label": "0-1%",
-      "samples": 155,
-      "sample_share": 0.15048543689320387,
-      "edit_distance": 251,
-      "error_share": 0.019692452534128355
-    },
-    {
-      "label": "1-5%",
-      "samples": 355,
-      "sample_share": 0.3446601941747573,
-      "edit_distance": 2075,
-      "error_share": 0.16279617134787383
-    },
-    {
-      "label": "5-10%",
-      "samples": 77,
-      "sample_share": 0.07475728155339806,
-      "edit_distance": 1778,
-      "error_share": 0.13949474344892515
-    },
-    {
-      "label": "10-25%",
-      "samples": 83,
-      "sample_share": 0.08058252427184466,
-      "edit_distance": 1543,
-      "error_share": 0.12105758669386474
-    },
-    {
-      "label": ">25%",
-      "samples": 27,
-      "sample_share": 0.02621359223300971,
-      "edit_distance": 7099,
-      "error_share": 0.556959045975208
-    }
-  ]
+  }
 }
