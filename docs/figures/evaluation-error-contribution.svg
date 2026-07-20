@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" role="img" aria-labelledby="chart-title chart-desc">
+  <title id="chart-title">评估字符与编辑错误贡献</title>
+  <desc id="chart-desc">按采集场景和难度比较 GT 字符占比、总编辑错误贡献以及组内 CER。</desc>
+  <rect width="1600" height="1160" fill="#FFFFFF" />
+  <text x="70.0" y="72.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="38" font-weight="500" text-anchor="start">误差从哪里来：曝光量、错误贡献与组内 CER</text>
+  <text x="70.0" y="112.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">浅蓝表示该组占全部 GT 字符的比例；红色表示该组占全部编辑错误的比例；每组错误贡献之和为 100%</text>
+  <line x1="70.0" y1="142.0" x2="1530.0" y2="142.0" stroke="#D9E0E6" stroke-width="2" />
+  <rect x="70.0" y="165.0" width="34.0" height="16.0" rx="4" fill="#B8CBD8" />
+  <text x="116.0" y="180.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="18" font-weight="400" text-anchor="start">GT 字符占比</text>
+  <rect x="280.0" y="165.0" width="34.0" height="16.0" rx="4" fill="#A13A32" />
+  <text x="326.0" y="180.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="18" font-weight="400" text-anchor="start">编辑错误贡献</text>
+  <text x="70.0" y="245.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="27" font-weight="500" text-anchor="start">按采集场景</text>
+  <text x="1375.0" y="245.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="19" font-weight="400" text-anchor="start">组内 CER</text>
+  <line x1="255.0" y1="280.0" x2="255.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="255.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">0%</text>
+  <line x1="475.0" y1="280.0" x2="475.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="475.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">20%</text>
+  <line x1="695.0" y1="280.0" x2="695.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="695.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">40%</text>
+  <line x1="915.0" y1="280.0" x2="915.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="915.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">60%</text>
+  <line x1="1135.0" y1="280.0" x2="1135.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1135.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">80%</text>
+  <line x1="1355.0" y1="280.0" x2="1355.0" y2="678.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1355.0" y="273.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">100%</text>
+  <text x="70.0" y="332.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">书籍扫描  n=787</text>
+  <rect x="255.0" y="310.0" width="768.7" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="342.0" width="598.4" height="24.0" rx="4" fill="#A13A32" />
+  <text x="1033.7" y="329.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">69.9%</text>
+  <text x="863.4" y="362.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">54.4%</text>
+  <text x="1450.0" y="348.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">4.84%</text>
+  <text x="70.0" y="424.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">屏幕拍摄  n=164</text>
+  <rect x="255.0" y="402.0" width="312.9" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="434.0" width="443.8" height="24.0" rx="4" fill="#A13A32" />
+  <text x="577.9" y="421.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">28.4%</text>
+  <text x="708.8" y="454.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">40.3%</text>
+  <text x="1450.0" y="440.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">8.82%</text>
+  <text x="70.0" y="516.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">手写拍照  n=70</text>
+  <rect x="255.0" y="494.0" width="17.3" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="526.0" width="57.6" height="24.0" rx="4" fill="#A13A32" />
+  <text x="282.3" y="513.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">1.6%</text>
+  <text x="322.6" y="546.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">5.2%</text>
+  <text x="1450.0" y="532.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">20.65%</text>
+  <text x="70.0" y="608.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">实景拍照  n=9</text>
+  <rect x="255.0" y="586.0" width="1.1" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="618.0" width="0.3" height="24.0" rx="4" fill="#A13A32" />
+  <text x="266.1" y="605.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">&lt;0.1%</text>
+  <text x="265.3" y="638.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">&lt;0.1%</text>
+  <text x="1450.0" y="624.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">1.49%</text>
+  <line x1="70.0" y1="675.0" x2="1530.0" y2="675.0" stroke="#D9E0E6" stroke-width="2" />
+  <text x="70.0" y="730.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="27" font-weight="500" text-anchor="start">按难度</text>
+  <text x="1375.0" y="730.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="19" font-weight="400" text-anchor="start">组内 CER</text>
+  <line x1="255.0" y1="765.0" x2="255.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="255.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">0%</text>
+  <line x1="475.0" y1="765.0" x2="475.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="475.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">20%</text>
+  <line x1="695.0" y1="765.0" x2="695.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="695.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">40%</text>
+  <line x1="915.0" y1="765.0" x2="915.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="915.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">60%</text>
+  <line x1="1135.0" y1="765.0" x2="1135.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1135.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">80%</text>
+  <line x1="1355.0" y1="765.0" x2="1355.0" y2="1071.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1355.0" y="758.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">100%</text>
+  <text x="70.0" y="817.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">低难度  n=271</text>
+  <rect x="255.0" y="795.0" width="77.1" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="827.0" width="19.9" height="24.0" rx="4" fill="#A13A32" />
+  <text x="342.1" y="814.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">7.0%</text>
+  <text x="284.9" y="847.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">1.8%</text>
+  <text x="1450.0" y="833.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">1.61%</text>
+  <text x="70.0" y="909.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">中难度  n=501</text>
+  <rect x="255.0" y="887.0" width="688.0" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="919.0" width="369.6" height="24.0" rx="4" fill="#A13A32" />
+  <text x="953.0" y="906.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">62.5%</text>
+  <text x="634.6" y="939.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">33.6%</text>
+  <text x="1450.0" y="925.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">3.34%</text>
+  <text x="70.0" y="1001.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="start">高难度  n=258</text>
+  <rect x="255.0" y="979.0" width="334.8" height="24.0" rx="4" fill="#B8CBD8" />
+  <rect x="255.0" y="1011.0" width="710.4" height="24.0" rx="4" fill="#A13A32" />
+  <text x="599.8" y="998.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">30.4%</text>
+  <text x="975.4" y="1031.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">64.6%</text>
+  <text x="1450.0" y="1017.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="20" font-weight="400" text-anchor="middle">13.20%</text>
+</svg>

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="chart-title chart-desc">
+  <title id="chart-title">逐样本 NED 分布与错误贡献</title>
+  <desc id="chart-desc">每个 NED 区间同时展示样本占比和其贡献的编辑错误占比。</desc>
+  <rect width="1600" height="900" fill="#FFFFFF" />
+  <text x="70.0" y="72.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="38" font-weight="500" text-anchor="start">均值背后的分布：多少样本、贡献多少错误</text>
+  <text x="70.0" y="112.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">同一 NED 区间内，蓝色为样本占比，红色为编辑错误贡献；错误贡献按编辑距离计算</text>
+  <line x1="70.0" y1="142.0" x2="1530.0" y2="142.0" stroke="#D9E0E6" stroke-width="2" />
+  <line x1="300.0" y1="190.0" x2="300.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="300.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">0%</text>
+  <line x1="530.0" y1="190.0" x2="530.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="530.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">20%</text>
+  <line x1="760.0" y1="190.0" x2="760.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="760.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">40%</text>
+  <line x1="990.0" y1="190.0" x2="990.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="990.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">60%</text>
+  <line x1="1220.0" y1="190.0" x2="1220.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1220.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">80%</text>
+  <line x1="1450.0" y1="190.0" x2="1450.0" y2="805.0" stroke="#D9E0E6" stroke-width="1" />
+  <text x="1450.0" y="178.0" fill="#5F6B76" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="middle">100%</text>
+  <text x="70.0" y="244.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">完全一致  n=333</text>
+  <rect x="300.0" y="220.0" width="371.8" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="255.0" width="0.0" height="25.0" rx="4" fill="#A13A32" />
+  <text x="681.8" y="240.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 32.3%</text>
+  <text x="310.0" y="275.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 0.0%</text>
+  <text x="70.0" y="340.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">0-1%  n=155</text>
+  <rect x="300.0" y="316.0" width="173.1" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="351.0" width="22.6" height="25.0" rx="4" fill="#A13A32" />
+  <text x="483.1" y="336.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 15.0%</text>
+  <text x="332.6" y="371.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 2.0%</text>
+  <text x="70.0" y="436.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">1-5%  n=355</text>
+  <rect x="300.0" y="412.0" width="396.4" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="447.0" width="187.2" height="25.0" rx="4" fill="#A13A32" />
+  <text x="706.4" y="432.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 34.5%</text>
+  <text x="497.2" y="467.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 16.3%</text>
+  <text x="70.0" y="532.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">5-10%  n=77</text>
+  <rect x="300.0" y="508.0" width="86.0" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="543.0" width="160.4" height="25.0" rx="4" fill="#A13A32" />
+  <text x="396.0" y="528.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 7.5%</text>
+  <text x="470.4" y="563.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 13.9%</text>
+  <text x="70.0" y="628.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">10-25%  n=83</text>
+  <rect x="300.0" y="604.0" width="92.7" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="639.0" width="139.2" height="25.0" rx="4" fill="#A13A32" />
+  <text x="402.7" y="624.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 8.1%</text>
+  <text x="449.2" y="659.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 12.1%</text>
+  <text x="70.0" y="724.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="21" font-weight="400" text-anchor="start">&gt;25%  n=27</text>
+  <rect x="300.0" y="700.0" width="30.1" height="25.0" rx="4" fill="#315F7D" />
+  <rect x="300.0" y="735.0" width="640.5" height="25.0" rx="4" fill="#A13A32" />
+  <text x="340.1" y="720.0" fill="#1F2933" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">样本 2.6%</text>
+  <text x="950.5" y="755.0" fill="#A13A32" font-family="-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, &quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="17" font-weight="400" text-anchor="start">错误 55.7%</text>
+</svg>
