@@ -91,7 +91,9 @@
 
 ### 训练目标
 
-规范彝文字符通常经 byte-fallback tokenizer 拆成多个 token。第二阶段在完整 OCR 交叉熵之外，仅在声明的目标字符位置加入轻量辅助约束：
+**分词分析。** PaddleOCR-VL-1.6 的 tokenizer 对规范彝文常采用 byte fallback：一个彝文字符通常被拆成 3 个 byte token，而两个形近字往往**共享前 1–2 个 byte token，真正决定字符身份的分叉出现在后续 token**。也就是说，区分形近字的信息集中在字符 byte 序列后段的少数 token 上，单纯增加孤立字符曝光未必能让模型在混排上下文中稳定分辨。这一观察同时指向两点设计：用受控 A/B 难例把差异放进真实上下文（见 [训练数据构建报告](TRAINING_DATA_CONSTRUCTION_REPORT.md)），以及把候选竞争组织在字符实际经过的 byte 分支上。
+
+基于此，第二阶段在完整 OCR 交叉熵之外，仅在声明的目标字符位置加入轻量辅助约束：
 
 ~~~text
 总损失
