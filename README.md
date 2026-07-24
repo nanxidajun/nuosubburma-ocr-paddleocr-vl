@@ -3,14 +3,14 @@
 <p align="center">
   <a href="https://huggingface.co/nanxidajun/NuosuBburma-OCR"><img alt="HF 模型" src="https://img.shields.io/badge/HuggingFace-%E6%A8%A1%E5%9E%8B-f7c948"></a>
   <a href="https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set"><img alt="HF 评估集" src="https://img.shields.io/badge/HuggingFace-%E8%AF%84%E4%BC%B0%E9%9B%86-4c9f70"></a>
-  <a href="https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo"><img alt="在线演示" src="https://img.shields.io/badge/Space-%E5%9C%A8%E7%BA%BF%E6%BC%94%E7%A4%BA-0f766e"></a>
+  <a href="hf_space/"><img alt="GPU Space 模板" src="https://img.shields.io/badge/Space-GPU_%E6%A8%A1%E6%9D%BF-0f766e"></a>
   <img alt="基座" src="https://img.shields.io/badge/Base-PaddleOCR--VL--1.6_0.9B-3465d9">
   <img alt="微调" src="https://img.shields.io/badge/Fine__tuning-LoRA-8a5cf6">
 </p>
 
 输入一张图片，输出其中规范彝文（ꆈꌠꁱꂷ / Nuosu Bburma）、汉字、拉丁字母、数字和标点。
 
-[模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [评估集可视化](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [在线演示](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Demo) · [模型与训练](docs/MODEL_AND_TRAINING.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
+[模型](https://huggingface.co/nanxidajun/NuosuBburma-OCR) · [评估集](https://huggingface.co/datasets/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [评估集可视化](https://huggingface.co/spaces/nanxidajun/NuosuBburma-OCR-Evaluation-Set) · [GPU Space 模板](hf_space/) · [模型与训练](docs/MODEL_AND_TRAINING.md) · [训练数据构建](docs/TRAINING_DATA_CONSTRUCTION_REPORT.md)
 
 ## 背景与任务
 
