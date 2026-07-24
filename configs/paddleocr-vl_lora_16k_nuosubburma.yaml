@@ -14,10 +14,11 @@ template_backend: custom
 template: paddleocr_vl
 
 ### model
-model_name_or_path: PaddlePaddle/PaddleOCR-VL
+# 固定基座快照（非浮动别名）；运行时也可由 run_train_lora.sh 的 MODEL_NAME_OR_PATH 覆盖。
+model_name_or_path: /root/.cache/huggingface/hub/models--PaddlePaddle--PaddleOCR-VL-1.6/snapshots/66317acc4c9fc17bd154591ce650735cd2855f3e
 _attn_implementation: flashmask
 lora: true
-lora_rank: 8
+lora_rank: 16
 
 ### finetuning
 stage: VL-SFT
